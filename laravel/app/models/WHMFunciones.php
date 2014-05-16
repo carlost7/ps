@@ -20,20 +20,21 @@ class WHMFunciones {
       }
 
       /*
-       |--------------------------------------------------
-       |    Seccion para agregar elementos al servidor
-       |-------------------------------------------------- 
+        |--------------------------------------------------
+        |    Seccion para agregar elementos al servidor
+        |--------------------------------------------------
        */
-             
+
       /*
        * Funcion para agregar un dominio/addon al servidor 
        */
-      public function agregarDominioServidor($domain, $subdomain ,$password)
+
+      public function agregarDominioServidor($domain, $subdomain, $password)
       {
 
             if (!isset($domain) || !isset($subdomain) || !isset($password))
             {
-                  Log::error('AgregarDominioServidor, Faltan datos en la funcion');                  
+                  Log::error('AgregarDominioServidor, Faltan datos en la funcion');
                   return false;
             }
 
@@ -44,7 +45,7 @@ class WHMFunciones {
             $resultado = json_decode($response, true);
             if ($resultado['cpanelresult']['data'][0]['result'] == 1)
             {
-                  Log::error('Agregado el dominio exitoso');                  
+                  Log::error('Agregado el dominio exitoso');
                   return true;
             }
             else
@@ -53,10 +54,11 @@ class WHMFunciones {
                   return false;
             }
       }
-      
+
       /*
        * Agregar Correos al servidor
        */
+
       public function agregarCorreoServidor($domain, $email, $password)
       {
 
@@ -77,16 +79,16 @@ class WHMFunciones {
                   else
                   {
                         Log::error('Error en WHM: AgregarCorreoServidor ' . $resultado['cpanelresult']['data'][0]['reason']);
-                        Log::error('Error'.$email);
+                        Log::error('Error' . $email);
                         return false;
                   }
             }
       }
 
-      
       /*
        * Agregar Forwarder al servidor;
        */
+
       public function agregarForwardServidor($domain, $email, $redireccion)
       {
 
@@ -116,6 +118,7 @@ class WHMFunciones {
       /*
        * Funcion para agregar un dominio/addon al servidor 
        */
+
       public function agregarFtpServidor($user_name, $home_dir, $pass)
       {
             if (!isset($user_name) || !isset($pass) || !isset($home_dir))
@@ -123,27 +126,31 @@ class WHMFunciones {
                   Log::error('AgregarFTPServidor, Faltan datos en la funcion');
                   return false;
             }
-
-            $response = $this->xmlapi->api2_query($this->plan->name_server, "Ftp", "addftp", array('ṕass' => $pass, 'user' => $user_name, 'quota' => $this->plan->quota_ftps, 'homedir' => $home_dir));
-
-            $resultado = json_decode($response, true);
-            Log::error("WHMFunciones AgregarFtpServidor ".$user_name." ".$home_dir." ".$pass);
-            dd($resultado);
-            if ($resultado['cpanelresult']['data'][0]['result'] == 1)
-            {
-                  return true;
-            }
             else
             {
-                  Log::error('Error whm: AgregarFtpServidor ' . $resultado['cpanelresult']['data'][0]['reason']);
-                  return false;
+
+                  $response = $this->xmlapi->api2_query($this->plan->name_server, "Ftp", "addftp", array('pass' => $pass, 'user' => $user_name, 'quota' => $this->plan->quota_ftps, 'homedir' => $home_dir));
+
+                  $resultado = json_decode($response, true);
+                  Log::error("WHMFunciones AgregarFtpServidor " . $user_name . " " . $home_dir . " " . $pass);
+                  
+                  if ($resultado['cpanelresult']['data'][0]['result'] == 1)
+                  {
+                        return true;
+                  }
+                  else
+                  {
+                        Log::error('Error whm: AgregarFtpServidor ' . $resultado['cpanelresult']['data'][0]['reason']);
+                        return false;
+                  }
             }
       }
-      
+
       /*
        * Funcion para agregar un dominio/addon al servidor 
        */
-      public function agregarDbServidor($username,$password,$dbname)
+
+      public function agregarDbServidor($username, $password, $dbname)
       {
 
             if (!isset($username) || !isset($password) || !isset($dbname))
@@ -152,22 +159,27 @@ class WHMFunciones {
                   return false;
             }
 
-            
+
             $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "adduser", array('username' => $username, 'password' => $password));
 
-            if($response != false){
+            if ($response != false)
+            {
                   $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "adddb", array('dbname' => $dbname));
-                  if($response!=false){
-                        $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "adduserdb", array('dbname' => $dbname,'dbuser'=> $username,'perms_list'=>'all'));
-                        if($response!=false){
+                  if ($response != false)
+                  {
+                        $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "adduserdb", array('dbname' => $dbname, 'dbuser' => $username, 'perms_list' => 'all'));
+                        if ($response != false)
+                        {
                               return true;
-                        }else{
+                        }
+                        else
+                        {
                               Log::error('Error whm: agregarDbServidor Error al agregar la base de datos');
                               return false;
                         }
                   }
             }
-            
+
             $resultado = json_decode($response, true);
             if ($resultado['cpanelresult']['data'][0]['result'] == 1)
             {
@@ -179,17 +191,17 @@ class WHMFunciones {
                   return false;
             }
       }
-      
-      
+
       /*
-       |-----------------------------------------------
-       |    Seccion para editar elementos del servidor    
-       |-----------------------------------------------
+        |-----------------------------------------------
+        |    Seccion para editar elementos del servidor
+        |-----------------------------------------------
        */
-      
+
       /*
        * Funciones para editar el password del servidor
        */
+
       public function editarPasswordCorreoServidor($domain, $email, $password)
       {
 
@@ -214,10 +226,11 @@ class WHMFunciones {
                   }
             }
       }
-      
+
       /*
        * Funciones para editar el password del servidor
        */
+
       public function editarPasswordFtpServidor($user, $pass)
       {
 
@@ -243,16 +256,16 @@ class WHMFunciones {
             }
       }
 
-      
       /*
-       |---------------------------------------------------
-       |    Seccion para eliminar los correos del servidor
-       |---------------------------------------------------
+        |---------------------------------------------------
+        |    Seccion para eliminar los correos del servidor
+        |---------------------------------------------------
        */
-      
+
       /*
        * Funcion para eliminar un correo del servidor
        */
+
       public function eliminarCorreoServidor($domain, $username)
       {
             if (!isset($domain) || !isset($username))
@@ -276,15 +289,16 @@ class WHMFunciones {
                   }
             }
       }
-      
+
       /*
        * Funcion para eliminar forwarders del servidor
        */
+
       public function eliminarFwdServidor($email, $forward)
       {
             if (!isset($email) || !isset($forward))
             {
-                  Session::flash('error','falta un argumento');
+                  Session::flash('error', 'falta un argumento');
                   return false;
             }
             else
@@ -293,10 +307,11 @@ class WHMFunciones {
                   return true;
             }
       }
-      
+
       /*
        * Funcion para eliminar un correo del servidor
        */
+
       public function eliminarFtpServidor($user, $borrar)
       {
             if (!isset($user) || !isset($borrar))
@@ -320,11 +335,12 @@ class WHMFunciones {
                   }
             }
       }
-      
+
       /*
        * Funcion para eliminar un correo del servidor
        */
-      public function eliminarDbServidor($username,$password,$db_name)
+
+      public function eliminarDbServidor($username, $password, $db_name)
       {
             if (!isset($username) || !isset($password) || !isset($dbname))
             {
@@ -332,22 +348,27 @@ class WHMFunciones {
                   return false;
             }
 
-            
-            $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "deluserdb", array('dbname' => $dbname,'dbuser'=> $username));
 
-            if($response != false){
+            $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "deluserdb", array('dbname' => $dbname, 'dbuser' => $username));
+
+            if ($response != false)
+            {
                   $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "deluser", array('dbuser' => $username));
-                  if($response!=false){
+                  if ($response != false)
+                  {
                         $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "deldb", array('dbname' => $dbname));
-                        if($response!=false){
+                        if ($response != false)
+                        {
                               return true;
-                        }else{
+                        }
+                        else
+                        {
                               Log::error('Error whm: agregarDbServidor Error al agregar la base de datos');
                               return false;
                         }
                   }
             }
-            
+
             $resultado = json_decode($response, true);
             if ($resultado['cpanelresult']['data'][0]['result'] == 1)
             {
@@ -358,7 +379,6 @@ class WHMFunciones {
                   Log::error('Error whm: AgregarDb ' . $resultado['cpanelresult']['data'][0]['reason']);
                   return false;
             }
-      }     
-      
+      }
 
 }

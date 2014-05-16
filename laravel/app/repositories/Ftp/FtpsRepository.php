@@ -10,7 +10,7 @@ interface FtpsRepository
       public function set_attributes($dominio_model);
       public function listarFtps();
       public function obtenerFtp($id);
-      public function agregarFtp($username, $hostname, $home_dir, $password);
-      public function editarFtp($password);
+      public function agregarFtp($username, $hostname, $home_dir, $password, $principal);
+      public function editarFtp($username,$password);
       public function eliminarFtp($user,$borrar);
 }

@@ -16,7 +16,10 @@
             {{ HTML::style('css/bootstrap.css') }}
             {{ HTML::style('css/bootstrap-theme.css') }}
             {{ HTML::style('css/main.css') }}
-            {{ HTML::script('js/vendor/modernizr-2.6.2-respond-1.1.0.min.js') }}            
+            {{ HTML::script('js/vendor/modernizr-2.6.2-respond-1.1.0.min.js') }}
+            <script>
+                  var base_url = '{{ URL::to("/") }}';
+            </script>
       </head>
       <body>
             <!--[if lt IE 7]>

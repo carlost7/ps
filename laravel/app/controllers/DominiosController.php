@@ -7,16 +7,20 @@
  */
 use UsuariosRepository as Usuario;
 use DominioRepository as Dominio;
+use FtpsRepository as Ftp;
 
-class DominiosController extends BaseController {
+class DominiosController extends BaseController
+{
 
       protected $Usuario;
       protected $Dominio;
+      protected $Ftp;
 
-      public function __construct(Usuario $usuario, Dominio $dominio)
+      public function __construct(Usuario $usuario, Dominio $dominio, Ftp $ftp)
       {
             $this->Usuario = $usuario;
             $this->Dominio = $dominio;
+            $this->Ftp = $ftp;
       }
 
       /*
@@ -49,11 +53,12 @@ class DominiosController extends BaseController {
       /*
        * Comprobar si se puede agregar el dominio, se tiene que usar ajax
        */
-      
-      public function comprobarDominio(){
+
+      public function comprobarDominio()
+      {
             return true;
       }
-      
+
       /*
        * Funcion para confirmar si el dominio es correcto
        * 
@@ -72,24 +77,35 @@ class DominiosController extends BaseController {
 
                   if ($validator->passes())
                   {
-                        $usuario = $this->Usuario->agregarUsuario(Input::get('nombre'), Input::get('password'), Input::get('correo'),false);
+                        $usuario = $this->Usuario->agregarUsuario(Input::get('nombre'), Input::get('password'), Input::get('correo'), false);
                         if ($usuario->id != null)
                         {
-                              $plan = Plan::where('nombre', '=', Input::get('plan'))->first();                              
-                              if ($this->Dominio->agregarDominio(Input::get('dominio'), Input::get('password'), $usuario->id, $plan->id))
+                              $plan = Plan::where('nombre', '=', Input::get('plan'))->first();
+                              $dominio = $this->Dominio->agregarDominio(Input::get('dominio'), Input::get('password'), $usuario->id, $plan->id);
+                              if (isset($dominio->id))
                               {
-                                    Session::put('message', 'La cuenta esta lista para usarse');
-                                    DB::commit();
-                                    return Redirect::to('usuario/login');
+                                    $this->Ftp->set_attributes($dominio);
+                                    $user=explode('.', $dominio->dominio);
+                                    $username = $user[0];
+                                    $hostname='primerserver.com';
+                                    $home_dir=$dominio->dominio;
+                                    if ($this->Ftp->agregarFtp($username, $hostname, $home_dir, Input::get('password'),true))
+                                    {
+                                          Session::put('message', 'La cuenta esta lista para usarse');
+                                          DB::commit();
+                                          return Redirect::to('usuario/login');
+                                    }else{
+                                          Session::put('error', 'Error al agregar el FTP');
+                                    }
                               }
                               else
                               {
-                                    Session::flash('error', 'Error al agregar el dominio al servidor');                                    
+                                    Session::flash('error', 'Error al agregar el dominio al servidor');
                               }
                         }
                         else
                         {
-                              Session::flash('error', 'Error al agregar usuario');                              
+                              Session::flash('error', 'Error al agregar usuario');
                         }
                   }
                   DB::rollback();
@@ -97,27 +113,28 @@ class DominiosController extends BaseController {
             }
             else
             {
-                  if(Input::get('dominio')!=''){
+                  if (Input::get('dominio') != '')
+                  {
                         return View::make('dominios.confirmar', array('dominio' => Input::get('dominio')));
-                  }else{
-                        Session::flash('error','Se necesita un dominio para poder continuar');
+                  }
+                  else
+                  {
+                        Session::flash('error', 'Se necesita un dominio para poder continuar');
                         return Redirect::back();
                   }
-                  
-                  
             }
       }
 
       protected function getValidatorConfirmUser()
       {
             return Validator::make(Input::all(), array(
-                        'nombre' => 'required|min:4',
-                        'password' => 'required|min:2',
-                        'password_confirmation' => 'required|same:password',
-                        'dominio' => 'required',
-                        'correo' => 'required|email|unique:user,email',
-                        'plan' => 'required|exists:planes,nombre',
-                        'aceptar'=>'required|accepted'
+                          'nombre' => 'required|min:4',
+                          'password' => 'required|min:2',
+                          'password_confirmation' => 'required|same:password',
+                          'dominio' => 'required',
+                          'correo' => 'required|email|unique:user,email',
+                          'plan' => 'required|exists:planes,nombre',
+                          'aceptar' => 'required|accepted'
             ));
       }
 

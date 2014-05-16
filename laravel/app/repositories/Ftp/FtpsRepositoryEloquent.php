@@ -48,21 +48,13 @@ class FtpsRepositoryEloquent implements FtpsRepository
        * Agregar Ftp a la base de datos
        */
 
-      public function agregarFtp($nombre, $email, $redireccion = '', $password)
+      public function agregarFtp($username, $hostname, $home_dir, $password, $principal)
       {
             DB::beginTransaction();
-            if ($this->agregarFtpServidor($email, $password))
+            if ($this->agregarFtpServidor($username, $home_dir, $password))
             {
-                  if ($redireccion != '')
-                  {
-                        if (!$this->agregarFwdServidor($email, $redireccion))
-                        {
-                              DB::rollback();
-                              return false;
-                        }
-                  }
-                  $correo = $this->agregarFtpBase($nombre, $email, $this->dominio_model->id, $redireccion);
-                  if ($correo->id)
+                  $ftp = $this->agregarFtpBase($username, $hostname, $home_dir, $principal);
+                  if (isset($ftp->id))
                   {
                         DB::commit();
                         return true;
@@ -84,14 +76,15 @@ class FtpsRepositoryEloquent implements FtpsRepository
        * Agregar correo a la base de datos
        */
 
-      protected function agregarFtpBase($nombre, $email, $dominio, $redireccion = '')
+      protected function agregarFtpBase($username, $hostname, $home_dir,$principal)
       {
-            $correo = new Ftp();
-            $correo->nombre = $nombre;
-            $correo->correo = $email;
-            $correo->dominio_id = $dominio;
-            $correo->redireccion = $redireccion;
-            $correo->save();
+            $ftp = new Ftp();
+            $ftp->dominio_id = $this->dominio_model->id;
+            $ftp->username = $username;
+            $ftp->hostname = $hostname;
+            $ftp->home_dir = $home_dir;
+            $ftp->is_principal = $principal;
+            $ftp->save();
             return $correo;
       }
 
@@ -100,10 +93,10 @@ class FtpsRepositoryEloquent implements FtpsRepository
        * 
        */
 
-      protected function agregarFtpServidor($correo, $password)
+      protected function agregarFtpServidor($username, $home_dir, $password)
       {
             $whmfuncion = new WHMFunciones($this->plan);
-            if ($whmfuncion->agregarFtpServidor($this->dominio_model->dominio, $correo, $password))
+            if ($whmfuncion->agregarFtpServidor($username, $home_dir, $password))
             {
                   return true;
             }
@@ -136,7 +129,7 @@ class FtpsRepositoryEloquent implements FtpsRepository
         |-------------------------------------
        */
 
-      public function editarFtp($correo_model, $password, $redireccion)
+      public function editarFtp($username,$password)
       {
 
             DB::beginTransaction();
@@ -235,7 +228,7 @@ class FtpsRepositoryEloquent implements FtpsRepository
         |------------------------------
        */
 
-      public function eliminarFtp($correo_model)
+      public function eliminarFtp($user,$borrar)
       {
 
             DB::beginTransaction();

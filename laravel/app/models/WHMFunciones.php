@@ -116,17 +116,19 @@ class WHMFunciones {
       /*
        * Funcion para agregar un dominio/addon al servidor 
        */
-      public function agregarFtpServidor($user_name,$pass,$homedir)
+      public function agregarFtpServidor($user_name, $home_dir, $pass)
       {
-            if (!isset($domain) || !isset($password))
+            if (!isset($user_name) || !isset($pass) || !isset($home_dir))
             {
                   Log::error('AgregarFTPServidor, Faltan datos en la funcion');
                   return false;
             }
 
-            $response = $this->xmlapi->api2_query($this->plan->name_server, "Ftp", "addftp", array('user' => $user_name, 'ṕass' => $pass, 'quota' => $this->plan->quota_ftps, 'homedir' => $homedir));
+            $response = $this->xmlapi->api2_query($this->plan->name_server, "Ftp", "addftp", array('ṕass' => $pass, 'user' => $user_name, 'quota' => $this->plan->quota_ftps, 'homedir' => $home_dir));
 
             $resultado = json_decode($response, true);
+            Log::error("WHMFunciones AgregarFtpServidor ".$user_name." ".$home_dir." ".$pass);
+            dd($resultado);
             if ($resultado['cpanelresult']['data'][0]['result'] == 1)
             {
                   return true;
@@ -141,7 +143,7 @@ class WHMFunciones {
       /*
        * Funcion para agregar un dominio/addon al servidor 
        */
-      public function agregarDbServidor($username,$password,$db_name)
+      public function agregarDbServidor($username,$password,$dbname)
       {
 
             if (!isset($username) || !isset($password) || !isset($dbname))

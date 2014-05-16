@@ -3,7 +3,7 @@
 
 function get_password() {
     var pass = $.post(
-            'http://localhost/primerserver/public/obtener_password',
+            base_url+'/obtener_password',
             {"_token": $(document).find('input[name=_token]').val()}
     );
     pass.done(function(data) {

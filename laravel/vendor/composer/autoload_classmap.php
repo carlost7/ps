@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'AddHomedirFtps' => $baseDir . '/app/database/migrations/2014_05_15_235435_add_homedir_ftps.php',
+    'AddPrincipalFtp' => $baseDir . '/app/database/migrations/2014_05_16_055641_add_principal_ftp.php',
     'AdminController' => $baseDir . '/app/controllers/AdminController.php',
     'AlterUserTable' => $baseDir . '/app/database/migrations/2014_05_08_164438_alter-user-table.php',
     'BaseController' => $baseDir . '/app/controllers/BaseController.php',

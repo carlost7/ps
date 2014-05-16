@@ -25,7 +25,7 @@ class DominioRepositoryEloquent implements DominioRepository {
                   if (isset($dominio->id))
                   {
                         Db::commit();
-                        return true;
+                        return $dominio;
                   }
                   else
                   {

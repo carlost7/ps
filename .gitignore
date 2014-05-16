@@ -1,0 +1,12 @@
+/laravel/bootstrap/compiled.php
+/laravel/vendor
+/laravelcomposer.phar
+/laravelcomposer.lock
+/laravel.env.*.php
+/laravel.env.php
+.DS_Store
+Thumbs.db
+/nbproject/private/
+/nbproject/
+/laravel/app/config/whm.php
+/laravel/app/config/database.php

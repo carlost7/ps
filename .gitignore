@@ -1,7 +1,4 @@
 /laravel/bootstrap/compiled.php
-/laravel/vendor
-/laravelcomposer.phar
-/laravelcomposer.lock
 /laravel.env.*.php
 /laravel.env.php
 .DS_Store

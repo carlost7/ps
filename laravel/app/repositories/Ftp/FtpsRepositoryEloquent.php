@@ -85,7 +85,7 @@ class FtpsRepositoryEloquent implements FtpsRepository
             $ftp->homedir = $home_dir;
             $ftp->is_principal = $principal;
             $ftp->save();
-            return $correo;
+            return $ftp;
       }
 
       /*

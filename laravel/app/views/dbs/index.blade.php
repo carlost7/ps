@@ -12,8 +12,8 @@
 <div class="jumbotron">
       <div class="container">
             <h2>Correos</h2>
-            <p>Aqui encontrarás una lista de todos los correos</p>
-            @if($total < Session::get('dominio')->plan->numero_correos)
+            <p>Aqui encontrarás una lista de todas las bases de datos</p>
+            @if($total < Session::get('dominio')->plan->numero_dbs)
             <p>Da click en el boton si quieres agregar uno nuevo</p>
             <p>{{ HTML::linkRoute('correos.create','Agregar Correo',null,array('class'=>'btn btn-primary btn-lg')) }}</p>
             @endif
@@ -22,29 +22,25 @@
 <div class="container">
       <div class="panel panel-default">
             <!-- Default panel contents -->
-            <div class="panel-heading">Lista de Correos ({{$total.'/'.Session::get('dominio')->plan->numero_correos }})</div>
+            <div class="panel-heading">Lista de Bases de Datos ({{$total.'/'.Session::get('dominio')->plan->numero_dbs }})</div>
 
 
-            @if($correos->count())
+            @if($dbs->count())
             <!-- Table -->
             <div class="table-responsive">
                   <table class="table">
                         <tr>
                               <th>Nombre</th>
-                              <th>Correo</th>                    
-                              <th>Redireccion</th>
-                              <th>Editar</th>
+                              <th>Usuario</th>                    
                               <th>Eliminar</th>
                         </tr>
-                        @foreach($correos as $correo)
+                        @foreach($dbs as $db)
                         <tr>
 
-                              <td>{{ $correo->nombre }}</td>
-                              <td>{{ HTML::link('correos/'.$correo->id,$correo->correo) }}</td>
-                              <td>{{ $correo->redireccion }}</td>
-                              <td>{{ HTML::link('correos/'.$correo->id.'/edit','Editar',array('class'=>'btn btn-primary btn-xs')) }}</td>
+                              <td>{{ HTML::link('dbs/'.$db->id,$db->nombre) }}</td>
+                              <td>{{ $db->usuario }}</td>
                               <td>
-                                    {{ Form::open(array('route' => array('correos.destroy',$correo->id),'method'=>'DELETE')) }}
+                                    {{ Form::open(array('route' => array('dbs.destroy',$db->id),'method'=>'DELETE')) }}
                                     {{ Form::submit('Eliminar', array('class' => 'btn btn-danger btn-xs')) }}
                                     {{ Form::close() }}
                               </td>                        
@@ -54,10 +50,14 @@
             </div>
 
             @else
-            <p>Aún no hay correos</p>
+            <p>Aún no hay bases de datos</p>
             <br />
-            <p>Para agregar un nuevo correo, solo da click en el boton</p>
+            @if(Session::get('dominio')->plan->numero_dbs == 0)
+            <p>Tu plan no incluye Bases de datos</p>
+            @else
+            <p>Da click en el boton si quieres agregar una nueva base de datos</p>
             <p>{{ HTML::linkRoute('correos.create','Agregar Correo',null,array('class'=>'btn btn-primary btn-lg')) }}</p>
+            @endif            
             @endif
       </div>
 </div>

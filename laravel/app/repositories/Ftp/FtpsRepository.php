@@ -12,5 +12,5 @@ interface FtpsRepository
       public function obtenerFtp($id);
       public function agregarFtp($username, $hostname, $home_dir, $password, $principal);
       public function editarFtp($username,$password);
-      public function eliminarFtp($user,$borrar);
+      public function eliminarFtp($ftp_model,$borrar);
 }

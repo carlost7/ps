@@ -39,7 +39,6 @@
                         </tr>
                         @foreach($ftps as $ftp)
                         <tr>
-
                               <td>{{ $ftp->username }}</td>
                               <td>{{ $ftp->hostname }}</td>
                               <td>{{ $ftp->homedir }}</td>

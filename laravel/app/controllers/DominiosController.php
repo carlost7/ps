@@ -93,6 +93,14 @@ class DominiosController extends BaseController
                                     {
                                           Session::put('message', 'La cuenta esta lista para usarse');
                                           DB::commit();
+                                          $data = array('dominio'=>$dominio->dominio,
+                                                        'usuario'=>$usuario->email,
+                                                        'password'=>Input::get('password'),
+                                                        'ftp_user'=>$username.'@'.$dominio->plan->name_server,
+                                                        'ftp_pass'=>Input::get('password'));
+                                          Mail::queue('emails.welcome',$data,function($message){
+                                                $message->to(Input::get('correo'),Input::get('nombre'))->subject('Bienvenido a PrimerServer');
+                                          });
                                           return Redirect::to('usuario/login');
                                     }else{
                                           Session::put('error', 'Error al agregar el FTP');

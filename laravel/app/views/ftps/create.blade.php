@@ -11,8 +11,8 @@
 @section('content')
 <div class="jumbotron">
       <div class="container">
-            <h2>{{ HTML::linkRoute('correos.index','Correos') }} > Agregar Correos</h2>
-            <p>Para crear un nuevo correo, rellena los siguiente campos</p>            
+            <h2>{{ HTML::linkRoute('ftps.index','Ftps') }} > Agregar Ftp</h2>
+            <p>Para crear un nuevo ftp, rellena los siguiente campos</p>            
       </div>
 </div>
 <div class="container">
@@ -22,22 +22,21 @@
       @endforeach
 
       <br />
-      {{ Form::open(array('url'=>'correos','id'=>'form_confirm')) }}
+      {{ Form::open(array('url'=>'ftps','id'=>'form_confirm')) }}
 
       <div class="form-group">
-            <label for="nombre">Nombre</label>
-            <input type="text" name="nombre" value="{{ Input::old('nombre')}}" class="form-control" id="Nombre" placeholder="Nombre del correo">
+            <label for="username">Nombre de Usuario</label>
+            <input type="text" name="username" value="{{ Input::old('username')}}" class="form-control" id="UserName" placeholder="Nombre del usuario">
       </div>
       <div class="form-group">
-            <label for="correo">Correo</label>
+            <label for="home_dir">Directorio</label>
             <div class="input-group">
-                  <input type="text" name="correo" value="{{ Input::old('correo')}}" class="form-control" id="Correo" placeholder="Escribe el correo">
-                  <span class="input-group-addon">{{ '@'.Session::get('dominio')->dominio }}</span>
+                  <span class="input-group-addon">{{ Session::get('dominio')->dominio.'/' }}</span>
+                  <input type="text" name="home_dir" value="{{ Input::old('home_dir')}}" class="form-control" id="HomeDir" placeholder="Escribe el directorio a donde llegará el FTP">
             </div>
-
       </div>
       <div class="form-group">
-            <label for="password">Password</label>            
+            <label for="password">Contraseña</label>            
             <div class="input-group">
                   <input type="password" name="password" class="form-control" id="Password" placeholder="Contraseña">
                   <span class="input-group-btn">
@@ -48,14 +47,10 @@
             </div>
       </div>
       <div class="form-group">
-            <label for="password_confirmation">Confirmar</label>
+            <label for="password_confirmation">Confirmar Contraseña</label>
             <input type="password" name="password_confirmation" class="form-control" id="Password_confirmation" placeholder="Confirma tu contraseña">
       </div>
-      <div class="form-group">
-            <label for="redireccion">Redirección</label>
-            <input type="text" name="redireccion" value="{{ Input::old('redireccion')}}" class="form-control" id="Nombre" placeholder="Escribe el correo al que se redireccionara">
-      </div>                  
-      <button type="submit" id='confirmar' class="btn btn-success">Agregar Correo</button>
+      <button type="submit" id='confirmar' class="btn btn-success">Agregar Ftp</button>
       {{ Form::close() }}
 
 </div>

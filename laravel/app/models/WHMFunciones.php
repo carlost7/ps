@@ -123,7 +123,7 @@ class WHMFunciones {
       {
             if (!isset($user_name) || !isset($pass) || !isset($home_dir))
             {
-                  Log::error('AgregarFTPServidor, Faltan datos en la funcion');
+                  Log::error('AgregarFTPServidor, Faltan datos en la funcion '.$user_name.' '.$home_dir.' '.$pass);
                   return false;
             }
             else
@@ -321,7 +321,7 @@ class WHMFunciones {
             }
             else
             {
-                  $response = $this->xmlapi->api2_query($this->plan->name_server, 'Ftp', 'delftp', array('user' => $user, 'destroy' => $destroy));
+                  $response = $this->xmlapi->api2_query($this->plan->name_server, 'Ftp', 'delftp', array('user' => $user, 'destroy' => $borrar));
 
                   $resultado = json_decode($response, true);
                   if ($resultado['cpanelresult']['data'][0]['result'] == 1)
@@ -340,9 +340,9 @@ class WHMFunciones {
        * Funcion para eliminar un correo del servidor
        */
 
-      public function eliminarDbServidor($username, $password, $db_name)
+      public function eliminarDbServidor($username, $dbname)
       {
-            if (!isset($username) || !isset($password) || !isset($dbname))
+            if (!isset($username) || !isset($dbname))
             {
                   Log::error('AgregarDbServidor, Faltan datos en la funcion');
                   return false;

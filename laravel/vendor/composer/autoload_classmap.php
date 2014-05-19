@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddDomainnamePlanes' => $baseDir . '/app/database/migrations/2014_05_19_060101_add_domainname_planes.php',
     'AddHomedirFtps' => $baseDir . '/app/database/migrations/2014_05_15_235435_add_homedir_ftps.php',
     'AddPrincipalFtp' => $baseDir . '/app/database/migrations/2014_05_16_055641_add_principal_ftp.php',
     'AdminController' => $baseDir . '/app/controllers/AdminController.php',

@@ -33,6 +33,7 @@
                               <th>Nombre</th>
                               <th>Correo</th>                    
                               <th>Redireccion</th>
+                              <th>Ingresar</th>
                               <th>Editar</th>
                               <th>Eliminar</th>
                         </tr>
@@ -42,6 +43,7 @@
                               <td>{{ $correo->nombre }}</td>
                               <td>{{ HTML::link('correos/'.$correo->id,$correo->correo) }}</td>
                               <td>{{ $correo->redireccion }}</td>
+                              <td>{{ HTML::link('https://rs4.websitehostserver.net:2096/?locale=es','Webmail') }}</td>
                               <td>{{ HTML::link('correos/'.$correo->id.'/edit','Editar',array('class'=>'btn btn-primary btn-xs')) }}</td>
                               <td>
                                     {{ Form::open(array('route' => array('correos.destroy',$correo->id),'method'=>'DELETE')) }}

@@ -33,7 +33,7 @@
             {{ Form::email('correo',null,array('class'=>'form-control','disabled'=>'disabled')) }}            
       </div>
       <div class="form-group">
-            <label for="password">Password</label>            
+            <label for="password">Contraseña</label>            
             <div class="input-group">
                   <input type="password" name="password" class="form-control" id="Password" placeholder="Contraseña">
                   <span class="input-group-btn">
@@ -44,7 +44,7 @@
             </div>
       </div>
       <div class="form-group">
-            <label for="password_confirmation">Confirmar</label>
+            <label for="password_confirmation">Confirmar Contraseña</label>
             <input type="password" name="password_confirmation" class="form-control" id="Password_confirmation" placeholder="Confirma tu contraseña">
       </div>
       <div class="form-group">

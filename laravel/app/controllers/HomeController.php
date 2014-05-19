@@ -57,8 +57,8 @@ class HomeController extends BaseController {
 
       public function obtenerPass()
       {
-            $length = 12;
-            $available_sets = 'lud';
+            $length = 9;
+            $available_sets = 'luds';
             $sets = array();
             if (strpos($available_sets, 'l') !== false)
             {

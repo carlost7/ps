@@ -76,11 +76,11 @@ class FtpsRepositoryEloquent implements FtpsRepository
        * Agregar correo a la base de datos
        */
 
-      protected function agregarFtpBase($username, $hostname, $home_dir,$principal)
+      protected function agregarFtpBase($username, $hostname, $home_dir, $principal)
       {
             $ftp = new Ftp();
             $ftp->dominio_id = $this->dominio_model->id;
-            $ftp->username = $username;
+            $ftp->username = $username.'@'.$this->plan->name_server;
             $ftp->hostname = $hostname;
             $ftp->homedir = $home_dir;
             $ftp->is_principal = $principal;
@@ -107,112 +107,32 @@ class FtpsRepositoryEloquent implements FtpsRepository
       }
 
       /*
-       * Agregar Forwarder al correo
-       */
-
-      protected function agregarFwdServidor($email, $redireccion)
-      {
-            $whmfuncion = new WHMFunciones($this->plan);
-            if ($whmfuncion->agregarForwardServidor($this->dominio_model->dominio, $email, $redireccion))
-            {
-                  return true;
-            }
-            else
-            {
-                  return false;
-            }
-      }
-
-      /*
         |-------------------------------------
         |    Editar Ftps
         |-------------------------------------
        */
 
-      public function editarFtp($username,$password)
+      public function editarFtp($username, $password)
       {
 
-            DB::beginTransaction();
-            if ($password!='')
+            if ($this->editarPasswordFtpServidor($username, $password))
             {
-                  if (!$this->editarPasswordFtpServidor($correo_model->correo, $password))
-                  {
-                        DB::rollback();
-                        return false;
-                  }
-            }
-
-            if (isset($redireccion))
-            {
-                  if ($correo_model->redireccion != $redireccion)
-                  {
-                        if (isset($correo_model->redireccion))
-                        {
-                              if (!$this->eliminarForwarderServidor($correo_model->correo, $correo_model->redireccion))
-                              {
-                                    DB::rollback();
-                                    return false;
-                              }
-                        }
-                        if (!$this->agregarFwdServidor($correo_model->correo, $redireccion))
-                        {
-                              DB::rollback();
-                              return false;
-                        }
-                  }
-            }
-            else
-            {
-                  if (isset($correo_model->redireccion))
-                  {
-                        if (!$this->eliminarForwarderServidor($correo_model->correo, $correo_model->redireccion))
-                        {
-                              DB::rollback();
-                              return false;
-                        }
-                  }
-            }
-
-
-            if ($this->editarFtpBase($correo_model, $redireccion))
-            {
-                  DB::commit();
                   return true;
             }
             else
             {
-                  DB::rollback();
                   return false;
             }
-      }
-
-      /*
-       * Editar Ftp de la base de datos 
-       */
-
-      protected function editarFtpBase($correo_model, $redireccion)
-      {
-            if ($redireccion)
-            {
-                  $correo_model->redireccion = $redireccion;
-            }
-            else
-            {
-                  $correo_model->redireccion = '';
-            }
-
-            $correo_model->save();
-            return $correo_model;
       }
 
       /*
        * Modificar las contraseñas del servidor
        */
 
-      protected function editarPasswordFtpServidor($correo, $password)
+      protected function editarPasswordFtpServidor($username, $password)
       {
             $whmfuncion = new WHMFunciones($this->plan);
-            if ($whmfuncion->editarPasswordFtpServidor($this->dominio_model->dominio, $correo, $password))
+            if ($whmfuncion->editarPasswordFtpServidor($username, $password))
             {
                   return true;
             }
@@ -228,18 +148,13 @@ class FtpsRepositoryEloquent implements FtpsRepository
         |------------------------------
        */
 
-      public function eliminarFtp($user,$borrar)
+      public function eliminarFtp($ftp_model, $borrar)
       {
 
             DB::beginTransaction();
-            if ($this->eliminarFtpServidor($correo_model))
+            if ($this->eliminarFtpServidor($ftp_model, $borrar))
             {
-                  if (isset($correo_model->redireccion))
-                  {
-                        $this->eliminarForwarderServidor($correo_model->correo, $correo_model->redireccion);
-                  }
-
-                  if ($this->eliminarFtpBase($correo_model))
+                  if ($this->eliminarFtpBase($ftp_model))
                   {
                         DB::commit();
                         return true;
@@ -261,9 +176,9 @@ class FtpsRepositoryEloquent implements FtpsRepository
        * Eliminar el correo de la base de datos
        */
 
-      protected function eliminarFtpBase($correo_model)
+      protected function eliminarFtpBase($ftp_model)
       {
-            if ($correo_model->delete())
+            if ($ftp_model->delete())
             {
                   return true;
             }
@@ -279,10 +194,10 @@ class FtpsRepositoryEloquent implements FtpsRepository
        * Si el correo tiene redirección borrar la redireccion
        */
 
-      protected function eliminarFtpServidor($correo_model)
+      protected function eliminarFtpServidor($ftp_model, $borrar)
       {
             $whmfuncion = new WHMFunciones($this->plan);
-            if ($whmfuncion->eliminarFtpServidor($this->dominio_model->dominio, $correo_model->correo))
+            if ($whmfuncion->eliminarFtpServidor($ftp_model->username, $borrar))
             {
                   return true;
             }
@@ -290,17 +205,6 @@ class FtpsRepositoryEloquent implements FtpsRepository
             {
                   return false;
             }
-      }
-
-      /*
-       * Eliminar la redireccion del servidor
-       */
-
-      protected function eliminarForwarderServidor($correo, $redireccion)
-      {
-            $whmfuncion = new WHMFunciones($this->plan);
-            $whmfuncion->eliminarFwdServidor($correo, $redireccion);
-            return true;
       }
 
 }

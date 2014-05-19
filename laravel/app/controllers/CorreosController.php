@@ -2,7 +2,8 @@
 
 use CorreoRepository as Correo;
 
-class CorreosController extends \BaseController {
+class CorreosController extends \BaseController
+{
 
       protected $Correo;
 
@@ -52,8 +53,9 @@ class CorreosController extends \BaseController {
             if ($validator->passes())
             {
                   $nombre = Input::get('nombre');
-                  if(strpos(Input::get('correo'), '@')){
-                        Session::flash('error','El campo correo solo debe contener el nombre de usuario');
+                  if (strpos(Input::get('correo'), '@'))
+                  {
+                        Session::flash('error', 'El campo correo solo debe contener el nombre de usuario');
                         return Redirect::to('correos/create')->withInput();
                   }
                   $correo = Input::get('correo') . '@' . Session::get('dominio')->dominio;
@@ -169,6 +171,11 @@ class CorreosController extends \BaseController {
                         return Redirect::to('correos');
                   }
             }
+            else
+            {
+                  Session::flash('error','El correo no pertenece al dominio');
+                  return Redirect::to('correos');
+            }
       }
 
       /*
@@ -178,11 +185,11 @@ class CorreosController extends \BaseController {
       protected function getCorreosValidator()
       {
             return Validator::make(Input::all(), array(
-                        'nombre' => 'required|min:4',
-                        'correo' => 'required',
-                        'password' => 'required|min:2',
-                        'password_confirmation' => 'required|same:password',
-                        'redireccion' => 'email',
+                          'nombre' => 'required|min:4',
+                          'correo' => 'required',
+                          'password' => 'required|min:2',
+                          'password_confirmation' => 'required|same:password',
+                          'redireccion' => 'email',
             ));
       }
 
@@ -193,9 +200,9 @@ class CorreosController extends \BaseController {
       protected function getEditCorreosValidator()
       {
             return Validator::make(Input::all(), array(
-                        'password' => 'min:4',
-                        'password_confirmation' => 'same:password',
-                        'redireccion' => 'email',
+                          'password' => 'min:4',
+                          'password_confirmation' => 'same:password',
+                          'redireccion' => 'email',
             ));
       }
 

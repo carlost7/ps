@@ -7,10 +7,9 @@
  */
 interface DatabaseRepository
 {
-      public function set_attributes($dominio_model);
+      public function set_attributes($Db_model);
       public function listarDatabases();
       public function obtenerDatabase($id);
-      public function agregarDatabase($nombre, $email, $redireccion = '', $password);
-      public function editarDatabase($correo_model, $password, $redireccion);
-      public function eliminarDatabase($correo_model);
+      public function agregarDatabase($username, $password, $dbname);
+      public function eliminarDatabase($Db_model);
 }

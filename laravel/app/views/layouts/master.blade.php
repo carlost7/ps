@@ -53,7 +53,7 @@
                                           <a href="#" class='dropdown-toggle' data-toggle='dropdown'>{{Auth::user()->email}} <b class="caret"></b></a>
                                           <ul class="dropdown-menu">
                                                 @if(Auth::user()->is_admin)
-                                                <li>{{ Html::linkRoute('admin/inicio','Administrador') ;}}</li>                                
+                                                <li>{{ Html::linkRoute('admin.usuarios.index','Administrador') ;}}</li>                                
                                                 @else
                                                 <li>{{ Html::linkRoute('usuario/inicio','Inicio') ;}}</li>
                                                 @endif                                                
@@ -95,13 +95,6 @@
 
             @yield('content')
 
-            @section('footer')
-            <div class="container">
-                  <footer>
-                        <p>&copy; Primer server 2015</p>
-                  </footer>
-            </div>            
-            @show
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.js"></script>                
             {{ HTML::script('js/vendor/bootstrap.min.js') }}
             {{ HTML::script('js/main.js') }}

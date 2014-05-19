@@ -6,15 +6,18 @@
  * @author carlos
  */
 class DominioRepositoryEloquent implements DominioRepository {
+      
       /*
-       * Funcion para comprar si el dominio esta disponible
+       * Tratar de probar si el dominio existe, o dar otras alternativas
        */
-
       public function comprobarDominio($dominio)
       {
             return true;
       }
 
+      /*
+       * Agregar el dominio al servidor y luego a la base de datos
+       */
       public function agregarDominio($nombre_dominio, $password, $usuario_id, $plan_id)
       {
             Db::beginTransaction();
@@ -74,6 +77,70 @@ class DominioRepositoryEloquent implements DominioRepository {
             $dominio->plan_id = $plan_id;
             $dominio->save();
             return $dominio;
+      }
+
+      /*
+       * Funcion para eliminar el dominio del sistema
+       */      
+      public function eliminarDominio($dominio_model)
+      {
+
+            DB::beginTransaction();
+            if ($this->eliminarDominioServidor($dominio_model))
+            {
+
+                  if ($this->eliminarDominioBase($dominio_model))
+                  {
+                        DB::commit();
+                        return true;
+                  }
+                  else
+                  {
+                        DB::rollback();
+                        return false;
+                  }
+            }
+            else
+            {
+                  DB::rollback();
+                  return false;
+            }
+      }
+
+      /*
+       * Funcion para eliminar el dominio de la base de datos
+       */
+      public function eliminarDominioBase($dominio_model)
+      {
+            if ($dominio_model->delete())
+            {
+                  return true;
+            }
+            else
+            {
+                  return false;
+            }
+      }
+
+      
+      /*
+       * Funcion para eliminar el dominio del servidor
+       */
+      public function eliminarDominioServidor($dominio_model)
+      {
+            $whmfunciones = new WHMFunciones($dominio_model->plan);            
+            $domain = $dominio_model->dominio;
+            $subs = explode(".", $dominio_model->dominio);
+            $subdomain = $subs[0] . '_' . 'psstartup.com';
+            
+            if ($whmfunciones->eliminarDominioServidor($domain, $subdomain))
+            {
+                  return true;
+            }
+            else
+            {
+                  return false;
+            }
       }
 
 }

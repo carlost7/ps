@@ -26,7 +26,7 @@ class UsuariosController extends BaseController {
                         {
                               if (Auth::user()->is_admin)
                               {
-                                    return Redirect::route('admin/inicio');
+                                    return Redirect::to('admin/usuarios');
                               }
                               else
                               {

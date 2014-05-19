@@ -133,7 +133,7 @@ class WHMFunciones {
 
                   $resultado = json_decode($response, true);
                   Log::error("WHMFunciones AgregarFtpServidor " . $user_name . " " . $home_dir . " " . $pass);
-                  
+
                   if ($resultado['cpanelresult']['data'][0]['result'] == 1)
                   {
                         return true;
@@ -258,9 +258,34 @@ class WHMFunciones {
 
       /*
         |---------------------------------------------------
-        |    Seccion para eliminar los correos del servidor
+        |    Seccion para eliminar del servidor
         |---------------------------------------------------
        */
+
+      public function eliminarDominioServidor($domain, $subdomain)
+      {
+
+            if (!isset($domain) || !isset($subdomain))
+            {
+                  Log::error('WHMFunciones eliminarDominioServidor: faltan datos para eliminar el dominio');
+                  return false;
+            }
+            else
+            {
+                  $response = $this->xmlapi->api2_query($this->plan->name_server, 'AddonDomain', 'deladdondomain', array('domain' => $domain, 'subdomain' => $subdomain));
+
+                  $resultado = json_decode($response, true);
+                  if ($resultado['cpanelresult']['data'][0]['result'] == 1)
+                  {
+                        return true;
+                  }
+                  else
+                  {
+                        Log::error('Error en WHM: editarPasswordFtpServidor ' . $resultado['cpanelresult']['data'][0]['reason']);
+                        return false;
+                  }
+            }
+      }
 
       /*
        * Funcion para eliminar un correo del servidor

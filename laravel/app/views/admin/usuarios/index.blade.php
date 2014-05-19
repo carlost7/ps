@@ -1,0 +1,54 @@
+@extends('layouts.master')
+
+@section('title')
+@parent
+
+- FTP
+@stop
+
+
+
+@section('content')
+<div class="container">
+      <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Lista de Usuarios</div>
+
+            <div class="table-responsive">
+                  <table class="table">
+                        <tr>
+                              <th>Nombre de usuario</th>
+                              <th>Correo</th>
+                              <th>Dominio</th>                              
+                              <th>Plan</th>
+                              <th>Agregar</th>
+                              <th>Eliminar</th>
+                        </tr>
+                        @foreach($usuarios as $usuario)
+                        <tr>
+
+                              <td>{{ $usuario->username }}</td>
+                              <td>{{ HTML::link('admin/usuarios/'.$usuario->id,$usuario->email) }}</td>
+                              <td>{{ $usuario->dominio->dominio }}</td>
+                              <td>{{ $usuario->dominio->plan->nombre }}</td>
+
+                              <td>{{ HTML::link('admin/usuarios/'.$usuario->id.'/edit','Agregar',array('class'=>'btn btn-primary btn-xs')) }}</td>
+                              <td>
+                                    {{ Form::open(array('route' => array('admin.usuarios.destroy',$usuario->id),'method'=>'DELETE')) }}
+                                    {{ Form::submit('Eliminar', array('class' => 'btn btn-danger btn-xs')) }}
+                                    {{ Form::close() }}
+                              </td>                        
+                        </tr>
+                        @endforeach
+                  </table>
+            </div>
+      </div>
+      
+      <p>{{ HTML::linkRoute('admin.usuarios.create','Agregar Usuario',null,array('class'=>'btn btn-primary btn-lg')) }}</p>
+      
+</div>
+
+
+
+@stop
+

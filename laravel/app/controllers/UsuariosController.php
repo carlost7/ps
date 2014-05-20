@@ -79,7 +79,7 @@ class UsuariosController extends BaseController {
                               ->with("status", Lang::get($response));
             }
 
-            return View::make('usuario/recuperar');
+            return View::make('usuarios.recuperar');
       }
 
       /*

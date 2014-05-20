@@ -3,19 +3,21 @@
 use UsuariosRepository as Usuario;
 use DominioRepository as Dominio;
 use FtpsRepository as Ftp;
+use CorreoRepository as Correo;
 
-class AdminUsersController extends \BaseController
-{
+class AdminUsersController extends \BaseController {
 
       protected $Usuario;
       protected $Dominio;
       protected $Ftp;
+      protected $Correo;
 
-      public function __construct(Usuario $usuario, Dominio $dominio, Ftp $ftp)
+      public function __construct(Usuario $usuario, Dominio $dominio, Ftp $ftp, Correo $correo)
       {
             $this->Usuario = $usuario;
             $this->Dominio = $dominio;
             $this->Ftp = $ftp;
+            $this->Correo = $correo;
       }
 
       /**
@@ -71,10 +73,10 @@ class AdminUsersController extends \BaseController
                                     DB::commit();
 
                                     $data = array('dominio' => $dominio->dominio,
-                                          'usuario' => $usuario->correo,
+                                          'usuario' => $usuario->email,
                                           'password' => Input::get('password'));
 
-                                    Mail::queue('email.nuevousuario', $data, function($message) use ($usuario) {
+                                    Mail::send('email.nuevousuario', $data, function($message) use ($usuario) {
                                           Log::error('AdminusersController ' . $usuario->correo . ' ' . $usuario->nombre);
                                           $message->to($usuario->email, $usuario->username)->subject('Configuración de correos T7Marketing');
                                     });
@@ -146,8 +148,15 @@ class AdminUsersController extends \BaseController
       {
             $usuario = $this->Usuario->obtenerUsuario($id);
             $this->Ftp->set_attributes($usuario->dominio);
-            foreach($usuario->dominio->ftps as $ftp) {
+            foreach ($usuario->dominio->ftps as $ftp)
+            {
                   $this->Ftp->eliminarFtp($ftp, true);
+            }
+
+            $this->Correo->set_attributes($usuario->dominio);
+            foreach ($usuario->dominio->correos as $correo)
+            {
+                  $this->Correo->eliminarCorreo($correo);
             }
 
             if ($this->Dominio->eliminarDominio($usuario->dominio))
@@ -168,12 +177,12 @@ class AdminUsersController extends \BaseController
       protected function getValidatorCreateUser()
       {
             return Validator::make(Input::all(), array(
-                          'nombre' => 'required|min:4',
-                          'password' => 'required|min:2',
-                          'password_confirmation' => 'required|same:password',
-                          'dominio' => 'required',
-                          'correo' => 'required|email|unique:user,email',
-                          'plan' => 'required|exists:planes,nombre',
+                        'nombre' => 'required|min:4',
+                        'password' => 'required|min:2',
+                        'password_confirmation' => 'required|same:password',
+                        'dominio' => 'required',
+                        'correo' => 'required|email|unique:user,email',
+                        'plan' => 'required|exists:planes,nombre',
             ));
       }
 

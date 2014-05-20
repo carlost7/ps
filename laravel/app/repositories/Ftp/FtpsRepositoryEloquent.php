@@ -132,7 +132,9 @@ class FtpsRepositoryEloquent implements FtpsRepository
       protected function editarPasswordFtpServidor($username, $password)
       {
             $whmfuncion = new WHMFunciones($this->plan);
-            if ($whmfuncion->editarPasswordFtpServidor($username, $password))
+            $usr = explode("@", $username);
+            $user = $usr[0];
+            if ($whmfuncion->editarPasswordFtpServidor($user, $password))
             {
                   return true;
             }

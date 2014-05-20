@@ -102,5 +102,5 @@ return array(
         | you may inspect the message. This is great for local development.
         |
        */
-      'pretend' => true,
+      'pretend' => false,
 );

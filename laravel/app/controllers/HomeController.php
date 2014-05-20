@@ -1,7 +1,6 @@
 <?php
 
-class HomeController extends BaseController
-{
+class HomeController extends BaseController {
       /*
        * Mostrar la pagina inicial
        */
@@ -32,13 +31,14 @@ class HomeController extends BaseController
                   $correo = Input::get('correo');
                   $nombre = Input::get('nombre');
                   $mensaje = Input::get('mensaje');
-                  
-                  $data = array('correo'=>$correo,'nombre'=>$nombre,'mensaje'=>$mensaje);
-                  
+
+                  $data = array('correo' => $correo, 'nombre' => $nombre, 'mensaje' => $mensaje);
+
                   Mail::send('email.contacto', $data, function($message) {
-                        $message->to('carlos.juarez@t7marketing.com', 'Carlos Juarez')->subject('Contacto');
+                        $message->to('juvcarl@hotmail.com')->subject('Contacto');
                   });
-                  Session::flash('message','Mensaje enviado con exito');
+
+                  Session::flash('message', 'Mensaje enviado con exito');
                   return Redirect::to('/');
             }
             else
@@ -90,13 +90,15 @@ class HomeController extends BaseController
 
             $all = '';
             $password = '';
-            foreach ($sets as $set) {
+            foreach ($sets as $set)
+            {
                   $password .= $set[array_rand(str_split($set))];
                   $all .= $set;
             }
 
             $all = str_split($all);
-            for ($i = 0; $i < $length - count($sets); $i++) {
+            for ($i = 0; $i < $length - count($sets); $i++)
+            {
                   $password .= $all[array_rand($all)];
             }
 

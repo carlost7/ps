@@ -3,7 +3,7 @@
 @section('title')
 @parent
 
-- Correo {{ $usuario->email }} 
+- Usuarios {{ $usuario->email }} 
 @stop
 
 

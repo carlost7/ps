@@ -21,7 +21,8 @@ class DbsController extends \BaseController
       public function index()
       {
             $dbs = $this->Database->listarDatabases();
-            return View::make('dbs.index')->with('dbs', $dbs);
+            $total = $dbs->count();
+            return View::make('dbs.index')->with(array('dbs'=>$dbs,'total'=>$total));
       }
 
       /**
@@ -41,7 +42,7 @@ class DbsController extends \BaseController
        */
       public function store()
       {
-            $dbs = $this->Database->listarDatabases;
+            $dbs = $this->Database->listarDatabases();
             $total = sizeof($dbs);
             if ($total >= Session::get('dominio')->plan->numero_dbs)
             {
@@ -51,8 +52,8 @@ class DbsController extends \BaseController
             $validator = $this->getDbsValidator();
             if ($validator->passes())
             {
-                  $username = Input::get('nombre_usuario');
-                  $dbname = Input::get('db_name');
+                  $username = Input::get('username');
+                  $dbname = Input::get('dbname');
                   $password = Input::get('password');
                   if ($this->Database->agregarDatabase($username, $password, $dbname))
                   {
@@ -96,22 +97,22 @@ class DbsController extends \BaseController
       public function destroy($id)
       {
             $Db_model = $this->Database->obtenerDatabase($id);
-            if ($this->isIdDomain($db))
+            if ($this->isIdDomain($Db_model))
             {
                   if ($this->Database->eliminarDatabase($Db_model))
                   {
-                        Session::flash('La base de datos fue eliminada con exito');
+                        Session::flash('message','La base de datos fue eliminada con exito');
                         return Redirect::to('dbs');
                   }
                   else
                   {
-                        Session::flash('Error al eliminar la base de datos');
+                        Session::flash('error','Error al eliminar la base de datos');
                         return Redirect::to('dbs');
                   }
             }
             else
             {
-                  Session::flash('La base de datos no pertenece al dominio');
+                  Session::flash('error','La base de datos no pertenece al dominio');
                   return View::make('dbs');
             }
       }

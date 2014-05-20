@@ -3,7 +3,8 @@
 @section('title')
 @parent
 
-- Correos
+- Bases de Datos
+
 @stop
 
 
@@ -11,11 +12,11 @@
 @section('content')
 <div class="jumbotron">
       <div class="container">
-            <h2>Correos</h2>
+            <h2>Bases de datos</h2>
             <p>Aqui encontrarás una lista de todas las bases de datos</p>
             @if($total < Session::get('dominio')->plan->numero_dbs)
             <p>Da click en el boton si quieres agregar uno nuevo</p>
-            <p>{{ HTML::linkRoute('correos.create','Agregar Correo',null,array('class'=>'btn btn-primary btn-lg')) }}</p>
+            <p>{{ HTML::linkRoute('dbs.create','Agregar Base de datos',null,array('class'=>'btn btn-primary btn-lg')) }}</p>
             @endif
       </div>
 </div>
@@ -56,7 +57,7 @@
             <p>Tu plan no incluye Bases de datos</p>
             @else
             <p>Da click en el boton si quieres agregar una nueva base de datos</p>
-            <p>{{ HTML::linkRoute('correos.create','Agregar Correo',null,array('class'=>'btn btn-primary btn-lg')) }}</p>
+            <p>{{ HTML::linkRoute('dbs.create','Agregar Base de Datos',null,array('class'=>'btn btn-primary btn-lg')) }}</p>
             @endif            
             @endif
       </div>
@@ -65,5 +66,3 @@
 @include('layouts.menu_usuario', array('activo'=>'correos'))
 
 @stop
-
-@section('footer')@stop

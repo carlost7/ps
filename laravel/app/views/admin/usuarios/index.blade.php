@@ -3,7 +3,7 @@
 @section('title')
 @parent
 
-- FTP
+- Usuarios
 @stop
 
 
@@ -24,6 +24,8 @@
                               <th>Agregar</th>
                               <th>Eliminar</th>
                         </tr>
+                        @if($usuarios->count())
+                        
                         @foreach($usuarios as $usuario)
                         <tr>
 
@@ -40,6 +42,8 @@
                               </td>                        
                         </tr>
                         @endforeach
+                        
+                        @endif
                   </table>
             </div>
       </div>

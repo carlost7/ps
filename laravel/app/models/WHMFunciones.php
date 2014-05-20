@@ -123,7 +123,7 @@ class WHMFunciones {
       {
             if (!isset($user_name) || !isset($pass) || !isset($home_dir))
             {
-                  Log::error('AgregarFTPServidor, Faltan datos en la funcion '.$user_name.' '.$home_dir.' '.$pass);
+                  Log::error('AgregarFTPServidor, Faltan datos en la funcion ' . $user_name . ' ' . $home_dir . ' ' . $pass);
                   return false;
             }
             else
@@ -152,22 +152,21 @@ class WHMFunciones {
 
       public function agregarDbServidor($username, $password, $dbname)
       {
-
             if (!isset($username) || !isset($password) || !isset($dbname))
             {
-                  Log::error('AgregarDbServidor, Faltan datos en la funcion');
+                  Log::error('AgregarDbServidor, Faltan datos en la funcion ' . $username . ' ' . $password . ' ' . $dbname);
                   return false;
             }
 
 
-            $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "adduser", array('username' => $username, 'password' => $password));
+            $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "adduser", array($username, $password));
 
             if ($response != false)
             {
-                  $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "adddb", array('dbname' => $dbname));
+                  $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "adddb", array($dbname));
                   if ($response != false)
                   {
-                        $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "adduserdb", array('dbname' => $dbname, 'dbuser' => $username, 'perms_list' => 'all'));
+                        $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "adduserdb", array($dbname, $username, 'all'));
                         if ($response != false)
                         {
                               return true;
@@ -187,7 +186,7 @@ class WHMFunciones {
             }
             else
             {
-                  Log::error('Error whm: AgregarDb ' . $resultado['cpanelresult']['data'][0]['reason']);
+                  Log::error('Error whm: AgregarDbServidor ' . $resultado['cpanelresult']['data'][0]['reason']);
                   return false;
             }
       }
@@ -221,7 +220,7 @@ class WHMFunciones {
                   }
                   else
                   {
-                        Log::error('Error en WHM: AgregarForwarderServidor ' . $resultado['cpanelresult']['data'][0]['reason']);
+                        Log::error('Error en WHM: AgregarPasswordCorreoServidor ' . $resultado['cpanelresult']['data'][0]['reason']);
                         return false;
                   }
             }
@@ -281,7 +280,7 @@ class WHMFunciones {
                   }
                   else
                   {
-                        Log::error('Error en WHM: editarPasswordFtpServidor ' . $resultado['cpanelresult']['data'][0]['reason']);
+                        Log::error('Error en WHM: eliminarDominioServidor ' . $resultado['cpanelresult']['data'][0]['reason']);
                         return false;
                   }
             }
@@ -355,7 +354,7 @@ class WHMFunciones {
                   }
                   else
                   {
-                        Log::error('Error en WHM: EliminarCorreoServidor ' . $resultado['cpanelresult']['data'][0]['reason']);
+                        Log::error('Error en WHM: EliminarFTPServidor ' . $resultado['cpanelresult']['data'][0]['reason']);
                         return false;
                   }
             }
@@ -374,34 +373,35 @@ class WHMFunciones {
             }
 
 
-            $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "deluserdb", array('dbname' => $dbname, 'dbuser' => $username));
+            $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "deluserdb", array($dbname, $username));
 
             if ($response != false)
             {
-                  $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "deluser", array('dbuser' => $username));
+                  
+                  $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "deluser", array($username));
                   if ($response != false)
                   {
-                        $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "deldb", array('dbname' => $dbname));
+                        $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "deldb", array($dbname));
                         if ($response != false)
                         {
                               return true;
                         }
                         else
                         {
-                              Log::error('Error whm: agregarDbServidor Error al agregar la base de datos');
+                              Log::error('Error whm: EliminarDBServidor Error al eliminar la base de datos');
                               return false;
                         }
                   }
-            }
-
-            $resultado = json_decode($response, true);
-            if ($resultado['cpanelresult']['data'][0]['result'] == 1)
-            {
-                  return true;
+                  else
+                  {
+                        Log::error('Error whm: EliminarDBServidor Error al eliminar el usuario');
+                        return false;
+                  }
+                  
             }
             else
             {
-                  Log::error('Error whm: AgregarDb ' . $resultado['cpanelresult']['data'][0]['reason']);
+                  Log::error('Error whm: EliminarDBServidor Error al eliminar el usuario de la base de datos');
                   return false;
             }
       }

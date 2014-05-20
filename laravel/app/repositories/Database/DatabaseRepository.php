@@ -7,9 +7,9 @@
  */
 interface DatabaseRepository
 {
-      public function set_attributes($Db_model);
+      public function set_attributes($Database_model);
       public function listarDatabases();
       public function obtenerDatabase($id);
       public function agregarDatabase($username, $password, $dbname);
-      public function eliminarDatabase($Db_model);
+      public function eliminarDatabase($Database_model);
 }

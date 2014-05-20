@@ -9,19 +9,17 @@
                   <p>
                         Alguien se quiere comunicar contigo
                   </p>
-
                   <ul>
                         <li>
-                              Nombre: {{ $nombre }}
+                              correo: {{ $correo }}
                         </li>
                         <li>
-                              Correo: {{ $correo }}
+                              nombre: {{ $nombre }}
                         </li>
                         <li>
-                              Mensaje: {{ $mensaje }}
+                              mensaje: {{ $mensaje }}
                         </li>
                   </ul>
-                  
                   <p>El equipo de primerserver</p>
             </div>
       </body>

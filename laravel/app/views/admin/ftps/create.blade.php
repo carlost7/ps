@@ -55,7 +55,6 @@
 
 </div>
 
-@include('layouts.menu_usuario', array('activo'=>'correos'))
 @include('layouts.modal_password')
 
 @stop

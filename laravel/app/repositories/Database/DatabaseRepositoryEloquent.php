@@ -34,7 +34,7 @@ class DatabaseRepositoryEloquent implements DatabaseRepository
 
       public function obtenerDatabase($id)
       {
-            return $database_model = Db::find($id);
+            return $database_model = Database::find($id);
       }
 
       /*
@@ -53,8 +53,8 @@ class DatabaseRepositoryEloquent implements DatabaseRepository
             DB::beginTransaction();
             if ($this->agregarDatabaseServidor($username, $password, $dbname))
             {
-                  $Db_model = $this->agregarDatabaseBase($username, $dbname, $this->dominio_model->id);
-                  if ($Db_model->id)
+                  $Database_model = $this->agregarDatabaseBase($username, $dbname, $this->dominio_model->id);
+                  if ($Database_model->id)
                   {
                         DB::commit();
                         return true;
@@ -78,12 +78,12 @@ class DatabaseRepositoryEloquent implements DatabaseRepository
 
       protected function agregarDatabaseBase($username, $dbname, $dominio)
       {
-            $db = new Db();
-            $db->dominio_id=$dominio;
-            $db->nombre = $dbname;
-            $db->usuario = $username;
-            $db->save();
-            return $db;
+            $database_model = new Database();
+            $database_model->dominio_id=$dominio;
+            $database_model->nombre = $this->plan->name_server."_".$dbname;
+            $database_model->usuario = $this->plan->name_server."_".$username;
+            $database_model->save();
+            return $database_model;
       }
 
       /*
@@ -94,7 +94,7 @@ class DatabaseRepositoryEloquent implements DatabaseRepository
       protected function agregarDatabaseServidor($username, $password, $dbname)
       {
             $whmfuncion = new WHMFunciones($this->plan);
-            if ($whmfuncion->agregarDatabaseServidor($username, $password, $dbname))
+            if ($whmfuncion->agregarDbServidor($username, $password, $dbname))
             {
                   return true;
             }
@@ -111,13 +111,13 @@ class DatabaseRepositoryEloquent implements DatabaseRepository
         |------------------------------
        */
 
-      public function eliminarDatabase($Db_model)
+      public function eliminarDatabase($Database_model)
       {
 
             DB::beginTransaction();
-            if ($this->eliminarDatabaseServidor($Db_model))
+            if ($this->eliminarDatabaseServidor($Database_model))
             {
-                  if ($this->eliminarDatabaseBase($Db_model))
+                  if ($this->eliminarDatabaseBase($Database_model))
                   {
                         DB::commit();
                         return true;
@@ -139,9 +139,10 @@ class DatabaseRepositoryEloquent implements DatabaseRepository
        * Eliminar el correo de la base de datos
        */
 
-      protected function eliminarDatabaseBase($Db_model)
+      protected function eliminarDatabaseBase($Database_model)
       {
-            if ($Db_model->delete())
+            
+            if ($Database_model->delete())
             {
                   return true;
             }
@@ -149,6 +150,7 @@ class DatabaseRepositoryEloquent implements DatabaseRepository
             {
                   return false;
             }
+            
       }
 
       /*
@@ -157,10 +159,10 @@ class DatabaseRepositoryEloquent implements DatabaseRepository
        * Si el correo tiene redirección borrar la redireccion
        */
 
-      protected function eliminarDatabaseServidor($Db_model)
+      protected function eliminarDatabaseServidor($Database_model)
       {
             $whmfuncion = new WHMFunciones($this->plan);
-            if ($whmfuncion->eliminarDbServidor($Db_model->usuario, $Db_model->nombre))
+            if ($whmfuncion->eliminarDbServidor($Database_model->usuario, $Database_model->nombre))
             {
                   return true;
             }

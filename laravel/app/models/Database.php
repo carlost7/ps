@@ -5,7 +5,7 @@
  *
  * @author carlos
  */
-class Db extends Eloquent
+class Database extends Eloquent
 {
 
       protected $table = 'dbs';

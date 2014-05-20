@@ -12,15 +12,26 @@
  * @author carlos
  */
 class UsuariosRepositoryEloquent implements UsuariosRepository {
+      
       /*
        * Funcion para listar todos los usuarios
        */
 
       public function listarUsuarios()
       {
-            return User::where('is_admin', '=', false)->get();
+            return User::where('is_admin', false)->get();
       }
 
+      /*
+       |-------------------------------------
+       |    Obtener un usuario 
+       |-------------------------------------
+       */      
+      public function obtenerUsuario($id)
+      {
+            return User::where('id', $id)->first();
+      }
+      
       /*
        * Funcion para agregar usuarios
        */
@@ -66,11 +77,7 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
             }
       }
 
-      public function obtenerUsuario($id)
-      {
-            return User::where('id', $id)->first();
-      }
-
+      
       public function editarUsuario($id, $nombre, $password, $correo, $is_admin)
       {
             $usuario = User::find($id);

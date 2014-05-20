@@ -16,18 +16,22 @@ Route::get('nosotros', array('as' => 'nosotros', 'uses' => 'HomeController@showA
 Route::get('contacto', array('as' => 'contacto', 'uses' => 'HomeController@showContacto'));
 Route::get('costos', array('as' => 'costos', 'uses' => 'HomeController@showCostos'));
 Route::get('terminos', array('as' => 'terminos', 'uses' => 'HomeController@showTerminos'));
-Route::post('obtener_password', array('as'=>'obtener_password', 'uses'=>'HomeController@obtenerPass'));
+Route::post('obtener_password', array('as' => 'obtener_password', 'uses' => 'HomeController@obtenerPass'));
 
 /*
- * Cuentas de usuario
+  |---------------------------------
+  | Cuentas de usuario
+  |---------------------------------
  */
-Route::any('usuario/login',         array('as' => 'usuario/login', 'uses' => 'UsuariosController@login'));
-Route::any('usuario/recuperar',     array('as' => 'usuario/recuperar', 'uses' => 'UsuariosController@recuperarPassword'));
+Route::any('usuario/login', array('as' => 'usuario/login', 'uses' => 'UsuariosController@login'));
+Route::any('usuario/recuperar', array('as' => 'usuario/recuperar', 'uses' => 'UsuariosController@recuperarPassword'));
 Route::any('usuario/reset/{token}', array('as' => 'usuario/reset', 'uses' => 'UsuariosController@regenerarPassword'));
 
 
 /*
- * Rutas para agregar dominios
+  |--------------------------------
+  | Rutas para agregar dominios
+  |--------------------------------
  */
 Route::any('dominio', array('as' => 'dominio/inicio', 'uses' => 'DominiosController@iniciarDominios'));
 Route::any('dominio/nuevo', array('as' => 'dominio/nuevo', 'uses' => 'DominiosController@dominioNuevo'));
@@ -37,32 +41,54 @@ Route::any('dominio/confirmar', array('as' => 'dominio/confirmar', 'uses' => 'Do
 
 
 /*
- * Todas las funciones que el usuario podra realizar
+  |--------------------------------------------------------
+  | Todas las funciones que el usuario podra realizar
+  |-------------------------------------------------------
  */
 Route::group(array('before' => 'auth'), function() {
+
       /*
-       * Terminar sesion de usuario, requiere estar loggeado para terminar la sesion
+        |------------------------------------------------------------------------------- -
+        | Terminar sesion de usuario, requiere estar loggeado para terminar la sesion
+        ----------------------------------------------------------------------------------
        */
       Route::get('usuario/logout', array('as' => 'usuario/logout', 'uses' => 'UsuariosController@logout'));
       Route::get('usuario/inicio', array('as' => 'usuario/inicio', 'uses' => 'UsuariosController@iniciar'));
-      
 
-      Route::resource('correos','CorreosController');
+      /*
+        |-------------------------------------------
+        | Acciondes del usuario
+        |-------------------------------------------
+       */
 
-      Route::resource('ftps','FtpsController');
+      Route::resource('correos', 'CorreosController');
 
-      Route::resource('dbs','DbsController');
+      Route::resource('ftps', 'FtpsController');
+
+      Route::resource('dbs', 'DbsController');
+
+
+      Route::get('pagos/inactivo', array('as' => 'pagos/inactivo', 'uses' => 'PagosController@obtenerFaltante'));
+
+      /*
+        |------------------------------------------
+        |    Seccion del administrador
+        |------------------------------------------
+       */
 
       Route::group(array('before' => 'is_admin', 'prefix' => 'admin'), function() {
 
             /*
              * Admin / t7marketing
              */
-            Route::any('/inicio', array('as' => 'admin/inicio', 'uses' => 'AdminController@obtenerIndex'));
-            Route::any('/usuarios', array('as' => 'admin/usuarios', 'uses' => 'AdminController@listarUsuarios'));
-            Route::post('/agregar_usuario', array('as' => 'admin/agregar_usuario', 'uses' => 'AdminController@agregarUsuario'));
-            Route::post('/eliminar_usuario', array('as' => 'admin/eliminar_usuario', 'uses' => 'AdminController@eliminarUsuario'));
-            Route::any('/datos_usuario/{id}', array('as' => 'admin/datos_usuario', 'uses' => 'AdminController@mostrarUsuario'));
+            Route::resource('usuarios', 'AdminUsersController');
+            
+            Route::resource('correos', 'AdminCorreosController');
+
+            Route::resource('ftps', 'AdminFtpsController');
+
+            Route::resource('dbs', 'AdminDbsController');
+            
       });
 });
 

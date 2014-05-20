@@ -23,18 +23,18 @@
 <div class="container">
 
 
-      {{ Form::open() }}
+      {{ Form::open(array('url'=>'contacto')) }}
       <div class="form-group">
-            <label for="Email">Correo Electrónico</label>
-            <input type="email" class="form-control" name="Email" id="Email" placeholder="Escribe tu correo">
+            <label for="correo">Correo Electrónico</label>
+            <input type="email" class="form-control" name="correo" id="Email" placeholder="Escribe tu correo">
       </div>
       <div class="form-group">
-            <label for="Nombre">Nombre</label>
-            <input type="text" class="form-control" id="Nombre" name="Nombre" placeholder="Escribe tu nombre">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="Nombre" name="nombre" placeholder="Escribe tu nombre">
       </div>
       <div class="form-group">
-            <label for="Mensaje">Mensaje</label>
-            <textarea class="form-control" rows="10"></textarea>
+            <label for="mensaje">Mensaje</label>
+            <textarea class="form-control" rows="10" name="mensaje"></textarea>
       </div>
       <button type="submit" class="btn btn-success">Enviar Mensaje</button>
       <button type="reset" class="btn btn-default">Limpiar</button>

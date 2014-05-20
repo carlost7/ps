@@ -132,7 +132,7 @@ class WHMFunciones {
                   $response = $this->xmlapi->api2_query($this->plan->name_server, "Ftp", "addftp", array('pass' => $pass, 'user' => $user_name, 'quota' => $this->plan->quota_ftps, 'homedir' => $home_dir));
 
                   $resultado = json_decode($response, true);
-                  Log::error("WHMFunciones AgregarFtpServidor " . $user_name . " " . $home_dir . " " . $pass);
+
 
                   if ($resultado['cpanelresult']['data'][0]['result'] == 1)
                   {

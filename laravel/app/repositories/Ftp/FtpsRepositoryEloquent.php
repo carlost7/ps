@@ -80,7 +80,7 @@ class FtpsRepositoryEloquent implements FtpsRepository
       {
             $ftp = new Ftp();
             $ftp->dominio_id = $this->dominio_model->id;
-            $ftp->username = $username.'@'.$this->plan->name_server;
+            $ftp->username = $username.'@'.$this->plan->domain;
             $ftp->hostname = $hostname;
             $ftp->homedir = $home_dir;
             $ftp->is_principal = $principal;

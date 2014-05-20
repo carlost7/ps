@@ -131,7 +131,7 @@ class DominioRepositoryEloquent implements DominioRepository {
             $whmfunciones = new WHMFunciones($dominio_model->plan);            
             $domain = $dominio_model->dominio;
             $subs = explode(".", $dominio_model->dominio);
-            $subdomain = $subs[0] . '_' . 'psstartup.com';
+            $subdomain = $subs[0] . '_' . $dominio_model->plan->domain;
             
             if ($whmfunciones->eliminarDominioServidor($domain, $subdomain))
             {

@@ -12,21 +12,14 @@
 <div class="jumbotron">
       <div class="container">
             <h2>FTP's</h2>
-            <p>Aqui encontrarás una lista de todos los ftp's</p>
-            @if($total < Session::get('dominio')->plan->numero_ftps)
-            <p>Da click en el boton si quieres agregar uno nuevo</p>
-            <p>{{ HTML::linkRoute('ftps.create','Agregar Ftp',null,array('class'=>'btn btn-primary btn-lg')) }}</p>
-            @endif
+            <p>{{ HTML::linkRoute('admin.ftps.create','Agregar Ftp',null,array('class'=>'btn btn-primary btn-lg')) }}</p>
       </div>
 </div>
 <div class="container">
       <div class="panel panel-default">
             <!-- Default panel contents -->
-            <div class="panel-heading">Lista de Ftps ({{$total.'/'.Session::get('dominio')->plan->numero_ftps }})</div>
+            <div class="panel-heading">Lista de Ftps ({{$total.'/'.Session::get('dominio_usuario')->plan->numero_ftps }})</div>
 
-
-            @if($ftps->count())
-            <!-- Table -->
             <div class="table-responsive">
                   <table class="table">
                         <tr>
@@ -39,15 +32,14 @@
                         </tr>
                         @foreach($ftps as $ftp)
                         <tr>
-
                               <td>{{ $ftp->username }}</td>
                               <td>{{ $ftp->hostname }}</td>
                               <td>{{ $ftp->homedir }}</td>
                               <td></td>
-                              <td>{{ HTML::link('ftps/'.$ftp->id.'/edit','Editar',array('class'=>'btn btn-primary btn-xs')) }}</td>
+                              <td>{{ HTML::link('admin/ftps/'.$ftp->id.'/edit','Editar',array('class'=>'btn btn-primary btn-xs')) }}</td>
                               <td>
                                     @if(!$ftp->is_principal)
-                                    {{ Form::open(array('route' => array('ftps.destroy',$ftp->id),'method'=>'DELETE')) }}
+                                    {{ Form::open(array('route' => array('admin.ftps.destroy',$ftp->id),'method'=>'DELETE')) }}
                                     {{ Form::submit('Eliminar', array('class' => 'btn btn-danger btn-xs')) }}
                                     {{ Form::close() }}
                                     @endif
@@ -55,18 +47,10 @@
                         </tr>
                         @endforeach
                   </table>
-            </div>
-
-            @else
-            <p>Aún no hay Ftp's</p>
-            <br />
-            <p>Para agregar un nuevo ftp, solo da click en el boton</p>
-            <p>{{ HTML::linkRoute('ftps.create','Agregar Ftp',null,array('class'=>'btn btn-primary btn-lg')) }}</p>
-            @endif
+            </div>            
       </div>
 </div>
 
+@include('layouts.menu_usuario', array('activo'=>'correos'))
 
 @stop
-
-@section('footer')@stop

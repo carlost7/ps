@@ -3,7 +3,7 @@
 @section('title')
 @parent
 
-- Correo {{ $correo->correo }} 
+- {{ $ftp->username }} 
 @stop
 
 
@@ -11,19 +11,19 @@
 @section('content')
 <div class="jumbotron">
       <div class="container">
-            <h2>{{ HTML::linkRoute('correos.index','Correos') }} > {{ $correo->correo }}</h2>
+            <h2>{{ HTML::linkRoute('ftps.index','Ftps') }} > {{ $ftp->username }}</h2>
       </div>
 </div>
 <div class="container">
 
-      <h1>Aqui se mostrarán los datos del correo</h1>
+      <h1>Aqui se mostrarán los datos del Ftp</h1>
       
       <ul>
             <li>
-                  {{ $correo->correo }}
+                  {{ $ftp->username }}
             </li>
             <li>
-                  {{ $correo->nombre }}
+                  {{ $ftp->homedir }}
             </li>
       </ul>
       

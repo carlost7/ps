@@ -3,7 +3,7 @@
 @section('title')
 @parent
 
-- Correo {{ $correo->correo }} 
+- Ftp {{ $ftp->username }} 
 @stop
 
 
@@ -11,9 +11,8 @@
 @section('content')
 <div class="jumbotron">
       <div class="container">
-            <h2>{{ HTML::linkRoute('correos.index','Correos') }} > Editar: {{ $correo->correo }}</h2>
+            <h2>{{ HTML::linkRoute('admin.ftps.index','Ftps') }} > Editar: {{ $ftp->username }}</h2>
             <p>Agrega la contraseña en el campo de contraseña</p>
-            <p>Modifica el correo de reenvio en el campo de reenvio</p>
       </div>
 </div>
 <div class="container">
@@ -22,18 +21,14 @@
       <div class="alert alert-danger">{{ $error }}</div>
       @endforeach
 
-      {{ Form::model($correo, array('url'=> array('correos/'.$correo->id),'method'=>'PUT')) }}
+      {{ Form::model($ftp, array('url'=> array('admin/ftps/'.$ftp->id),'method'=>'PUT')) }}
 
       <div class="form-group">
-            {{ Form::label('nombre','Nombre') }}
-            {{ Form::text('nombre',null,array('class'=>'form-control','disabled'=>'disabled')) }}            
+            {{ Form::label('username','Nombre de Usuario') }}
+            {{ Form::text('username',null,array('class'=>'form-control','disabled'=>'disabled')) }}            
       </div>
       <div class="form-group">
-            {{ Form::label('correo','Correo') }}
-            {{ Form::email('correo',null,array('class'=>'form-control','disabled'=>'disabled')) }}            
-      </div>
-      <div class="form-group">
-            <label for="password">Password</label>            
+            <label for="password">Contraseña</label>            
             <div class="input-group">
                   <input type="password" name="password" class="form-control" id="Password" placeholder="Contraseña">
                   <span class="input-group-btn">
@@ -44,20 +39,15 @@
             </div>
       </div>
       <div class="form-group">
-            <label for="password_confirmation">Confirmar</label>
+            <label for="password_confirmation">Confirmar Contraseña</label>
             <input type="password" name="password_confirmation" class="form-control" id="Password_confirmation" placeholder="Confirma tu contraseña">
       </div>
-      <div class="form-group">
-            {{ Form::label('redireccion','Redireccion') }}
-            {{ Form::text('redireccion',null,array('class'=>'form-control')) }}            
-      </div>                  
-      <button type="submit" id='confirmar' class="btn btn-success">Editar Correo</button>
+      <button type="submit" id='confirmar' class="btn btn-success">Editar Ftp</button>
       {{ Form::close() }}
       
 </div>
 
+@include('layouts.menu_usuario', array('activo'=>'correos'))
 @include('layouts.modal_password')
 
 @stop
-
-@section('footer')@stop

@@ -13,7 +13,7 @@
 
 Route::get('/', array('as' => 'inicio', 'uses' => 'HomeController@showWelcome'));
 Route::get('nosotros', array('as' => 'nosotros', 'uses' => 'HomeController@showAbout'));
-Route::get('contacto', array('as' => 'contacto', 'uses' => 'HomeController@showContacto'));
+Route::any('contacto', array('as' => 'contacto', 'uses' => 'HomeController@showContacto'));
 Route::get('costos', array('as' => 'costos', 'uses' => 'HomeController@showCostos'));
 Route::get('terminos', array('as' => 'terminos', 'uses' => 'HomeController@showTerminos'));
 Route::post('obtener_password', array('as' => 'obtener_password', 'uses' => 'HomeController@obtenerPass'));

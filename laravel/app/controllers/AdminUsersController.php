@@ -4,7 +4,8 @@ use UsuariosRepository as Usuario;
 use DominioRepository as Dominio;
 use FtpsRepository as Ftp;
 
-class AdminUsersController extends \BaseController {
+class AdminUsersController extends \BaseController
+{
 
       protected $Usuario;
       protected $Dominio;
@@ -144,7 +145,10 @@ class AdminUsersController extends \BaseController {
       public function destroy($id)
       {
             $usuario = $this->Usuario->obtenerUsuario($id);
-            //$this->Ftp->eliminarFtp(, $borrar);
+            $this->Ftp->set_attributes($usuario->dominio);
+            foreach($usuario->dominio->ftps as $ftp) {
+                  $this->Ftp->eliminarFtp($ftp, true);
+            }
 
             if ($this->Dominio->eliminarDominio($usuario->dominio))
             {
@@ -164,12 +168,12 @@ class AdminUsersController extends \BaseController {
       protected function getValidatorCreateUser()
       {
             return Validator::make(Input::all(), array(
-                        'nombre' => 'required|min:4',
-                        'password' => 'required|min:2',
-                        'password_confirmation' => 'required|same:password',
-                        'dominio' => 'required',
-                        'correo' => 'required|email|unique:user,email',
-                        'plan' => 'required|exists:planes,nombre',
+                          'nombre' => 'required|min:4',
+                          'password' => 'required|min:2',
+                          'password_confirmation' => 'required|same:password',
+                          'dominio' => 'required',
+                          'correo' => 'required|email|unique:user,email',
+                          'plan' => 'required|exists:planes,nombre',
             ));
       }
 

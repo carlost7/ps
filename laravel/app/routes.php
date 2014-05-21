@@ -89,6 +89,8 @@ Route::group(array('before' => 'auth'), function() {
 
             Route::resource('dbs', 'AdminDbsController');
             
+            Route::resource('planes', 'AdminPlanesController');
+            
       });
 });
 

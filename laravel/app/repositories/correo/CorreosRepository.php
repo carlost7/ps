@@ -5,7 +5,7 @@
  *
  * @author carlos
  */
-interface CorreoRepository
+interface CorreosRepository
 {
       public function set_attributes($dominio_model);
       public function listarCorreos();

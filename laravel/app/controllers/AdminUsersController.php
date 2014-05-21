@@ -3,7 +3,8 @@
 use UsuariosRepository as Usuario;
 use DominioRepository as Dominio;
 use FtpsRepository as Ftp;
-use CorreoRepository as Correo;
+use CorreosRepository as Correo;
+use PlanRepository as Plan;
 
 class AdminUsersController extends \BaseController {
 
@@ -11,13 +12,15 @@ class AdminUsersController extends \BaseController {
       protected $Dominio;
       protected $Ftp;
       protected $Correo;
+      protected $Plan;
 
-      public function __construct(Usuario $usuario, Dominio $dominio, Ftp $ftp, Correo $correo)
+      public function __construct(Usuario $usuario, Dominio $dominio, Ftp $ftp, Correo $correo, Plan $plan)
       {
             $this->Usuario = $usuario;
             $this->Dominio = $dominio;
             $this->Ftp = $ftp;
             $this->Correo = $correo;
+            $this->Plan = $plan;
       }
 
       /**
@@ -38,8 +41,9 @@ class AdminUsersController extends \BaseController {
        */
       public function create()
       {
-
-            return View::make('admin.usuarios.create');
+            $planes = $this->Plan->listarPlanes();
+            return View::make('admin.usuarios.create')->with('planes',$planes);
+            
       }
 
       /**
@@ -58,7 +62,7 @@ class AdminUsersController extends \BaseController {
                   $usuario = $this->Usuario->agregarUsuario(Input::get('nombre'), Input::get('password'), Input::get('correo'), false);
                   if ($usuario->id != null)
                   {
-                        $plan = Plan::where('nombre', '=', Input::get('plan'))->first();
+                        $plan = $this->Plan->obtenerPlanNombre(Input::get('plan'));
                         $dominio = $this->Dominio->agregarDominio(Input::get('dominio'), Input::get('password'), $usuario->id, $plan->id);
                         if (isset($dominio->id))
                         {

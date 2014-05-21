@@ -51,25 +51,14 @@
             <input type="password" name="password_confirmation" class="form-control" id="Password_confirmation" placeholder="Confirma tu contraseña">
       </div>
       <div class="form-group">
+            @foreach($planes as $plan)
             <div class="radio">
                   <label>
-                        <input type="radio" name="plan" id="planBasico" value="basico">
-                        Básico
-                  </label>
-            </div>
-            <div class="radio">
-                  <label>
-                        <input type="radio" name="plan" id="planStartup" value="startup" checked="checked">
-                        Startup
-                  </label>
-            </div>
-            <div class="radio">
-                  <label>
-                        <input type="radio" name="plan" id="planEnterprise" value="enterprise">
-                        Enterprise
-                  </label>
-            </div>
-
+                        {{Form::radio('plan', $plan->nombre) }}
+                        {{ $plan->nombre }}
+                  </label>                  
+            </div>                  
+            @endforeach
       </div>      
       <button type="submit" id='confirmar' class="btn btn-success">Confirmar Dominio</button>
       {{ Form::close() }}

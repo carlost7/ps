@@ -53,7 +53,8 @@
                                           <a href="#" class='dropdown-toggle' data-toggle='dropdown'>{{Auth::user()->email}} <b class="caret"></b></a>
                                           <ul class="dropdown-menu">
                                                 @if(Auth::user()->is_admin)
-                                                <li>{{ Html::linkRoute('admin.usuarios.index','Administrador') ;}}</li>                                
+                                                <li>{{ Html::linkRoute('admin.usuarios.index','Usuarios') ;}}</li> 
+                                                <li>{{ Html::linkRoute('admin.planes.index','Planes') ;}}</li> 
                                                 @else
                                                 <li>{{ Html::linkRoute('usuario/inicio','Inicio') ;}}</li>
                                                 @endif                                                

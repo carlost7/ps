@@ -13,7 +13,7 @@ class RepositoriesServiceProvider extends ServiceProvider
       public function register()
       {
             $this->app->bind(
-                    'CorreoRepository', 'CorreosRepositoryEloquent'
+                    'CorreosRepository', 'CorreosRepositoryEloquent'
             );
             $this->app->bind(
                     'UsuariosRepository', 'UsuariosRepositoryEloquent'
@@ -26,6 +26,9 @@ class RepositoriesServiceProvider extends ServiceProvider
             );
             $this->app->bind(
                     'DatabaseRepository', 'DatabaseRepositoryEloquent'
+            );
+            $this->app->bind(
+                    'PlanRepository', 'PlanRepositoryEloquent'
             );
       }
 

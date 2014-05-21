@@ -5,11 +5,18 @@
  *
  * @author carlos
  */
-class Plan extends Eloquent
-{
+class Plan extends Eloquent {
 
       protected $table = 'planes';
-      protected $fillable = array('nombre', 'correos', 'ftps', 'dbs');
+      protected $fillable = array(
+            'nombre', 
+            'name_server', 
+            'numero_correos', 
+            'quota_correos',
+            'numero_ftps',
+            'quota_ftps',
+            'numero_dbs',
+            'quota_dbs');
 
       public function dominios()
       {

@@ -5,7 +5,7 @@
  *
  * @author carlos
  */
-class CorreosRepositoryEloquent implements CorreoRepository
+class CorreosRepositoryEloquent implements CorreosRepository
 {
 
       protected $dominio_model;

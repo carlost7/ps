@@ -89,14 +89,15 @@ class DominiosController extends BaseController
                                     $username = $user[0];
                                     $hostname='primerserver.com';
                                     $home_dir=$dominio->dominio;
-                                    if ($this->Ftp->agregarFtp($username, $hostname, $home_dir, Input::get('password'),true))
+                                    $ftp = $this->Ftp->agregarFtp($username, $hostname, $home_dir, Input::get('password'),true);
+                                    if ($ftp->id)
                                     {
                                           Session::put('message', 'La cuenta esta lista para usarse');
                                           DB::commit();
                                           $data = array('dominio'=>$dominio->dominio,
                                                         'usuario'=>$usuario->email,
                                                         'password'=>Input::get('password'),
-                                                        'ftp_user'=>$username.'@'.$dominio->plan->name_server,
+                                                        'ftp_user'=>$ftp->username,
                                                         'ftp_pass'=>Input::get('password'));
                                           
                                           Mail::queue('email.welcome',$data,function($message){

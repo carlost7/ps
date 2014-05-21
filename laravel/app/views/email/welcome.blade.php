@@ -8,8 +8,8 @@
             <br />
             <p>Los datos de entrada a la aplicación son los siguientes</p>
             <ul>
-                  <li>Dominio:{{ $dominio }} </li>
-                  <li>Usuario:{{ $usuario }}</li>
+                  <li>Dominio: {{ $dominio }} </li>
+                  <li>Usuario: {{ $usuario }}</li>
                   <li>Contraseña: {{ $password }}</li>
             </ul>
             <br />
@@ -22,7 +22,7 @@
                   <li>Puerto: 21</li>
             </ul>
             <p>Para entrar a la aplicación y comenzar a crear tus correos electrónicos puedes usar el siguiente link</p>
-            <p>{{ HTML::linkRoute('usuarios/login','Primer Server') }}</p>
+            <p>{{ HTML::linkRoute('usuario/login','Primer Server') }}</p>
             <br />
             <p>Que tengas un excelente dia</p>
       </body>

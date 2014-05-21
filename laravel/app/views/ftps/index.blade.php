@@ -34,8 +34,7 @@
                               <th>Host</th>
                               <th>Directorio</th>
                               <th>Configuración</th>
-                              <th>Editar</th>
-                              <th>Eliminar</th>
+                              <th>Editar</th>                              
                         </tr>
                         @foreach($ftps as $ftp)
                         <tr>
@@ -43,14 +42,7 @@
                               <td>{{ $ftp->hostname }}</td>
                               <td>{{ $ftp->homedir }}</td>
                               <td></td>
-                              <td>{{ HTML::link('ftps/'.$ftp->id.'/edit','Editar',array('class'=>'btn btn-primary btn-xs')) }}</td>
-                              <td>
-                                    @if(!$ftp->is_principal)
-                                    {{ Form::open(array('route' => array('ftps.destroy',$ftp->id),'method'=>'DELETE')) }}
-                                    {{ Form::submit('Eliminar', array('class' => 'btn btn-danger btn-xs')) }}
-                                    {{ Form::close() }}
-                                    @endif
-                              </td>                        
+                              <td>{{ HTML::link('ftps/'.$ftp->id.'/edit','Editar',array('class'=>'btn btn-primary btn-xs')) }}</td>                                                      
                         </tr>
                         @endforeach
                   </table>

@@ -70,13 +70,12 @@ class UsuariosController extends BaseController {
 
                   if ($this->isInvalidUser($response))
                   {
-                        return Redirect::back()
-                                    ->withInput()
-                                    ->with("error", Lang::get($response));
+                        Session::flash('error', Lang::get($response));
+                        return Redirect::back()->withInput();
+                                    
                   }
 
-                  return Redirect::back()
-                              ->with("status", Lang::get($response));
+                  return Redirect::back()->with("message", Lang::get($response));
             }
 
             return View::make('usuarios.recuperar');

@@ -57,7 +57,7 @@ class FtpsRepositoryEloquent implements FtpsRepository
                   if (isset($ftp->id))
                   {
                         DB::commit();
-                        return true;
+                        return $ftp;
                   }
                   else
                   {

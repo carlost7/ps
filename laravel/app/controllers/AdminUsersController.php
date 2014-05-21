@@ -76,8 +76,7 @@ class AdminUsersController extends \BaseController {
                                           'usuario' => $usuario->email,
                                           'password' => Input::get('password'));
 
-                                    Mail::send('email.nuevousuario', $data, function($message) use ($usuario) {
-                                          Log::error('AdminusersController ' . $usuario->correo . ' ' . $usuario->nombre);
+                                    Mail::queue('email.nuevousuario', $data, function($message) use ($usuario) {
                                           $message->to($usuario->email, $usuario->username)->subject('Configuración de correos T7Marketing');
                                     });
                                     return Redirect::to('admin/usuarios');

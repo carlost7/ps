@@ -7,7 +7,7 @@
             <h2>Bienvenido a t7marketing</h2>
             <div>
                   <p>
-                        Hemos creado una cuenta en T/marketing para que pueda configurar sus correos electrónicos
+                        Hemos creado una cuenta en T7marketing para que pueda configurar sus correos electrónicos
                   </p>
 
                   <p>

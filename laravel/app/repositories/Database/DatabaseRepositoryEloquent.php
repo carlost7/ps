@@ -51,6 +51,9 @@ class DatabaseRepositoryEloquent implements DatabaseRepository
       public function agregarDatabase($username, $password, $dbname)
       {
             DB::beginTransaction();
+            $dom = explode('.', $this->dominio_model->dominio);
+            $username = $dom[0].'_'.$username;
+            $dbname = $dom[0].'_'.$dbname;
             if ($this->agregarDatabaseServidor($username, $password, $dbname))
             {
                   $Database_model = $this->agregarDatabaseBase($username, $dbname, $this->dominio_model->id);

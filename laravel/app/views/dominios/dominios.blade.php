@@ -3,46 +3,87 @@
 @section('title')
 @parent
 
-| Dominios
+| Inicio Primer Server
 @stop
 
-
-
 @section('content')
-<div class="container">
 
-      <div class="page-header">
-            <h1>Dominio</h1>            
+<div class="jumbotron">
+      <div class="container">
+            <h1>
+                  Iniciamos
+            </h1>
       </div>
-
-      <ol class="breadcrumb">
-            <li class="active">
-                  Inicio
-            </li>            
-      </ol>
-
-      <h2>Empezaremos por lo básico.</h2>
-      <ul>
-            <li>
-                  <p>Necesitas un dominio para poder estar en internet.</p>      
-            </li>
-            <li>
-                  <p>Un dominio es un nombre que le permite a las personas saber quien eres</p>
-            </li>
-            <li>
-                  <p>El dominio es del tipo <i>dominio.com</i></p>      
-            </li>
-      </ul>
-
-      <p>Si aún no tienes un dominio da click para conseguirlo</p>
-      {{ HTML::linkRoute('dominio/nuevo','Crear nuevo dominio',null,array('class'=>'btn btn-primary btn-lg')) }}
-
-      <p>Si ya tienes un dominio da click aquí para utilizarlo</p>
-      {{ HTML::linkRoute('dominio/existente','Ya tengo un dominio',null,array('class'=>'btn btn-primary btn-lg')) }}
+</div>
+<div class="container">
+      <div class="comprobacion">
+            <div class="alert">                  
+                  <p class="result"></p>
+            </div>                        
+      </div>
+      <div class="clearfix"></div>
+      {{ Form::open(array('route'=>'dominio/confirmar','id'=>'form_confirm','method'=>'GET')) }}
+      <div class="form-group">                       
+            <div class="input-group">
+                  <span class="input-group-addon">
+                        <input type="checkbox" id="existente" name="existente" value="1"> Ya tengo dominio:
+                  </span>
+                  <input type="text" class="form-control" id="dominio" name="dominio" placeholder="Escribir el nombre del dominio que quieres utilizar">
+                  <span class="input-group-btn">
+                        <button class="btn btn-primary" id="Comprobar" type="button">Comprobar Disponibilidad</button>
+                  </span>
+            </div><!-- /input-group -->
+      </div>      
+      <button type="submit" id="crear" class="btn btn-success" disabled='disabled'>Crear Dominio</button>
+      {{ Form::close() }}
 </div>
 
 @stop
 
-@section('footer')
-.@parent
+@section('scripts')
+<script>
+      $('#Comprobar').click(function() {
+            var dom = $('#dominio').val();
+            if (dom == '') {
+                  $(".comprobacion").show();
+                  $(".comprobacion").addClass('alert-danger');
+                  $(".result").text("Debe escribir un dominio para poder continuar");
+            } else {
+                  comprobar_dominio(dom, function(result) {
+                        if (result['resultado']) {
+                              $(".comprobacion").addClass('alert-success');
+                              $(".result").text(result['mensaje']);
+                              $(".comprobacion").show();
+                              proceed();
+                        } else {
+                              $(".comprobacion").addClass('alert-danger');
+                              $(".result").text(result['mensaje']);
+                              $(".comprobacion").show();
+                        }
+                  });
+            }
+      });
+
+      function proceed() {
+            $('#crear').removeAttr('disabled');
+            $('#crear').addClass('btn-success');
+      }
+
+
+      $('#existente').click(function() {
+            if ($('#existente').is(':checked')) {
+                  $('#crear').removeAttr('disabled');
+                  $('#crear').addClass('btn-success');
+                  $('#Comprobar').attr('disabled', 'disabled');
+            } else {
+                  $('#crear').attr('disabled', 'disabled');
+                  $('#Comprobar').removeAttr('disabled');
+            }
+      });
+
+      $(document).ready(function() {
+            $(".comprobacion").hide();
+      });
+</script>
 @stop
+

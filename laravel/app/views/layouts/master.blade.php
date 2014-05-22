@@ -90,7 +90,7 @@
             <div class="alert alert-danger alert-dismissable">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                   {{ Session::get('error') }}
-                  {{ Session::forget('message'); }}
+                  {{ Session::forget('error'); }}
             </div>                    
             @endif
 

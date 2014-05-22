@@ -34,13 +34,16 @@
 
       {{ Form::open(array('route'=>'dominio/confirmar','method'=>'get')) }}
       <div class="form-group">                       
-            <div class="input-group">                        
+            <div class="input-group">
+                  <span class="input-group-addon">
+                        <input type="checkbox">
+                  </span>
                   <input type="text" class="form-control" id="dominio" name="dominio" placeholder="Escribir el nombre del dominio">
                   <span class="input-group-btn">
                         <button class="btn btn-info" id="comprobar" type="button">Checar Disponibilidad</button>
                   </span>
             </div><!-- /input-group -->
-      </div>
+      </div>      
       <button type="submit" id="crear" class="btn btn-success" disabled='disabled'>Crear Dominio</button>
       {{ Form::close() }}
 </div>

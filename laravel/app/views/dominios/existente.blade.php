@@ -26,7 +26,6 @@
       </ol>
 
       <p>Si ya tienes un dominio, escribelo en el cuadro de texto</p>
-
       {{ Form::open(array('route'=>'dominio/confirmar','method'=>'get')) ;}}
       <div class="form-group">                       
             <input type="text" class="form-control" id="dominio" name="dominio" placeholder="Escribir el nombre del dominio">

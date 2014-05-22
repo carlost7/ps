@@ -10,6 +10,9 @@
 
 @section('content')
 
+{{ Session::get('posible_dominio') }}
+{{ Session::get('existente') }}
+
 <div class="jumbotron">
 
       <div class="container">

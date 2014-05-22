@@ -54,7 +54,7 @@ class FtpsController extends \BaseController
             {
                   $username = Input::get('username');
                   $hostname = 'primerserver.com';
-                  $home_dir = Session::get('dominio')->dominio . '/' . Input::get('home_dir');
+                  $home_dir = 'public_html/'.Session::get('dominio')->dominio . '/' . Input::get('home_dir');
                   $password = Input::get('password');
                   if ($this->Ftp->agregarFtp($username, $hostname, $home_dir, $password, false))
                   {

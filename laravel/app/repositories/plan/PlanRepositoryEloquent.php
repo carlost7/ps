@@ -81,7 +81,7 @@ class PlanRepositoryEloquent implements PlanRepository {
 
       protected function editarPlanBase($id, $nombre, $dominio, $name_server, $numero_correos, $quota_correos, $numero_ftps, $quota_ftps, $numero_dbs, $quota_dbs)
       {
-            $plan = Plan::where('id', $id)->get();
+            $plan = Plan::find($id);
             if ($plan)
             {
                   $plan->nombre = $nombre;

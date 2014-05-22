@@ -81,14 +81,19 @@ class UsuariosController extends BaseController {
             if ($this->isPostRequest())
             {
                   $validator = $this->getCambioPasswordValidator();
-                  if ($validator->passes)
+                  if ($validator->passes())
                   {
                         if (strlen(Input::get('old_password')) > 0 && !Hash::check(Auth::user()->password, Input::get('old_password')))
                         {
                               $usuario = Auth::user();
-                              if($this->Usuario->edtiarPasswordUsuario($usuario->id, Input::get('password'))){
+                              if($this->Usuario->editarPasswordUsuario($usuario->id, Input::get('password'))){
                                     Session::flash('message','Cambio de contraseña correcto');
-                                    return Redirect::to('usuario/inicio');
+                                    if(Auth::User()->is_admin){
+                                          return Redirect::to('admin/usuarios');
+                                    }else{
+                                          return Redirect::to('usuario/inicio');
+                                    }
+                                    
                               }else{
                                     Session::flash('error','Error al cambiar la contraseña');
                               }
@@ -120,7 +125,7 @@ class UsuariosController extends BaseController {
                         {
                               $usuario = Auth::user();
                               if($this->Usuario->editarCorreoUsuario($usuario->id,Input::get('new_email'))){
-                                    Session::flash('message','Cambio de contraseña correcto');
+                                    Session::flash('message','Tu correo se ha actualizado');
                                     return Redirect::to('usuario/inicio');
                               }else{
                                     Session::flash('error','Error al cambiar la contraseña');
@@ -195,6 +200,7 @@ class UsuariosController extends BaseController {
 
       public function logout()
       {
+            Session::flush();
             Auth::logout();
             Session::flash('message', 'Vuelve pronto');
             return Redirect::route("inicio");

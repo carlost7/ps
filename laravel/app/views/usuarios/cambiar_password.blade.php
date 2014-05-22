@@ -45,7 +45,7 @@
                   <input type="password" name="password_confirmation" class="form-control" id="Password_confirmation" placeholder="Confirma tu contraseña">
             </div>
       </div>            
-      <button type="submit" id='recordar' class="btn btn-success btn-lg">Enviar correo</button>
+      <button type="submit" id='recordar' class="btn btn-success btn-lg">Cambiar Contraseña</button>
       {{ Form::close() }}
 </div>
 

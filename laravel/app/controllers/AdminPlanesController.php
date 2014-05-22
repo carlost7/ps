@@ -86,7 +86,7 @@ class AdminPlanesController extends \BaseController {
        */
       public function edit($id)
       {
-            $plan = $this->Plan->Usuario->obtenerUsuario($id);
+            $plan = $this->Plan->mostrarPlan($id);
             if ($plan->id)
             {
                   return View::make('admin.planes.edit')->with('plan', $plan);
@@ -106,7 +106,7 @@ class AdminPlanesController extends \BaseController {
        */
       public function update($id)
       {
-            $plan = $this->Plan->Usuario->obtenerUsuario($id);
+            $plan = $this->Plan->mostrarPlan($id);
             if ($plan->id)
             {
                   $validator = $this->getValidatorPlan();

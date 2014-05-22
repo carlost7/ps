@@ -1,6 +1,6 @@
 <?php
 
-use CorreoRepository as Correo;
+use CorreosRepository as Correo;
 
 class CorreosController extends \BaseController
 {

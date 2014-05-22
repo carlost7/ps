@@ -38,7 +38,7 @@
                   <input type="email" name="new_email" class="form-control" id="New_email" placeholder="Nuevo Correo">
             </div>
       </div>            
-      <button type="submit" id='recordar' class="btn btn-success btn-lg">Enviar correo</button>
+      <button type="submit" id='recordar' class="btn btn-success btn-lg">Cambiar correo</button>
       {{ Form::close() }}
 </div>
 

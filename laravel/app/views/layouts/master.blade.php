@@ -94,6 +94,8 @@
             </div>                    
             @endif
 
+            {{Session::get('dominio')}}
+            
             @yield('content')
 
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.js"></script>                

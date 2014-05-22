@@ -54,6 +54,8 @@ Route::group(array('before' => 'auth'), function() {
        */
       Route::get('usuario/logout', array('as' => 'usuario/logout', 'uses' => 'UsuariosController@logout'));
       Route::get('usuario/inicio', array('as' => 'usuario/inicio', 'uses' => 'UsuariosController@iniciar'));
+      Route::any('usuario/cambiar_password', array('as'=>'usuario/cambiar_password','uses'=>'UsuariosController@cambiarPasswordUsuario'));
+      Route::any('usuario/cambiar_correo', array('as'=>'usuario/cambiar_correo','uses'=>'UsuariosController@cambiarCorreoUsuario'));
 
       /*
         |-------------------------------------------

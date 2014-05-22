@@ -21,16 +21,16 @@
 <div class="container">
 
       {{ Form::open() }}
-      @foreach($errors as $error)
-      <div class="alert alert-danger">{{ $error }}</div>
-      @endforeach
+      @if($errors->count())            
+            <div class="alert alert-danger">{{ $errors }}</div>
+      @endif
 
       <div class="form-group">
             <label for="Correo">Correo</label>
             <input type="email" name="email" value="{{ Input::old('email') }}" class="form-control" id="Correo" placeholder="Escribe tu correo">            
       </div>
       <div class="form-group">
-            <label for="password">Password</label>            
+            <label for="password">Contraseña</label>            
             <div class="input-group">
                   <input type="password" name="password" class="form-control" id="Password" placeholder="Contraseña">
                   <span class="input-group-btn">
@@ -41,7 +41,7 @@
             </div>
       </div>
       <div class="form-group">
-            <label for="password_confirmation">Confirmar</label>
+            <label for="password_confirmation">Confirmar contraseña</label>
             <input type="password" name="password_confirmation" class="form-control" id="Password_confirmation" placeholder="Confirma tu contraseña">
       </div>
       <button type="submit" id='resetear' class="btn btn-success btn-lg">Modificar Contraseña</button>

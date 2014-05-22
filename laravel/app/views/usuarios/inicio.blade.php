@@ -17,9 +17,8 @@
 </div>
 
 <div class="container">
-
-      <h1>Esta página contendra tutoriales de como usar el sistema</h1>
-
+      <p>{{ HTML::linkRoute('usuario/cambiar_password','Cambiar Contraseña',null,array('class'=>'btn btn-primary btn-lg')) }}</p>
+      <p>{{ HTML::linkRoute('usuario/cambiar_correo','Cambiar Correo',null,array('class'=>'btn btn-primary btn-lg'))}}</p>      
 </div>
 
 

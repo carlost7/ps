@@ -78,6 +78,47 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
       }
 
       
+      public function editarPasswordUsuario($id,$password){
+            $usuario = User::find($id);
+            if ($usuario)
+            {
+                  $usuario->password = Hash::make($password);
+                  if ($usuario->save())
+                  {
+                        return $usuario;
+                  }
+                  else
+                  {
+                        return false;
+                  }
+            }
+            else
+            {
+                  return false;
+            }
+      }
+      
+      public function editarCorreoUsuario($id,$correo){
+            $usuario = User::find($id);
+            if ($usuario)
+            {
+                  $usuario->email = $correo;
+                  if ($usuario->save())
+                  {
+                        return $usuario;
+                  }
+                  else
+                  {
+                        return false;
+                  }
+            }
+            else
+            {
+                  return false;
+            }
+      }
+
+
       public function editarUsuario($id, $nombre, $password, $correo, $is_admin)
       {
             $usuario = User::find($id);

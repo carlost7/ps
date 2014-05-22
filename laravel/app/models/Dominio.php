@@ -33,7 +33,7 @@ class Dominio extends Eloquent
 
       public function dbs()
       {
-            return $this->hasMany('Db','dominio_id','id');
+            return $this->hasMany('Database','dominio_id','id');
       }
 
 }

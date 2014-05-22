@@ -5,7 +5,20 @@
  *
  * @author carlos
  */
+
+use UsuariosRepository as UserRep;
+
 class UsuariosController extends BaseController {
+      
+      protected $Usuario;
+      
+      public function __construct(UserRep $usuario)
+      {
+            parent::__construct();
+            $this->Usuario = $usuario;
+            
+      }
+      
       /*
        * Funcion para loggear al usuario a la aplicación
        */
@@ -52,11 +65,78 @@ class UsuariosController extends BaseController {
       /*
        * Página prinicipal del usuario
        */
-      public function iniciar(){
+
+      public function iniciar()
+      {
             return View::make('usuarios.inicio');
       }
-      
-      
+
+      /*
+       * Funcion para modificar el password
+       */
+
+      public function cambiarPasswordUsuario()
+      {
+
+            if ($this->isPostRequest())
+            {
+                  $validator = $this->getCambioPasswordValidator();
+                  if ($validator->passes)
+                  {
+                        if (strlen(Input::get('old_password')) > 0 && !Hash::check(Auth::user()->password, Input::get('old_password')))
+                        {
+                              $usuario = Auth::user();
+                              if($this->Usuario->edtiarPasswordUsuario($usuario->id, Input::get('password'))){
+                                    Session::flash('message','Cambio de contraseña correcto');
+                                    return Redirect::to('usuario/inicio');
+                              }else{
+                                    Session::flash('error','Error al cambiar la contraseña');
+                              }
+                        }else{
+                              Session::flash('error','El password anterior no coincide con los datos de la base');
+                        }
+                  }
+                  return Redirect::back()->withErrors($validator)->withInput();
+            }
+            else
+            {
+                  return View::make('usuarios.cambiar_password');
+            }
+      }
+
+      /*
+       * Funcion para modificar el correo
+       */
+
+      public function cambiarCorreoUsuario()
+      {
+
+            if ($this->isPostRequest())
+            {
+                  $validator = $this->getCambioCorreoValidator();
+                  if ($validator->passes())
+                  {
+                        if (strlen(Input::get('password')) > 0 && !Hash::check(Auth::user()->password, Input::get('password')))
+                        {
+                              $usuario = Auth::user();
+                              if($this->Usuario->editarCorreoUsuario($usuario->id,Input::get('new_email'))){
+                                    Session::flash('message','Cambio de contraseña correcto');
+                                    return Redirect::to('usuario/inicio');
+                              }else{
+                                    Session::flash('error','Error al cambiar la contraseña');
+                              }
+                        }else{
+                              Session::flash('error','El password anterior no coincide con los datos de la base');
+                        }
+                  }
+                  return Redirect::back()->withErrors($validator->messages())->withInput();
+            }
+            else
+            {
+                  return View::make('usuarios.cambiar_correo');
+            }
+      }
+
       /*
        * Funcion para recuperar contraseña perdida
        */
@@ -72,7 +152,6 @@ class UsuariosController extends BaseController {
                   {
                         Session::flash('error', Lang::get($response));
                         return Redirect::back()->withInput();
-                                    
                   }
 
                   return Redirect::back()->with("message", Lang::get($response));
@@ -176,6 +255,24 @@ class UsuariosController extends BaseController {
                         'email' => 'required|email',
                         'password' => 'required',
                         'password_confirmation' => 'required|same:password',
+            ));
+      }
+
+      protected function getCambioPasswordValidator()
+      {
+            return Validator::make(Input::all(), array(
+                        'old_password' => 'required',
+                        'password' => 'required',
+                        'password_confirmation' => 'required|same:password',
+            ));
+      }
+
+      protected function getCambioCorreoValidator()
+      {
+            return Validator::make(Input::all(), array(
+                        'password' => 'required',
+                        'old_email' => 'required|email',
+                        'new_email' => 'required|email',
             ));
       }
 

@@ -72,36 +72,6 @@ class DominiosController extends BaseController {
             return Response::json($response);
       }
 
-      /*
-       * Funcion para confirmar si el dominio es correcto
-       * 
-       * get: muestra la página de confirmación de dominio
-       * post: agrega el usuario al sistema, agrega el dominio al usuario y al sistema
-       *      envia al usuario a la pagina principal para entrar al dashboard
-       */
-
-      public function confirmarDominio()
-      {
-            if ($this->isPostRequest())
-            {
-                  echo Input::get('nombre');
-            }
-            else
-            {
-                  if (Input::get('dominio') != '')
-                  {
-                        Session::put('posible_dominio',Input::get('dominio'));
-                        Session::put('existente',Input::get('existente'));
-                        return View::make('dominios.confirmar', array('dominio' => Input::get('dominio')));
-                  }
-                  else
-                  {
-                        Session::flash('error', 'Se necesita un dominio para poder continuar');
-                        return Redirect::back();
-                  }
-            }
-      }
-
       protected function agregarUsuarioSistema()
       {
             DB::beginTransaction();

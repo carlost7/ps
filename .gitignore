@@ -7,3 +7,5 @@ Thumbs.db
 /nbproject/
 /laravel/app/config/whm.php
 /laravel/app/config/database.php
+/laravel/app/config/mercadopago.php
+/laravel/app/config/payment.php

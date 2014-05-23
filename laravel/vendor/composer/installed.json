@@ -40,84 +40,6 @@
         ]
     },
     {
-        "name": "symfony/security",
-        "version": "v2.4.4",
-        "version_normalized": "2.4.4.0",
-        "target-dir": "Symfony/Component/Security",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/Security.git",
-            "reference": "1f2b6d8dfea39071748becf040c8d8a23288e725"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/Security/zipball/1f2b6d8dfea39071748becf040c8d8a23288e725",
-            "reference": "1f2b6d8dfea39071748becf040c8d8a23288e725",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3",
-            "symfony/event-dispatcher": "~2.1",
-            "symfony/http-foundation": "~2.1",
-            "symfony/http-kernel": "~2.4"
-        },
-        "replace": {
-            "symfony/security-acl": "self.version",
-            "symfony/security-core": "self.version",
-            "symfony/security-csrf": "self.version",
-            "symfony/security-http": "self.version"
-        },
-        "require-dev": {
-            "doctrine/common": "~2.2",
-            "doctrine/dbal": "~2.2",
-            "ircmaxell/password-compat": "1.0.*",
-            "psr/log": "~1.0",
-            "symfony/expression-language": "~2.4",
-            "symfony/routing": "~2.2",
-            "symfony/validator": "~2.2"
-        },
-        "suggest": {
-            "doctrine/dbal": "For using the built-in ACL implementation",
-            "ircmaxell/password-compat": "For using the BCrypt password encoder in PHP <5.5",
-            "symfony/class-loader": "For using the ACL generateSql script",
-            "symfony/expression-language": "For using the expression voter",
-            "symfony/finder": "For using the ACL generateSql script",
-            "symfony/routing": "For using the HttpUtils class to create sub-requests, redirect the user, and match URLs",
-            "symfony/validator": "For using the user password constraint"
-        },
-        "time": "2014-04-25 07:06:20",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.4-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Symfony\\Component\\Security\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com",
-                "homepage": "http://fabien.potencier.org",
-                "role": "Lead Developer"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "http://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony Security Component",
-        "homepage": "http://symfony.com"
-    },
-    {
         "name": "swiftmailer/swiftmailer",
         "version": "v5.2.0",
         "version_normalized": "5.2.0.0",
@@ -1791,5 +1713,110 @@
             "rest",
             "sdk"
         ]
+    },
+    {
+        "name": "mercadopago/sdk",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/mercadopago/sdk-php.git",
+            "reference": "e271b79b8a2b83526d8c437947a6025432c20814"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/mercadopago/sdk-php/zipball/e271b79b8a2b83526d8c437947a6025432c20814",
+            "reference": "e271b79b8a2b83526d8c437947a6025432c20814",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*"
+        },
+        "time": "2014-01-29 12:00:01",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "lib/mercadopago.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "authors": [
+            {
+                "name": "Horacio Casatti",
+                "email": "horacio.casatti@mercadolibre.com"
+            }
+        ],
+        "description": "MercadoPago SDK module for Payments integration.",
+        "keywords": [
+            "mercadopago",
+            "sdk"
+        ]
+    },
+    {
+        "name": "symfony/security-core",
+        "version": "v2.4.5",
+        "version_normalized": "2.4.5.0",
+        "target-dir": "Symfony/Component/Security/Core",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/security-core.git",
+            "reference": "1fbe80d10b7a5bcb619abe3e4cfede795d9958dc"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/security-core/zipball/1fbe80d10b7a5bcb619abe3e4cfede795d9958dc",
+            "reference": "1fbe80d10b7a5bcb619abe3e4cfede795d9958dc",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "ircmaxell/password-compat": "1.0.*",
+            "psr/log": "~1.0",
+            "symfony/event-dispatcher": "~2.1",
+            "symfony/expression-language": "~2.4",
+            "symfony/http-foundation": "~2.4",
+            "symfony/validator": "~2.2"
+        },
+        "suggest": {
+            "ircmaxell/password-compat": "For using the BCrypt password encoder in PHP <5.5",
+            "symfony/event-dispatcher": "",
+            "symfony/expression-language": "For using the expression voter",
+            "symfony/http-foundation": "",
+            "symfony/validator": "For using the user password constraint"
+        },
+        "time": "2014-04-23 14:04:21",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.4-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Symfony\\Component\\Security\\Core\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com",
+                "homepage": "http://fabien.potencier.org",
+                "role": "Lead Developer"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "http://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Security Component - Core Library",
+        "homepage": "http://symfony.com"
     }
 ]

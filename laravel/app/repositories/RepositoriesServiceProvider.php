@@ -7,28 +7,30 @@ use Illuminate\Support\ServiceProvider;
  *
  * @author carlos
  */
-class RepositoriesServiceProvider extends ServiceProvider
-{
+class RepositoriesServiceProvider extends ServiceProvider {
 
       public function register()
       {
             $this->app->bind(
-                    'CorreosRepository', 'CorreosRepositoryEloquent'
+                  'CorreosRepository', 'CorreosRepositoryEloquent'
             );
             $this->app->bind(
-                    'UsuariosRepository', 'UsuariosRepositoryEloquent'
+                  'UsuariosRepository', 'UsuariosRepositoryEloquent'
             );
             $this->app->bind(
-                    'DominioRepository', 'DominioRepositoryEloquent'
+                  'DominioRepository', 'DominioRepositoryEloquent'
             );
             $this->app->bind(
-                    'FtpsRepository', 'FtpsRepositoryEloquent'
+                  'FtpsRepository', 'FtpsRepositoryEloquent'
             );
             $this->app->bind(
-                    'DatabaseRepository', 'DatabaseRepositoryEloquent'
+                  'DatabaseRepository', 'DatabaseRepositoryEloquent'
             );
             $this->app->bind(
-                    'PlanRepository', 'PlanRepositoryEloquent'
+                  'PlanRepository', 'PlanRepositoryEloquent'
+            );
+            $this->app->bind(
+                  'PagosRepository', 'PagosRepositoryMercadoPago'
             );
       }
 

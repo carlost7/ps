@@ -39,6 +39,8 @@ Route::any('dominio/existente', array('as' => 'dominio/existente', 'uses' => 'Do
 Route::any('dominio/comprobar', array('as' => 'dominio/comprobar', 'uses' => 'DominiosController@comprobarDominio'));
 Route::any('dominio/confirmar', array('as' => 'dominio/confirmar', 'uses' => 'DominiosController@confirmarDominio'));
 
+Route::any('pagos/confirmar_registro', array('as'=>'pagos/confirmar_registro','uses'=>'PagosController@confirmarRegistro'));
+
 
 /*
   |--------------------------------------------------------

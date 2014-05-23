@@ -22,7 +22,8 @@ class CorreosController extends \BaseController
       {
             $correos = $this->Correo->listarCorreos();
             $total = sizeof($correos);
-            return View::make('correos.index')->with(array('correos' => $correos, 'total' => $total));
+            $quotas = $this->Correo->listarQuotas();
+            return View::make('correos.index')->with(array('correos' => $correos, 'quotas' => $quotas , 'total' => $total));
       }
 
       /**
@@ -85,7 +86,8 @@ class CorreosController extends \BaseController
             $correo = $this->Correo->obtenerCorreo($id);
             if ($this->isIdDomain($correo))
             {
-                  return View::make('correos.show')->with('correo', $correo);
+                  $used_quota = $this->Correo->obtenerUsedQuota($correo);
+                  return View::make('correos.show')->with(array('correo'=>$correo,'used_quota'=>$used_quota));
             }
             else
             {

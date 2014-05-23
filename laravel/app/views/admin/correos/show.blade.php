@@ -11,7 +11,7 @@
 @section('content')
 <div class="jumbotron">
       <div class="container">
-            <h2>{{ HTML::linkRoute('correos.index','Correos') }} > {{ $correo->correo }}</h2>
+            <h2>{{ HTML::linkRoute('admin.correos.index','Correos') }} > {{ $correo->correo }}</h2>
       </div>
 </div>
 <div class="container">
@@ -20,10 +20,13 @@
       
       <ul>
             <li>
-                  {{ $correo->correo }}
+                  Correo: {{ $correo->correo }}
             </li>
             <li>
-                  {{ $correo->nombre }}
+                  Nombre: {{ $correo->nombre }}
+            </li>
+            <li>
+                  Espacio Utilizado: {{ $used_quota }}Mb
             </li>
       </ul>
       

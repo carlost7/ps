@@ -1,6 +1,6 @@
 <?php
 
-use CorreoRepository as Correo;
+use CorreosRepository as Correo;
 
 class AdminCorreosController extends \BaseController {
 
@@ -20,8 +20,9 @@ class AdminCorreosController extends \BaseController {
       public function index()
       {
             $correos = $this->Correo->listarCorreos();
+            $quotas = $this->Correo->listarQuotas();
             $total = sizeof($correos);
-            return View::make('admin.correos.index')->with(array('correos' => $correos, 'total' => $total));
+            return View::make('admin.correos.index')->with(array('correos' => $correos, 'quotas' => $quotas ,'total' => $total));
       }
 
       /**
@@ -84,7 +85,8 @@ class AdminCorreosController extends \BaseController {
             $correo = $this->Correo->obtenerCorreo($id);
             if ($this->isIdDomain($correo))
             {
-                  return View::make('admin.correos.show')->with('correo', $correo);
+                  $used_quota = $this->Correo->obtenerUsedQuota($correo);
+                  return View::make('admin.correos.show')->with(array('correo'=>$correo,'used_quota'=>$used_quota));
             }
             else
             {

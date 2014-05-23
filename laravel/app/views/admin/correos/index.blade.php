@@ -27,6 +27,8 @@
                               <th>Nombre</th>
                               <th>Correo</th>                    
                               <th>Redireccion</th>
+                              <th>Espacio Utilizado</th>
+                              <th>Mostrar</th>
                               <th>Editar</th>
                               <th>Eliminar</th>
                         </tr>
@@ -36,9 +38,11 @@
                               <td>{{ $correo->nombre }}</td>
                               <td>{{ HTML::link('admin/correos/'.$correo->id,$correo->correo) }}</td>
                               <td>{{ $correo->redireccion }}</td>
+                              <td>{{ $quotas[$correo->correo]['diskused'].'Mb / '.$quotas[$correo->correo]['diskquota'].'Mb'}}</td>
+                              <td>{{ HTML::link('admin/correos/'.$correo->id,'Mostrarr',array('class'=>'btn btn-primary btn-xs')) }}</td>
                               <td>{{ HTML::link('admin/correos/'.$correo->id.'/edit','Editar',array('class'=>'btn btn-primary btn-xs')) }}</td>
                               <td>
-                                    {{ Form::open(array('route' => array('correos.destroy',$correo->id),'method'=>'DELETE')) }}
+                                    {{ Form::open(array('route' => array('admin.correos.destroy',$correo->id),'method'=>'DELETE')) }}
                                     {{ Form::submit('Eliminar', array('class' => 'btn btn-danger btn-xs')) }}
                                     {{ Form::close() }}
                               </td>                        

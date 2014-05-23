@@ -5,7 +5,8 @@
  *
  * @author carlos
  */
-class WHMFunciones {
+class WHMFunciones
+{
 
       protected $xmlapi;
       protected $plan;
@@ -377,7 +378,7 @@ class WHMFunciones {
 
             if ($response != false)
             {
-                  
+
                   $response = $this->xmlapi->api1_query($this->plan->name_server, "Mysql", "deluser", array($username));
                   if ($response != false)
                   {
@@ -397,13 +398,45 @@ class WHMFunciones {
                         Log::error('Error whm: EliminarDBServidor Error al eliminar el usuario');
                         return false;
                   }
-                  
             }
             else
             {
                   Log::error('Error whm: EliminarDBServidor Error al eliminar el usuario de la base de datos');
                   return false;
             }
+      }
+
+      /*
+        |--------------------------------
+        | Obtener quotas
+        |--------------------------------
+       */
+
+      public function obtenerQuotaCorreoServidor($username, $domain)
+      {
+            $response = $this->xmlapi->api2_query($this->plan->name_server, 'Email', 'getdiskusage', array('user' => $username, 'domain' => $domain));
+
+            $resultado = json_decode($response, true);
+            return $resultado['cpanelresult']['data']['0']['diskused'];            
+      }
+      
+      public function obtenerQuotaCorreosServidor($domain)
+      {
+            $response = $this->xmlapi->api2_query($this->plan->name_server, 'Email', 'listpopswithdisk', array('domain' => $domain));
+            
+            $resultado = json_decode($response, true);
+            $quotas = array();
+            if($resultado['cpanelresult']['data']!=null){
+                  foreach($resultado['cpanelresult']['data'] as $result){
+                        $correo = array('diskquota'=>$result['diskquota'],'diskused'=>$result['diskused']);
+                        $quotas[$result['login']]=$correo;
+                  }
+                  return $quotas;            
+            }else{
+                  return null;
+            }
+            
+            
       }
 
 }

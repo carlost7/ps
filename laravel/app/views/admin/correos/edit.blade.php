@@ -11,7 +11,7 @@
 @section('content')
 <div class="jumbotron">
       <div class="container">
-            <h2>{{ HTML::linkRoute('correos.index','Correos') }} > Editar: {{ $correo->correo }}</h2>
+            <h2>{{ HTML::linkRoute('admin.correos.index','Correos') }} > Editar: {{ $correo->correo }}</h2>
             <p>Agrega la contraseña en el campo de contraseña</p>
             <p>Modifica el correo de reenvio en el campo de reenvio</p>
       </div>
@@ -22,7 +22,7 @@
       <div class="alert alert-danger">{{ $error }}</div>
       @endforeach
 
-      {{ Form::model($correo, array('url'=> array('correos/'.$correo->id),'method'=>'PUT')) }}
+      {{ Form::model($correo, array('url'=> array('admin/correos/'.$correo->id),'method'=>'PUT')) }}
 
       <div class="form-group">
             {{ Form::label('nombre','Nombre') }}

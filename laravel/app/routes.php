@@ -39,8 +39,11 @@ Route::any('dominio/existente', array('as' => 'dominio/existente', 'uses' => 'Do
 Route::any('dominio/comprobar', array('as' => 'dominio/comprobar', 'uses' => 'DominiosController@comprobarDominio'));
 Route::any('dominio/confirmar', array('as' => 'dominio/confirmar', 'uses' => 'DominiosController@confirmarDominio'));
 
-Route::any('pagos/confirmar_registro', array('as'=>'pagos/confirmar_registro','uses'=>'PagosController@confirmarRegistro'));
-
+Route::any('pagos/confirmar_registro', array('as' => 'pagos/confirmar_registro', 'uses' => 'PagosController@confirmarRegistro'));
+Route::any('pagos/descripcion', array('as' => 'pagos/descripcion', 'uses' => 'PagosController@getCostoTotal'));
+Route::get('pagos/pago_cancelado', array('as' => 'pagos/pago_cancelado', 'uses' => 'PagosController@cancelarPago'));
+Route::get('pagos/pago_aceptado', array('as' => 'pagos/pago_aceptado', 'uses' => 'PagosController@aceptarPago'));
+Route::get('pagos/pago_pendiente', array('as' => 'pagos/pago_pendiente', 'uses' => 'PagosController@pagoPendiente'));
 
 /*
   |--------------------------------------------------------
@@ -55,24 +58,32 @@ Route::group(array('before' => 'auth'), function() {
         ----------------------------------------------------------------------------------
        */
       Route::get('usuario/logout', array('as' => 'usuario/logout', 'uses' => 'UsuariosController@logout'));
-      Route::get('usuario/inicio', array('as' => 'usuario/inicio', 'uses' => 'UsuariosController@iniciar'));
-      Route::any('usuario/cambiar_password', array('as'=>'usuario/cambiar_password','uses'=>'UsuariosController@cambiarPasswordUsuario'));
-      Route::any('usuario/cambiar_correo', array('as'=>'usuario/cambiar_correo','uses'=>'UsuariosController@cambiarCorreoUsuario'));
+      Route::any('usuario/cambiar_password', array('as' => 'usuario/cambiar_password', 'uses' => 'UsuariosController@cambiarPasswordUsuario'));
+      Route::any('usuario/cambiar_correo', array('as' => 'usuario/cambiar_correo', 'uses' => 'UsuariosController@cambiarCorreoUsuario'));
+      Route::any('usuario/problemas', array('as' => 'usuario/problemas', 'uses' => 'UsuariosController@mostrarProblemas'));
 
       /*
-        |-------------------------------------------
-        | Acciondes del usuario
-        |-------------------------------------------
+       * Seccion de pagos
        */
+      Route::get('pagos/inicio', array('as' => 'pagos/inicio', 'uses' => 'PagosController@mostrarPagos'));
+      Route::get('pagos/faltantes', array('as' => 'pagos/faltantes', 'uses' => 'PagosController@mostrarPagos'));
 
-      Route::resource('correos', 'CorreosController');
+      Route::group(array('before' => 'comprobar_usuario'), function() {
 
-      Route::resource('ftps', 'FtpsController');
+            /*
+              |-------------------------------------------
+              | Acciondes del usuario
+              |-------------------------------------------
+             */
+            Route::get('usuario/inicio', array('as' => 'usuario/inicio', 'uses' => 'UsuariosController@iniciar'));
+            
+            
+            Route::resource('correos', 'CorreosController');
 
-      Route::resource('dbs', 'DbsController');
+            Route::resource('ftps', 'FtpsController');
 
-
-      Route::get('pagos/inactivo', array('as' => 'pagos/inactivo', 'uses' => 'PagosController@obtenerFaltante'));
+            Route::resource('dbs', 'DbsController');
+      });
 
       /*
         |------------------------------------------
@@ -86,15 +97,14 @@ Route::group(array('before' => 'auth'), function() {
              * Admin / t7marketing
              */
             Route::resource('usuarios', 'AdminUsersController');
-            
+
             Route::resource('correos', 'AdminCorreosController');
 
             Route::resource('ftps', 'AdminFtpsController');
 
             Route::resource('dbs', 'AdminDbsController');
-            
+
             Route::resource('planes', 'AdminPlanesController');
-            
       });
 });
 

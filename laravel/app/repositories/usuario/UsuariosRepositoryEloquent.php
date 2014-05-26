@@ -36,13 +36,15 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
        * Funcion para agregar usuarios
        */
 
-      public function agregarUsuario($nombre, $password, $correo, $is_admin)
+      public function agregarUsuario($nombre, $password, $correo, $is_admin, $is_activo, $is_deudor)
       {
             $usuario = new User();
             $usuario->username = $nombre;
             $usuario->password = Hash::make($password);
             $usuario->email = $correo;
             $usuario->is_admin = $is_admin;
+            $usuario->is_activo = $is_activo;
+            $usuario->is_deudor = $is_deudor;
             if ($usuario->save())
             {
                   return $usuario;

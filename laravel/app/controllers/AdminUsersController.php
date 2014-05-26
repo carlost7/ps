@@ -59,7 +59,7 @@ class AdminUsersController extends \BaseController {
 
             if ($validator->passes())
             {
-                  $usuario = $this->Usuario->agregarUsuario(Input::get('nombre'), Input::get('password'), Input::get('correo'), false);
+                  $usuario = $this->Usuario->agregarUsuario(Input::get('nombre'), Input::get('password'), Input::get('correo'), false, false, false);
                   if ($usuario->id != null)
                   {
                         $plan = $this->Plan->obtenerPlanNombre(Input::get('plan'));

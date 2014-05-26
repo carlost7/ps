@@ -14,7 +14,7 @@
       <div class="container">
             <h2>Bases de datos</h2>
             <p>Aqui encontrarás una lista de todas las bases de datos</p>
-            @if($total < Session::get('dominio')->plan->numero_dbs)
+            @if($total < Session::get('dominio_usuario')->plan->numero_dbs)
             <p>Da click en el boton si quieres agregar uno nuevo</p>
             <p>{{ HTML::linkRoute('admin.dbs.create','Agregar Base de datos',null,array('class'=>'btn btn-primary btn-lg')) }}</p>
             @endif
@@ -23,7 +23,7 @@
 <div class="container">
       <div class="panel panel-default">
             <!-- Default panel contents -->
-            <div class="panel-heading">Lista de Bases de Datos ({{$total.'/'.Session::get('dominio')->plan->numero_dbs }})</div>
+            <div class="panel-heading">Lista de Bases de Datos ({{$total.'/'.Session::get('dominio_usuario')->plan->numero_dbs }})</div>
 
 
             @if($dbs->count())

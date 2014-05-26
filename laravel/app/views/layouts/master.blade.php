@@ -57,6 +57,7 @@
                                                 <li>{{ Html::linkRoute('admin.planes.index','Planes') ;}}</li> 
                                                 @else
                                                 <li>{{ Html::linkRoute('usuario/inicio','Inicio') ;}}</li>
+                                                <li>{{ Html::linkRoute('pagos/inicio','Pagos') ;}}</li>
                                                 @endif                                                
                                                 <li>{{ Html::linkRoute('usuario/logout','Salir') ;}}</li>                                 
                                           </ul>

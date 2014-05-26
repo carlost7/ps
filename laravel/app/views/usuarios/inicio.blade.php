@@ -3,7 +3,7 @@
 @section('title')
 @parent
 
-| Dashboard
+| Inicio
 @stop
 
 

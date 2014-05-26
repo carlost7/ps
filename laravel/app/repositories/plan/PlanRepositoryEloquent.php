@@ -5,7 +5,8 @@
  *
  * @author carlos
  */
-class PlanRepositoryEloquent implements PlanRepository {
+class PlanRepositoryEloquent implements PlanRepository
+{
 
       public function listarPlanes()
       {
@@ -18,7 +19,7 @@ class PlanRepositoryEloquent implements PlanRepository {
             $plan = Plan::find($id);
             return $plan;
       }
-      
+
       public function obtenerPlanNombre($nombre)
       {
             $plan = Plan::where('nombre', '=', $nombre)->first();
@@ -44,7 +45,6 @@ class PlanRepositoryEloquent implements PlanRepository {
                   return false;
             }
       }
-    
 
       protected function agregarPlanServidor()
       {
@@ -67,9 +67,9 @@ class PlanRepositoryEloquent implements PlanRepository {
             return $plan;
       }
 
-      public function editarPlan($id, $nombre, $dominio, $name_server, $numero_correos, $quota_correos, $numero_ftps, $quota_ftps, $numero_dbs, $quota_dbs)
+      public function editarPlan($id, $nombre, $dominio, $name_server, $numero_correos, $quota_correos, $numero_ftps, $quota_ftps, $numero_dbs, $quota_dbs, $costo_anual, $costo_mensual, $moneda)
       {
-            if ($this->editarPlanBase($id, $nombre, $dominio, $name_server, $numero_correos, $quota_correos, $numero_ftps, $quota_ftps, $numero_dbs, $quota_dbs))
+            if ($this->editarPlanBase($id, $nombre, $dominio, $name_server, $numero_correos, $quota_correos, $numero_ftps, $quota_ftps, $numero_dbs, $quota_dbs, $costo_anual, $costo_mensual, $moneda))
             {
                   return true;
             }
@@ -79,7 +79,7 @@ class PlanRepositoryEloquent implements PlanRepository {
             }
       }
 
-      protected function editarPlanBase($id, $nombre, $dominio, $name_server, $numero_correos, $quota_correos, $numero_ftps, $quota_ftps, $numero_dbs, $quota_dbs)
+      protected function editarPlanBase($id, $nombre, $dominio, $name_server, $numero_correos, $quota_correos, $numero_ftps, $quota_ftps, $numero_dbs, $quota_dbs, $costo_anual, $costo_mensual, $moneda)
       {
             $plan = Plan::find($id);
             if ($plan)
@@ -93,6 +93,9 @@ class PlanRepositoryEloquent implements PlanRepository {
                   $plan->quota_ftps = $quota_ftps;
                   $plan->numero_dbs = $numero_dbs;
                   $plan->quota_dbs = $quota_dbs;
+                  $plan->costo_anual = $costo_anual;
+                  $plan->costo_mensual = $costo_mensual;
+                  $plan->moneda = $moneda;
                   if ($plan->save())
                   {
                         return true;

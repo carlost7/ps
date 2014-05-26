@@ -4,20 +4,18 @@
             <meta charset="utf-8">
       </head>
       <body>
-            <h2>Bienvenido a t7marketing</h2>
+            <h2>Bienvenido a PrimerServer</h2>
             <div>
                   <p>
-                        Hemos creado una cuenta en T7marketing para que pueda configurar sus correos electrónicos
+                        Hemos creado una cuenta en PrimerServer
                   </p>
 
                   <p>
-                        Para hacerlo de click en el siguiente enlace <a href="{{ URL::route("usuario/login") }}">T7marketing</a>                        
+                        Actualmente estamos validando tu pago, en cuanto este listo, te enviaremos un correo para que puedas empezar
                   </p>
 
+                  <p>Datos de usuario</p>
                   <ul>
-                        <li>
-                              Dominio: {{ $dominio }}
-                        </li>
                         <li>
                               Usuario: {{ $usuario }}
                         </li>
@@ -26,7 +24,7 @@
                         </li>
                   </ul>
                   
-                  <p>El equipo de T7Marketing</p>
+                  <p>El equipo de PrimerServer</p>
             </div>
       </body>
 </html>

@@ -58,8 +58,20 @@
       <div class="form-group">
             <label for="quota_dbs">Quota dbs</label>
             <input type="text" name="quota_dbs" value="{{ $plan->quota_dbs }}" class="form-control" id="Quota_dbs">
-      </div>      
-      <button type="submit" id='confirmar' class="btn btn-success">Confirmar Dominio</button>
+      </div>
+      <div class="form-group">
+            <label for="costo_anual">Costo anual</label>
+            <input type="text" name="costo_anual" value="{{ $plan->costo_anual }}" class="form-control" id="Costo_anual">
+      </div>
+      <div class="form-group">
+            <label for="costo_mensual">Costo mensual</label>
+            <input type="text" name="costo_mensual" value="{{ $plan->costo_mensual }}" class="form-control" id="Costo_mensual">
+      </div>
+      <div class="form-group">
+            <label for="moneda">Moneda</label>
+            <input type="text" name="moneda" value="{{ $plan->moneda }}" class="form-control" id="Moneda">
+      </div>
+      <button type="submit" id='confirmar' class="btn btn-success">Editar Plan</button>
       {{ Form::close() }}
 </div>
 

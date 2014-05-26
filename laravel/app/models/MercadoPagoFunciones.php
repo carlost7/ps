@@ -18,12 +18,12 @@ class MercadoPagoFunciones {
       public function __construct()
       {
             $this->mp = new MP(Config::get('payment.client_id'),Config::get('payment.client_socket'));
+            $this->mp->sandbox_mode(true);
       }
       
       public function create_preference($preference_data){
             $preference = $this->mp->create_preference($preference_data);
-            dd($preference);
-            return $preference['response'][config::get('payment.init_point')];
+            return $preference;
             
       }      
       

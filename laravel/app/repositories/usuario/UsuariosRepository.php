@@ -11,7 +11,7 @@ interface UsuariosRepository {
 
       public function obtenerUsuario($id);
 
-      public function agregarUsuario($nombre, $password, $correo, $is_admin);
+      public function agregarUsuario($nombre, $password, $correo, $is_admin, $is_activo, $is_deudor);
 
       public function editarUsuario($id, $nombre, $password, $correo, $is_admin);
 

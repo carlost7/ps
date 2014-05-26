@@ -31,10 +31,16 @@
 
                               <td>{{ $usuario->username }}</td>
                               <td>{{ HTML::link('admin/usuarios/'.$usuario->id,$usuario->email) }}</td>
+                              @if($usuario->dominio != null)
                               <td>{{ $usuario->dominio->dominio }}</td>
                               <td>{{ $usuario->dominio->plan->nombre }}</td>
-
                               <td>{{ HTML::link('admin/usuarios/'.$usuario->id.'/edit','Agregar',array('class'=>'btn btn-primary btn-xs')) }}</td>
+                              @else
+                              <td>pendiente</td>
+                              <td>pendiente</td>
+                              <td></td>
+                              @endif
+                              
                               <td>
                                     {{ Form::open(array('route' => array('admin.usuarios.destroy',$usuario->id),'method'=>'DELETE')) }}
                                     {{ Form::submit('Eliminar', array('class' => 'btn btn-danger btn-xs')) }}

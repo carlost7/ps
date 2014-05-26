@@ -103,3 +103,21 @@ Route::filter('is_activo', function() {
             return Redirect::to('pagos/faltantes');
       }
 });
+
+/*
+ *
+ * Comprobar usuario
+ *  
+ */
+ROute::filter('comprobar_usuario',function(){
+      $usuario = Auth::user();
+      if(!$usuario->is_activo){
+            if(!$usuario->is_deudor){
+                  Session::flash('error','Revisa por favor los pagos pendientes, antes de poder continuar');
+                  return Redirect::to('pagos/faltantes');
+            }else{
+                  Session::flash('messages','El usuario tiene problemas, ponte en contacto con nosotros');
+                  return Redirect::to('usuario/problemas');
+            }
+      }
+});

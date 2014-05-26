@@ -20,9 +20,17 @@ class AdminDbsController extends \BaseController
        */
       public function index()
       {
-            $dbs = $this->Database->listarDatabases();
-            $total = $dbs->count();
-            return View::make('admin.dbs.index')->with(array('dbs'=>$dbs,'total'=>$total));
+            if (Session::get('dominio_usuario')->plan->numero_dbs > 0)
+            {
+                  $dbs = $this->Database->listarDatabases();
+                  $total = $dbs->count();
+                  return View::make('admin.dbs.index')->with(array('dbs' => $dbs, 'total' => $total));
+            }
+            else
+            {
+                  Session::flash('error'.'El plan del usuario no tiene bases de datos');
+                  return Redirect::back();
+            }
       }
 
       /**
@@ -101,18 +109,18 @@ class AdminDbsController extends \BaseController
             {
                   if ($this->Database->eliminarDatabase($Db_model))
                   {
-                        Session::flash('message','La base de datos fue eliminada con exito');
+                        Session::flash('message', 'La base de datos fue eliminada con exito');
                         return Redirect::to('admin/dbs');
                   }
                   else
                   {
-                        Session::flash('error','Error al eliminar la base de datos');
+                        Session::flash('error', 'Error al eliminar la base de datos');
                         return Redirect::to('admin/dbs');
                   }
             }
             else
             {
-                  Session::flash('error','La base de datos no pertenece al dominio');
+                  Session::flash('error', 'La base de datos no pertenece al dominio');
                   return View::make('admin.dbs.index');
             }
       }

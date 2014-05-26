@@ -9,7 +9,8 @@ use UsuariosRepository as Usuario;
 use DominioRepository as Dominio;
 use FtpsRepository as Ftp;
 
-class DominiosController extends BaseController {
+class DominiosController extends BaseController
+{
 
       protected $Usuario;
       protected $Dominio;
@@ -55,17 +56,27 @@ class DominiosController extends BaseController {
 
       public function comprobarDominio()
       {
-            $dominio = Input::get('dominio');
-            if ($dominio)
+            $validator = $this->getValidatorComprobarNombreDominio();
+            if ($validator->passes())
             {
-                  $resultado = true;
-                  $mensaje = "el dominio " . $dominio . " es correcto";
+                  $dominio = Input::get('dominio');
+                  if (filter_var(gethostbyname($dominio), FILTER_VALIDATE_IP))
+                  {
+                        $resultado = false;
+                        $mensaje = "El dominio " . $dominio . " ya esta siendo utilizado";
+                  }
+                  else
+                  {
+                        $resultado = true;
+                        $mensaje = "El dominio " . $dominio . " es correcto";
+                  }
             }
             else
             {
                   $resultado = false;
-                  $mensaje = "el dominio " . $dominio . " ya esta ocupado";
+                  $mensaje = $validator->messages()->first('dominio');
             }
+
 
             $response = array('resultado' => $resultado, 'mensaje' => $mensaje);
 
@@ -90,7 +101,7 @@ class DominiosController extends BaseController {
                               $user = explode('.', $dominio->dominio);
                               $username = $user[0];
                               $hostname = 'primerserver.com';
-                              $home_dir = 'public_html/'.$dominio->dominio;
+                              $home_dir = 'public_html/' . $dominio->dominio;
                               $ftp = $this->Ftp->agregarFtp($username, $hostname, $home_dir, Input::get('password'), true);
                               if ($ftp->id)
                               {
@@ -130,14 +141,26 @@ class DominiosController extends BaseController {
       protected function getValidatorConfirmUser()
       {
             return Validator::make(Input::all(), array(
-                        'nombre' => 'required|min:4',
-                        'password' => 'required|min:2',
-                        'password_confirmation' => 'required|same:password',
-                        'dominio' => 'required',
-                        'correo' => 'required|email|unique:user,email',
-                        'plan' => 'required|exists:planes,nombre',
-                        'aceptar' => 'required|accepted'
+                          'nombre' => 'required|min:4',
+                          'password' => 'required|min:2',
+                          'password_confirmation' => 'required|same:password',
+                          'dominio' => 'required',
+                          'correo' => 'required|email|unique:user,email',
+                          'plan' => 'required|exists:planes,nombre',
+                          'aceptar' => 'required|accepted'
             ));
+      }
+
+      protected function getValidatorComprobarNombreDominio()
+      {
+            return Validator::make(Input::all(), array(
+                          'dominio' => array('required'),
+                          'dominio' => array('regex:/^([a-z0-9]([-a-z0-9]*[a-z0-9])?\\.)+((a[cdefgilmnoqrstuwxz]|aero|arpa)|(b[abdefghijmnorstvwyz]|biz)|(c[acdfghiklmnorsuvxyz]|cat|com|coop)|d[ejkmoz]|(e[ceghrstu]|edu)|f[ijkmor]|(g[abdefghilmnpqrstuwy]|gov)|h[kmnrtu]|(i[delmnoqrst]|info|int)|(j[emop]|jobs)|k[eghimnprwyz]|l[abcikrstuvy]|(m[acdghklmnopqrstuvwxyz]|mil|mobi|museum)|(n[acefgilopruz]|name|net)|(om|org)|(p[aefghklmnrstwy]|pro)|qa|r[eouw]|s[abcdeghijklmnortvyz]|(t[cdfghjklmnoprtvwz]|travel)|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw])$/'),
+                            ), array(
+                          'dominio.required' => 'Es necesario especificar un dominio',
+                          'dominio.regex' => 'El dominio tiene que ser de la forma [nombredominio].[com|pais].[pais]',
+                            )
+            );
       }
 
 }

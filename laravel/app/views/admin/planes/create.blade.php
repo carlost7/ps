@@ -58,8 +58,20 @@
       <div class="form-group">
             <label for="quota_dbs">Quota dbs</label>
             <input type="text" name="quota_dbs" value="{{ Input::old('quota_ftps')}}" class="form-control" id="Quota_dbs">
-      </div>      
-      <button type="submit" id='confirmar' class="btn btn-success">Confirmar Dominio</button>
+      </div>     
+      <div class="form-group">
+            <label for="costo_anual">Costo anual</label>
+            <input type="text" name="costo_anual" value="{{ Input::old('costo_anual') }}" class="form-control" id="Costo_anual">
+      </div>
+      <div class="form-group">
+            <label for="costo_mensual">Costo mensual</label>
+            <input type="text" name="costo_mensual" value="{{ Input::old('costo_mensual') }}" class="form-control" id="Costo_mensual">
+      </div>
+      <div class="form-group">
+            <label for="moneda">Moneda</label>
+            <input type="text" name="moneda" value="{{ Input::old('moneda') }}" class="form-control" id="Moneda">
+      </div>
+      <button type="submit" id='confirmar' class="btn btn-success">Crear Plan</button>
       {{ Form::close() }}
 </div>
 

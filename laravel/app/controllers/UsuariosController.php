@@ -72,6 +72,15 @@ class UsuariosController extends BaseController {
       }
 
       /*
+       * mostrar Problemas
+       */
+      public function mostrarProblemas(){
+            return View::make('usuarios.problemas');
+      }
+      
+      
+      
+      /*
        * Funcion para modificar el password
        */
 

@@ -35,7 +35,7 @@ class MercadoPagoFunciones {
 
       public function recibir_notificacion($id)
       {
-            $payment_info = $mp->get_payment_info($id);
+            $payment_info = $this->mp->get_payment_info($id);
 
             // Show payment information
             if ($payment_info["status"] == 200)

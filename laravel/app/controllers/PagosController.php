@@ -48,7 +48,7 @@ class PagosController extends BaseController {
       {
             $status = Input::get('collection_status');
             $preference_id = Input::get('preference_id');
-
+            
             if ($status == 'approved')
             {
                   if ($this->agregarDominioSistema($preference_id, $status))
@@ -197,7 +197,8 @@ class PagosController extends BaseController {
                   {
                         $resultado = false;
                         $mensaje = $validator->messages()->first('dominio');
-                        return Redirect::back()->withErrors($validator)->withInput();
+                        Session::flash('error',$mensaje);
+                        return Redirect::back()->withInput();
                   }
             }
       }
@@ -488,7 +489,7 @@ class PagosController extends BaseController {
       
       protected function actualizarUsuarioPagado($usuario,$is_activo,$is_deudor){
             
-            $usuario = $this->Usuario->editarUsuario($usuario->id, $usuario->nombre, $usuario->password, $usuario->email, $usuario->is_admin, $usuario->is_activo, $usuario->is_deudor);
+            $usuario = $this->Usuario->editarUsuarioPagado($usuario->id, $is_activo, $is_deudor);
             if($usuario != false && $usuario->id){
                   return true;
             }else{
@@ -509,7 +510,7 @@ class PagosController extends BaseController {
                         'password' => 'required|min:2',
                         'password_confirmation' => 'required|same:password',
                         'dominio' => 'required',
-                        'correo' => 'required|email|unique:user,email',
+                        'correo' => 'required|email',//|unique:user,email
                         'plan' => 'required|exists:planes,id',
                         'aceptar' => 'required|accepted',
                         'tipo_pago' => 'required',

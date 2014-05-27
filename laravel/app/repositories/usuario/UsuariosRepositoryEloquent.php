@@ -121,6 +121,9 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
             }
       }
 
+      /*
+       * 
+       */
       public function editarUsuario($id, $nombre, $password, $correo, $is_admin,$is_activo,$is_deudor)
       {
             $usuario = User::find($id);
@@ -147,4 +150,29 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
             }
       }
 
+      /*
+       * 
+       */
+      public function editarUsuarioPagado($id, $is_activo, $is_deudor)
+      {
+            $usuario = User::find($id);
+            if ($usuario)
+            {
+                  $usuario->is_activo = $is_activo;
+                  $usuario->is_deudor = $is_deudor;
+                  if ($usuario->save())
+                  {
+                        return $usuario;
+                  }
+                  else
+                  {
+                        return false;
+                  }
+            }
+            else
+            {
+                  return false;
+            }
+      }
+      
 }

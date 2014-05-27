@@ -90,7 +90,10 @@ class PagosController extends BaseController {
 
             Log::error('Mercado pago ids ' . print_r(Input::all(), true));
 
-            $id = Input::get('id');
+            print_r(Input::all());
+            
+            exit();
+            /*$id = Input::get('id');
             if (isset($id))
             {
                   if ($this->Pagos->recibirNotificacionPago($id))
@@ -105,7 +108,7 @@ class PagosController extends BaseController {
             else
             {
                   echo "no se obtuvo nada";
-            }
+            }*/
       }
 
       /*
@@ -422,7 +425,7 @@ class PagosController extends BaseController {
                               $ftp = $this->Ftp->agregarFtp($username, $hostname, $home_dir, $password, true);
                               if ($ftp->id)
                               {
-                                    if ($this->actualizarUsuarioPagado($usuario))
+                                    if ($this->actualizarUsuarioPagado($usuario,true,false))
                                     {
                                           Session::put('message', 'La cuenta esta lista para usarse');
                                           DB::commit();

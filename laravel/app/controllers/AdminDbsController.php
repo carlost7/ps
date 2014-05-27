@@ -2,8 +2,7 @@
 
 use DatabaseRepository as Database;
 
-class AdminDbsController extends \BaseController
-{
+class AdminDbsController extends \BaseController {
 
       protected $Database;
 
@@ -28,7 +27,7 @@ class AdminDbsController extends \BaseController
             }
             else
             {
-                  Session::flash('error'.'El plan del usuario no tiene bases de datos');
+                  Session::flash('error' . 'El plan del usuario no tiene bases de datos');
                   return Redirect::back();
             }
       }
@@ -128,10 +127,10 @@ class AdminDbsController extends \BaseController
       protected function getDbsValidator()
       {
             return Validator::make(Input::all(), array(
-                          'username' => 'required',
-                          'dbname' => 'required',
-                          'password' => 'required|min:2',
-                          'password_confirmation' => 'required|same:password',
+                        'username' => 'required',
+                        'dbname' => 'required',
+                        'password' => 'required|min:2',
+                        'password_confirmation' => 'required|same:password',
             ));
       }
 

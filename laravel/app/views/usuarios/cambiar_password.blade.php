@@ -22,7 +22,7 @@
 
       {{ Form::open(array('url'=>'usuario/cambiar_password')) }}
       @foreach($errors->all() as $error)
-            <div class="alert alert-danger">{{ $error }}</div>      
+      <div class="alert alert-danger">{{ $error }}</div>      
       @endforeach
       <div class="form-group">
             <div class="form-group">

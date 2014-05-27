@@ -17,7 +17,7 @@
 <div class="container">
 
       <h1>Aqui se mostrarán los datos del correo</h1>
-      
+
       <ul>
             <li>
                   {{ $correo->correo }}
@@ -26,8 +26,8 @@
                   {{ $correo->nombre }}
             </li>
       </ul>
-      
-      
+
+
 </div>
 
 

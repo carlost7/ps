@@ -17,7 +17,7 @@
 <div class="container">
 
       <h1>Aqui se mostrarán los datos del Ftp</h1>
-      
+
       <ul>
             <li>
                   {{ $ftp->username }}
@@ -26,8 +26,8 @@
                   {{ $ftp->homedir }}
             </li>
       </ul>
-      
-      
+
+
 </div>
 
 

@@ -5,8 +5,7 @@
  *
  * @author carlos
  */
-class Ftp extends Eloquent
-{
+class Ftp extends Eloquent {
 
       protected $table = 'ftps';
       protected $fillable = array('username', 'hostname');

@@ -27,7 +27,7 @@
             <li>N. Database: {{ $plan->numero_dbs }}</li>
             <li>Q. Database: {{ $plan->quota_dbs }}</li>
       </ul>      
-      
+
 </div>
 
 

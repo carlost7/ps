@@ -5,8 +5,7 @@
  *
  * @author carlos
  */
-class DominioSeeder extends DatabaseSeeder
-{
+class DominioSeeder extends DatabaseSeeder {
 
       public function run()
       {
@@ -17,7 +16,8 @@ class DominioSeeder extends DatabaseSeeder
                         "activo" => true,
                         "plan_id" => 3,)
             );
-            foreach ($dominios as $dominio) {
+            foreach ($dominios as $dominio)
+            {
                   Dominio::create($dominio);
             }
       }

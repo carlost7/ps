@@ -129,8 +129,7 @@
  * @link http://twiki.cpanel.net/twiki/bin/view/AllDocumentation/AutomationIntegration/XmlApi
  * @since Class available since release 0.1
  * */
-class xmlapi
-{
+class xmlapi {
 
       // should debugging statements be printed?
       private $debug = false;
@@ -668,7 +667,7 @@ class xmlapi
 
             $args = http_build_query($vars, '', '&');
             $url = $this->protocol . '://' . $this->host . ':' . $this->port . $query_type . $function;
-            Log::error('ApiQuery '.$url.' '.$args);
+            Log::error('ApiQuery ' . $url . ' ' . $args);
             if ($this->debug)
             {
                   error_log('URL: ' . $url);
@@ -785,8 +784,8 @@ class xmlapi
 
             // Pass authentication header
             $header[0] = $authstr .
-                    "Content-Type: application/x-www-form-urlencoded\r\n" .
-                    "Content-Length: " . strlen($postdata) . "\r\n" . "\r\n" . $postdata;
+                  "Content-Type: application/x-www-form-urlencoded\r\n" .
+                  "Content-Length: " . strlen($postdata) . "\r\n" . "\r\n" . $postdata;
 
             curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
 
@@ -842,7 +841,8 @@ class xmlapi
             // Recurse into arrays
             if (is_array($data))
             {
-                  foreach ($data as &$item) {
+                  foreach ($data as &$item)
+                  {
                         $item = $this->unserialize_xml($item, $callback, true);
                   }
             }
@@ -904,7 +904,8 @@ class xmlapi
                   $func_type => $function,
                   $api_type => '1'
             );
-            for ($int = 0; $int < count($args); $int++) {
+            for ($int = 0; $int < count($args); $int++)
+            {
                   $call['arg-' . $int] = $args[$int];
             }
 
@@ -2596,7 +2597,8 @@ class xmlapi
             if (is_array($args))
             {
                   $display = '';
-                  foreach ($args as $key => $value) {
+                  foreach ($args as $key => $value)
+                  {
                         $display .= $value . '|';
                   }
                   $values['display'] = substr($display, 0, -1);

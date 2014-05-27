@@ -5,20 +5,18 @@
  *
  * @author carlos
  */
-
 use UsuariosRepository as UserRep;
 
 class UsuariosController extends BaseController {
-      
+
       protected $Usuario;
-      
+
       public function __construct(UserRep $usuario)
       {
             parent::__construct();
             $this->Usuario = $usuario;
-            
       }
-      
+
       /*
        * Funcion para loggear al usuario a la aplicación
        */
@@ -74,12 +72,12 @@ class UsuariosController extends BaseController {
       /*
        * mostrar Problemas
        */
-      public function mostrarProblemas(){
+
+      public function mostrarProblemas()
+      {
             return View::make('usuarios.problemas');
       }
-      
-      
-      
+
       /*
        * Funcion para modificar el password
        */
@@ -95,19 +93,26 @@ class UsuariosController extends BaseController {
                         if (strlen(Input::get('old_password')) > 0 && !Hash::check(Auth::user()->password, Input::get('old_password')))
                         {
                               $usuario = Auth::user();
-                              if($this->Usuario->editarPasswordUsuario($usuario->id, Input::get('password'))){
-                                    Session::flash('message','Cambio de contraseña correcto');
-                                    if(Auth::User()->is_admin){
+                              if ($this->Usuario->editarPasswordUsuario($usuario->id, Input::get('password')))
+                              {
+                                    Session::flash('message', 'Cambio de contraseña correcto');
+                                    if (Auth::User()->is_admin)
+                                    {
                                           return Redirect::to('admin/usuarios');
-                                    }else{
+                                    }
+                                    else
+                                    {
                                           return Redirect::to('usuario/inicio');
                                     }
-                                    
-                              }else{
-                                    Session::flash('error','Error al cambiar la contraseña');
                               }
-                        }else{
-                              Session::flash('error','El password anterior no coincide con los datos de la base');
+                              else
+                              {
+                                    Session::flash('error', 'Error al cambiar la contraseña');
+                              }
+                        }
+                        else
+                        {
+                              Session::flash('error', 'El password anterior no coincide con los datos de la base');
                         }
                   }
                   return Redirect::back()->withErrors($validator)->withInput();
@@ -133,14 +138,19 @@ class UsuariosController extends BaseController {
                         if (strlen(Input::get('password')) > 0 && !Hash::check(Auth::user()->password, Input::get('password')))
                         {
                               $usuario = Auth::user();
-                              if($this->Usuario->editarCorreoUsuario($usuario->id,Input::get('new_email'))){
-                                    Session::flash('message','Tu correo se ha actualizado');
+                              if ($this->Usuario->editarCorreoUsuario($usuario->id, Input::get('new_email')))
+                              {
+                                    Session::flash('message', 'Tu correo se ha actualizado');
                                     return Redirect::to('usuario/inicio');
-                              }else{
-                                    Session::flash('error','Error al cambiar la contraseña');
                               }
-                        }else{
-                              Session::flash('error','El password anterior no coincide con los datos de la base');
+                              else
+                              {
+                                    Session::flash('error', 'Error al cambiar la contraseña');
+                              }
+                        }
+                        else
+                        {
+                              Session::flash('error', 'El password anterior no coincide con los datos de la base');
                         }
                   }
                   return Redirect::back()->withErrors($validator->messages())->withInput();

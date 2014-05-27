@@ -9,9 +9,9 @@ class Plan extends Eloquent {
 
       protected $table = 'planes';
       protected $fillable = array(
-            'nombre', 
-            'name_server', 
-            'numero_correos', 
+            'nombre',
+            'name_server',
+            'numero_correos',
             'quota_correos',
             'numero_ftps',
             'quota_ftps',
@@ -21,6 +21,10 @@ class Plan extends Eloquent {
       public function dominios()
       {
             return $this->hasMany('Dominio');
+      }
+      
+      public function dominios_pendientes(){
+            return $this->hasMany('DominioPendiente');
       }
 
 }

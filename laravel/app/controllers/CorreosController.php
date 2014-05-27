@@ -2,8 +2,7 @@
 
 use CorreosRepository as Correo;
 
-class CorreosController extends \BaseController
-{
+class CorreosController extends \BaseController {
 
       protected $Correo;
 
@@ -23,7 +22,7 @@ class CorreosController extends \BaseController
             $correos = $this->Correo->listarCorreos();
             $total = sizeof($correos);
             $quotas = $this->Correo->listarQuotas();
-            return View::make('correos.index')->with(array('correos' => $correos, 'quotas' => $quotas , 'total' => $total));
+            return View::make('correos.index')->with(array('correos' => $correos, 'quotas' => $quotas, 'total' => $total));
       }
 
       /**
@@ -87,7 +86,7 @@ class CorreosController extends \BaseController
             if ($this->isIdDomain($correo))
             {
                   $used_quota = $this->Correo->obtenerUsedQuota($correo);
-                  return View::make('correos.show')->with(array('correo'=>$correo,'used_quota'=>$used_quota));
+                  return View::make('correos.show')->with(array('correo' => $correo, 'used_quota' => $used_quota));
             }
             else
             {
@@ -175,7 +174,7 @@ class CorreosController extends \BaseController
             }
             else
             {
-                  Session::flash('error','El correo no pertenece al dominio');
+                  Session::flash('error', 'El correo no pertenece al dominio');
                   return Redirect::to('correos');
             }
       }
@@ -187,11 +186,11 @@ class CorreosController extends \BaseController
       protected function getCorreosValidator()
       {
             return Validator::make(Input::all(), array(
-                          'nombre' => 'required|min:4',
-                          'correo' => 'required',
-                          'password' => 'required|min:2',
-                          'password_confirmation' => 'required|same:password',
-                          'redireccion' => 'email',
+                        'nombre' => 'required|min:4',
+                        'correo' => 'required',
+                        'password' => 'required|min:2',
+                        'password_confirmation' => 'required|same:password',
+                        'redireccion' => 'email',
             ));
       }
 
@@ -202,9 +201,9 @@ class CorreosController extends \BaseController
       protected function getEditCorreosValidator()
       {
             return Validator::make(Input::all(), array(
-                          'password' => 'min:4',
-                          'password_confirmation' => 'same:password',
-                          'redireccion' => 'email',
+                        'password' => 'min:4',
+                        'password_confirmation' => 'same:password',
+                        'redireccion' => 'email',
             ));
       }
 

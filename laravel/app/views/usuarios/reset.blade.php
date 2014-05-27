@@ -22,7 +22,7 @@
 
       {{ Form::open() }}
       @if($errors->count())            
-            <div class="alert alert-danger">{{ $errors }}</div>
+      <div class="alert alert-danger">{{ $errors }}</div>
       @endif
 
       <div class="form-group">
@@ -54,7 +54,7 @@
 @stop
 
 @section('footer')
-      @parent
+@parent
 @stop
 
 

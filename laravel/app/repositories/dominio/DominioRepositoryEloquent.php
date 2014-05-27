@@ -6,10 +6,10 @@
  * @author carlos
  */
 class DominioRepositoryEloquent implements DominioRepository {
-      
       /*
        * Tratar de probar si el dominio existe, o dar otras alternativas
        */
+
       public function comprobarDominio($dominio)
       {
             return true;
@@ -18,12 +18,13 @@ class DominioRepositoryEloquent implements DominioRepository {
       /*
        * Agregar el dominio al servidor y luego a la base de datos
        */
+
       public function agregarDominio($nombre_dominio, $password, $usuario_id, $plan_id)
       {
             Db::beginTransaction();
             if ($this->agregarDominioServidor($nombre_dominio, $plan_id, $password))
             {
-                  Log::error('Agregar Dominio');
+                  Log::error('Agregar Dominio');                  
                   $dominio = $this->agregarDominioBase($usuario_id, $nombre_dominio, true, $plan_id);
                   if (isset($dominio->id))
                   {
@@ -81,7 +82,8 @@ class DominioRepositoryEloquent implements DominioRepository {
 
       /*
        * Funcion para eliminar el dominio del sistema
-       */      
+       */
+
       public function eliminarDominio($dominio_model)
       {
 
@@ -110,6 +112,7 @@ class DominioRepositoryEloquent implements DominioRepository {
       /*
        * Funcion para eliminar el dominio de la base de datos
        */
+
       public function eliminarDominioBase($dominio_model)
       {
             if ($dominio_model->delete())
@@ -122,20 +125,57 @@ class DominioRepositoryEloquent implements DominioRepository {
             }
       }
 
-      
       /*
        * Funcion para eliminar el dominio del servidor
        */
+
       public function eliminarDominioServidor($dominio_model)
       {
-            $whmfunciones = new WHMFunciones($dominio_model->plan);            
+            $whmfunciones = new WHMFunciones($dominio_model->plan);
             $domain = $dominio_model->dominio;
             $subs = explode(".", $dominio_model->dominio);
             $subdomain = $subs[0] . '_' . $dominio_model->plan->domain;
-            
+
             if ($whmfunciones->eliminarDominioServidor($domain, $subdomain))
             {
                   return true;
+            }
+            else
+            {
+                  return false;
+            }
+      }
+
+      /*
+       * Apartar domnio para un usuario
+       */
+
+      public function apartarDominio($user_model, $dominio, $is_propio, $plan_model)
+      {
+
+            $dominio_pendiente = new DominioPendiente();
+
+            $dominio_pendiente->usuario_id = $user_model->id;
+            $dominio_pendiente->dominio = $dominio;
+            $dominio_pendiente->is_propio = $is_propio;
+            $dominio_pendiente->plan_id = $plan_model->id;
+
+            if ($dominio_pendiente->save())
+            {
+                  return true;
+            }
+            else
+            {
+                  return false;
+            }
+      }
+
+      public function obtenerDominioPendiente($user_model)
+      {
+            $dominio_pendiente = DominioPendiente::where('usuario_id', $user_model->id)->first();
+            if ($dominio_pendiente->count())
+            {
+                  return $dominio_pendiente;
             }
             else
             {

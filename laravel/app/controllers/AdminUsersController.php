@@ -42,8 +42,7 @@ class AdminUsersController extends \BaseController {
       public function create()
       {
             $planes = $this->Plan->listarPlanes();
-            return View::make('admin.usuarios.create')->with('planes',$planes);
-            
+            return View::make('admin.usuarios.create')->with('planes', $planes);
       }
 
       /**

@@ -95,9 +95,9 @@
                   </label>
             </div>
       </div>
-      
+
       <div class="alert hidden" id="resultado"><p></p></div>
-      
+
       <button type="submit" id='confirmar' class="btn btn-success">Confirmar Compra</button>
       {{ Form::close() }}
 </div>
@@ -115,7 +115,7 @@
       $('[name="tipo_pago"]').change(function(e) {
             if ($('#pagomensual').is(':checked')) {
                   $('#Tiemposervicio').addClass('show');
-                  $('#Tiemposervicio').removeClass('hidden');                  
+                  $('#Tiemposervicio').removeClass('hidden');
                   obtenerCosto();
             } else {
                   $('#Tiemposervicio').addClass('hidden');
@@ -123,11 +123,11 @@
                   obtenerCosto();
             }
       });
-      
-      $('[name="tiempo_servicio"]').change(function(e){
+
+      $('[name="tiempo_servicio"]').change(function(e) {
             obtenerCosto();
       });
-      
+
       $('[name="plan"]').change(function(e) {
             obtenerCosto();
       });
@@ -148,11 +148,11 @@
             var plan = $('[name="plan"]:checked').val();
             var tipo_pago = $('[name="tipo_pago"]:checked').val();
             var tiempo_servicio = $('[name="tiempo_servicio"]:checked').val();
-            
-            obtener_descripcion_costo(plan,tipo_pago,tiempo_servicio, function(result) {
+
+            obtener_descripcion_costo(plan, tipo_pago, tiempo_servicio, function(result) {
                   $('#resultado').removeClass('hidden');
                   $('#resultado').addClass('show');
-                  $('#resultado').text("Total: "+result['total']+" Descripción: "+result['descripcion']);
+                  $('#resultado').text("Total: " + result['total'] + " Descripción: " + result['descripcion']);
             });
 
 

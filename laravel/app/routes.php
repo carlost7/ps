@@ -76,8 +76,8 @@ Route::group(array('before' => 'auth'), function() {
               |-------------------------------------------
              */
             Route::get('usuario/inicio', array('as' => 'usuario/inicio', 'uses' => 'UsuariosController@iniciar'));
-            
-            
+
+
             Route::resource('correos', 'CorreosController');
 
             Route::resource('ftps', 'FtpsController');

@@ -22,7 +22,7 @@ class AdminCorreosController extends \BaseController {
             $correos = $this->Correo->listarCorreos();
             $quotas = $this->Correo->listarQuotas();
             $total = sizeof($correos);
-            return View::make('admin.correos.index')->with(array('correos' => $correos, 'quotas' => $quotas ,'total' => $total));
+            return View::make('admin.correos.index')->with(array('correos' => $correos, 'quotas' => $quotas, 'total' => $total));
       }
 
       /**
@@ -86,7 +86,7 @@ class AdminCorreosController extends \BaseController {
             if ($this->isIdDomain($correo))
             {
                   $used_quota = $this->Correo->obtenerUsedQuota($correo);
-                  return View::make('admin.correos.show')->with(array('correo'=>$correo,'used_quota'=>$used_quota));
+                  return View::make('admin.correos.show')->with(array('correo' => $correo, 'used_quota' => $used_quota));
             }
             else
             {

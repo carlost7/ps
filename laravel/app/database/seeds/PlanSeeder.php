@@ -5,8 +5,7 @@
  *
  * @author carlos
  */
-class PlanSeeder extends DatabaseSeeder
-{
+class PlanSeeder extends DatabaseSeeder {
 
       public function run()
       {
@@ -24,7 +23,7 @@ class PlanSeeder extends DatabaseSeeder
                         "costo_anual" => 12,
                         "costo_mensual" => 3,
                         "moneda" => "MXN",
-                        ),
+                  ),
                   array(
                         "nombre" => "startup",
                         "domain" => "psstartup.com",
@@ -38,7 +37,7 @@ class PlanSeeder extends DatabaseSeeder
                         "costo_anual" => 24,
                         "costo_mensual" => 5,
                         "moneda" => "MXN",
-                        ),
+                  ),
                   array(
                         "nombre" => "enterprise",
                         "domain" => "psenterprise.com",
@@ -52,9 +51,10 @@ class PlanSeeder extends DatabaseSeeder
                         "costo_anual" => 36,
                         "costo_mensual" => 7,
                         "moneda" => "MXN",
-                        ),
+                  ),
             );
-            foreach ($planes as $plan) {
+            foreach ($planes as $plan)
+            {
                   Plan::create($plan);
             }
       }

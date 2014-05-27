@@ -23,7 +23,7 @@
                               Password: {{ $password }}
                         </li>
                   </ul>
-                  
+
                   <p>El equipo de PrimerServer</p>
             </div>
       </body>

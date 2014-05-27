@@ -5,8 +5,7 @@
  *
  * @author carlos
  */
-class WHMFunciones
-{
+class WHMFunciones {
 
       protected $xmlapi;
       protected $plan;
@@ -417,26 +416,28 @@ class WHMFunciones
             $response = $this->xmlapi->api2_query($this->plan->name_server, 'Email', 'getdiskusage', array('user' => $username, 'domain' => $domain));
 
             $resultado = json_decode($response, true);
-            return $resultado['cpanelresult']['data']['0']['diskused'];            
+            return $resultado['cpanelresult']['data']['0']['diskused'];
       }
-      
+
       public function obtenerQuotaCorreosServidor($domain)
       {
             $response = $this->xmlapi->api2_query($this->plan->name_server, 'Email', 'listpopswithdisk', array('domain' => $domain));
-            
+
             $resultado = json_decode($response, true);
             $quotas = array();
-            if($resultado['cpanelresult']['data']!=null){
-                  foreach($resultado['cpanelresult']['data'] as $result){
-                        $correo = array('diskquota'=>$result['diskquota'],'diskused'=>$result['diskused']);
-                        $quotas[$result['login']]=$correo;
+            if ($resultado['cpanelresult']['data'] != null)
+            {
+                  foreach ($resultado['cpanelresult']['data'] as $result)
+                  {
+                        $correo = array('diskquota' => $result['diskquota'], 'diskused' => $result['diskused']);
+                        $quotas[$result['login']] = $correo;
                   }
-                  return $quotas;            
-            }else{
+                  return $quotas;
+            }
+            else
+            {
                   return null;
             }
-            
-            
       }
 
 }

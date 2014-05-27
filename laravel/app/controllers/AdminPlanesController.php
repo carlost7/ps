@@ -2,8 +2,7 @@
 
 use PlanRepository as Plan;
 
-class AdminPlanesController extends \BaseController
-{
+class AdminPlanesController extends \BaseController {
 
       protected $Plan;
 
@@ -180,18 +179,18 @@ class AdminPlanesController extends \BaseController
       protected function getValidatorPlan()
       {
             return Validator::make(Input::all(), array(
-                          'nombre' => 'required',
-                          'domain' => 'required',
-                          'name_server' => 'required',
-                          'numero_correos' => 'required',
-                          'quota_correos' => 'required',
-                          'numero_ftps' => 'required',
-                          'quota_ftps' => 'required',
-                          'numero_dbs' => 'required',
-                          'quota_dbs' => 'required',
-                          'costo_anual' => 'required',
-                          'costo_mensual' => 'required',
-                          'moneda' => 'required',
+                        'nombre' => 'required',
+                        'domain' => 'required',
+                        'name_server' => 'required',
+                        'numero_correos' => 'required',
+                        'quota_correos' => 'required',
+                        'numero_ftps' => 'required',
+                        'quota_ftps' => 'required',
+                        'numero_dbs' => 'required',
+                        'quota_dbs' => 'required',
+                        'costo_anual' => 'required',
+                        'costo_mensual' => 'required',
+                        'moneda' => 'required',
             ));
       }
 

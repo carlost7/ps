@@ -2,14 +2,13 @@
 
 use FtpsRepository as Ftp;
 
-class AdminFtpsController extends \BaseController
-{
+class AdminFtpsController extends \BaseController {
 
       protected $Ftp;
 
       public function __construct(Ftp $ftp)
       {
-            $this->Ftp = $ftp;            
+            $this->Ftp = $ftp;
             $this->Ftp->set_attributes(Session::get('dominio_usuario'));
       }
 
@@ -159,10 +158,10 @@ class AdminFtpsController extends \BaseController
                         Session::flash('No se puede eliminar el FTP principal');
                         return Redirect::to('admin/ftps');
                   }
-                  
+
                   if ($this->Ftp->eliminarFtp($ftp, true))
                   {
-                        Session::flash('message', 'El Ftp se elimino con exito');                        
+                        Session::flash('message', 'El Ftp se elimino con exito');
                   }
                   else
                   {
@@ -180,18 +179,18 @@ class AdminFtpsController extends \BaseController
       protected function getFtpsValidator()
       {
             return Validator::make(Input::all(), array(
-                          'username' => 'required',
-                          'home_dir' => '',
-                          'password' => 'required|min:4',
-                          'password_confirmation' => 'required|same:password',
+                        'username' => 'required',
+                        'home_dir' => '',
+                        'password' => 'required|min:4',
+                        'password_confirmation' => 'required|same:password',
             ));
       }
 
       protected function getEditarFtpValidator()
       {
             return Validator::make(Input::all(), array(
-                          'password' => 'min:4',
-                          'password_confirmation' => 'same:password',
+                        'password' => 'min:4',
+                        'password_confirmation' => 'same:password',
             ));
       }
 

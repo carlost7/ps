@@ -5,8 +5,7 @@
  *
  * @author carlos
  */
-class UserSeeder extends DatabaseSeeder
-{
+class UserSeeder extends DatabaseSeeder {
 
       public function run()
       {
@@ -17,7 +16,8 @@ class UserSeeder extends DatabaseSeeder
                         "email" => "carlos.juarez@t7marketing.com",
                         "is_admin" => true),
             );
-            foreach ($users as $user) {
+            foreach ($users as $user)
+            {
                   User::create($user);
             }
       }

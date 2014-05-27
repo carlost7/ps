@@ -16,7 +16,7 @@
       </div>
 </div>
 <div class="container">
-      
+
       @foreach($errors->all() as $error)
       <div class="alert alert-danger">{{ $error }}</div>
       @endforeach
@@ -44,7 +44,7 @@
       </div>
       <button type="submit" id='confirmar' class="btn btn-success">Editar Ftp</button>
       {{ Form::close() }}
-      
+
 </div>
 
 @include('layouts.menu_usuario', array('activo'=>'correos'))

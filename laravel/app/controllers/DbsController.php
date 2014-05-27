@@ -2,8 +2,7 @@
 
 use DatabaseRepository as Database;
 
-class DbsController extends \BaseController
-{
+class DbsController extends \BaseController {
 
       protected $Database;
 
@@ -22,7 +21,7 @@ class DbsController extends \BaseController
       {
             $dbs = $this->Database->listarDatabases();
             $total = $dbs->count();
-            return View::make('dbs.index')->with(array('dbs'=>$dbs,'total'=>$total));
+            return View::make('dbs.index')->with(array('dbs' => $dbs, 'total' => $total));
       }
 
       /**
@@ -101,18 +100,18 @@ class DbsController extends \BaseController
             {
                   if ($this->Database->eliminarDatabase($Db_model))
                   {
-                        Session::flash('message','La base de datos fue eliminada con exito');
+                        Session::flash('message', 'La base de datos fue eliminada con exito');
                         return Redirect::to('dbs');
                   }
                   else
                   {
-                        Session::flash('error','Error al eliminar la base de datos');
+                        Session::flash('error', 'Error al eliminar la base de datos');
                         return Redirect::to('dbs');
                   }
             }
             else
             {
-                  Session::flash('error','La base de datos no pertenece al dominio');
+                  Session::flash('error', 'La base de datos no pertenece al dominio');
                   return View::make('dbs');
             }
       }
@@ -120,10 +119,10 @@ class DbsController extends \BaseController
       protected function getDbsValidator()
       {
             return Validator::make(Input::all(), array(
-                          'username' => 'required',
-                          'dbname' => 'required',
-                          'password' => 'required|min:2',
-                          'password_confirmation' => 'required|same:password',
+                        'username' => 'required',
+                        'dbname' => 'required',
+                        'password' => 'required|min:2',
+                        'password_confirmation' => 'required|same:password',
             ));
       }
 

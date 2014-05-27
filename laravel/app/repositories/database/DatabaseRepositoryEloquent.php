@@ -5,8 +5,7 @@
  *
  * @author carlos
  */
-class DatabaseRepositoryEloquent implements DatabaseRepository
-{
+class DatabaseRepositoryEloquent implements DatabaseRepository {
 
       protected $dominio_model;
       protected $plan;
@@ -52,8 +51,8 @@ class DatabaseRepositoryEloquent implements DatabaseRepository
       {
             DB::beginTransaction();
             $dom = explode('.', $this->dominio_model->dominio);
-            $username = $dom[0].'_'.$username;
-            $dbname = $dom[0].'_'.$dbname;
+            $username = $dom[0] . '_' . $username;
+            $dbname = $dom[0] . '_' . $dbname;
             if ($this->agregarDatabaseServidor($username, $password, $dbname))
             {
                   $Database_model = $this->agregarDatabaseBase($username, $dbname, $this->dominio_model->id);
@@ -82,9 +81,9 @@ class DatabaseRepositoryEloquent implements DatabaseRepository
       protected function agregarDatabaseBase($username, $dbname, $dominio)
       {
             $database_model = new Database();
-            $database_model->dominio_id=$dominio;
-            $database_model->nombre = $this->plan->name_server."_".$dbname;
-            $database_model->usuario = $this->plan->name_server."_".$username;
+            $database_model->dominio_id = $dominio;
+            $database_model->nombre = $this->plan->name_server . "_" . $dbname;
+            $database_model->usuario = $this->plan->name_server . "_" . $username;
             $database_model->save();
             return $database_model;
       }
@@ -107,7 +106,6 @@ class DatabaseRepositoryEloquent implements DatabaseRepository
             }
       }
 
-      
       /*
         |-----------------------------
         |    Seccion eliminar correos
@@ -144,7 +142,7 @@ class DatabaseRepositoryEloquent implements DatabaseRepository
 
       protected function eliminarDatabaseBase($Database_model)
       {
-            
+
             if ($Database_model->delete())
             {
                   return true;
@@ -153,7 +151,6 @@ class DatabaseRepositoryEloquent implements DatabaseRepository
             {
                   return false;
             }
-            
       }
 
       /*

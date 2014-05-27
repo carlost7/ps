@@ -4,13 +4,12 @@
             <meta charset="utf-8">
       </head>
       <body>
-            <h2>Bienvenido a Primer Server</h2>
+            <h2>Tu cuenta esta lista para usarse</h2>
             <br />
-            <p>Los datos de entrada a la aplicación son los siguientes</p>
+            <p>Tus datos son los siguientes:</p>
             <ul>
                   <li>Dominio: {{ $dominio }} </li>
-                  <li>Usuario: {{ $usuario }}</li>
-                  <li>Contraseña: {{ $password }}</li>
+                  <li>Usuario: {{ $usuario }}</li>                  
             </ul>
             <br />
             <p>Los datos del Ftp, para que puedas empezar a subir tus archivos y mostrarlos en internet son los siguientes</p>

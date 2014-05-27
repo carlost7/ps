@@ -5,8 +5,7 @@
  *
  * @author carlos
  */
-class CorreosRepositoryEloquent implements CorreosRepository
-{
+class CorreosRepositoryEloquent implements CorreosRepository {
 
       protected $dominio_model;
       protected $plan;
@@ -27,13 +26,14 @@ class CorreosRepositoryEloquent implements CorreosRepository
             return Correo::where('dominio_id', '=', $this->dominio_model->id)->get();
       }
 
-      public function listarQuotas(){
+      public function listarQuotas()
+      {
             $domain = $this->dominio_model->dominio;
             $whmfuncion = new WHMFunciones($this->plan);
             $usedQuotas = $whmfuncion->obtenerQuotaCorreosServidor($domain);
             return $usedQuotas;
       }
-      
+
       /*
        * Obtener Correo unico
        * TODO: obtener size
@@ -43,9 +43,10 @@ class CorreosRepositoryEloquent implements CorreosRepository
       {
             return $correo_model = Correo::find($id);
       }
-      
-      public function obtenerUsedQuota($correo_model){
-            
+
+      public function obtenerUsedQuota($correo_model)
+      {
+
             $correo = explode('@', $correo_model->correo);
             $username = $correo[0];
             $domain = $correo[1];
@@ -157,7 +158,7 @@ class CorreosRepositoryEloquent implements CorreosRepository
       {
 
             DB::beginTransaction();
-            if ($password!='')
+            if ($password != '')
             {
                   if (!$this->editarPasswordCorreoServidor($correo_model->correo, $password))
                   {

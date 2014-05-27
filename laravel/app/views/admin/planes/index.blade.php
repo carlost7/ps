@@ -33,7 +33,7 @@
 
                         @foreach($planes as $plan)
                         <tr>
-                              
+
                               <td>{{$plan->nombre}}</td>
                               <td>{{$plan->domain}}</td>
                               <td>{{$plan->name_server}}</td>

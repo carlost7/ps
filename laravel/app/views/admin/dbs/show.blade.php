@@ -17,7 +17,7 @@
 <div class="container">
 
       <h1>Aqui se mostrarán los datos de la base de datos</h1>
-      
+
       <ul>
             <li>
                   Nombre: {{ $database->nombre }}
@@ -26,8 +26,8 @@
                   Usuario: {{ $database->usuario }}
             </li>
       </ul>
-      
-      
+
+
 </div>
 
 @stop

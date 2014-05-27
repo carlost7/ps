@@ -5,8 +5,7 @@
  *
  * @author carlos
  */
-class Database extends Eloquent
-{
+class Database extends Eloquent {
 
       protected $table = 'dbs';
       protected $fillable = array('nombre', 'usuario');

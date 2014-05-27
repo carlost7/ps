@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableDominios extends Migration {
+class CreateTableDominiosPendientes extends Migration {
 
       /**
        * Run the migrations.
@@ -12,14 +12,14 @@ class CreateTableDominios extends Migration {
        */
       public function up()
       {
-            Schema::create('dominios', function(Blueprint $table) {
+            Schema::create('dominios_pendientes', function(Blueprint $table) {
                   $table->increments('id');
-                  $table->integer('user_id')->unsigned()->unique();
+                  $table->integer('usuario_id')->unsigned();
                   $table->string('dominio');
-                  $table->boolean('activo');
+                  $table->boolean('is_propio');
                   $table->integer('plan_id')->unsigned();
                   $table->timestamps();
-                  $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade')->onUpdate('cascade');
+                  $table->foreign('usuario_id')->references('id')->on('user');
                   $table->foreign('plan_id')->references('id')->on('planes');
             });
       }
@@ -31,7 +31,7 @@ class CreateTableDominios extends Migration {
        */
       public function down()
       {
-            Schema::drop('dominios');
+            Schema::dropIfExists('dominios_pendientes');
       }
 
 }

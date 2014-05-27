@@ -5,8 +5,7 @@
  *
  * @author carlos
  */
-class Dominio extends Eloquent
-{
+class Dominio extends Eloquent {
 
       protected $table = 'dominios';
       protected $fillable = array('user_id', 'dominio', 'activo', 'plan_id');
@@ -23,17 +22,17 @@ class Dominio extends Eloquent
 
       public function correos()
       {
-            return $this->hasMany('Correo','dominio_id','id');
+            return $this->hasMany('Correo', 'dominio_id', 'id');
       }
 
       public function ftps()
       {
-            return $this->hasMany('Ftp','dominio_id','id');
+            return $this->hasMany('Ftp', 'dominio_id', 'id');
       }
 
       public function dbs()
       {
-            return $this->hasMany('Database','dominio_id','id');
+            return $this->hasMany('Database', 'dominio_id', 'id');
       }
 
 }

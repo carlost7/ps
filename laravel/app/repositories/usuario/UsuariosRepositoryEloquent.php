@@ -12,7 +12,6 @@
  * @author carlos
  */
 class UsuariosRepositoryEloquent implements UsuariosRepository {
-      
       /*
        * Funcion para listar todos los usuarios
        */
@@ -23,15 +22,16 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
       }
 
       /*
-       |-------------------------------------
-       |    Obtener un usuario 
-       |-------------------------------------
-       */      
+        |-------------------------------------
+        |    Obtener un usuario
+        |-------------------------------------
+       */
+
       public function obtenerUsuario($id)
       {
             return User::where('id', $id)->first();
       }
-      
+
       /*
        * Funcion para agregar usuarios
        */
@@ -79,8 +79,8 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
             }
       }
 
-      
-      public function editarPasswordUsuario($id,$password){
+      public function editarPasswordUsuario($id, $password)
+      {
             $usuario = User::find($id);
             if ($usuario)
             {
@@ -99,8 +99,9 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
                   return false;
             }
       }
-      
-      public function editarCorreoUsuario($id,$correo){
+
+      public function editarCorreoUsuario($id, $correo)
+      {
             $usuario = User::find($id);
             if ($usuario)
             {
@@ -119,7 +120,6 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
                   return false;
             }
       }
-
 
       public function editarUsuario($id, $nombre, $password, $correo, $is_admin)
       {

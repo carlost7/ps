@@ -5,8 +5,7 @@
  *
  * @author carlos
  */
-class ContactoController extends BaseController
-{
+class ContactoController extends BaseController {
 
       public function enviarMensajeContacto()
       {

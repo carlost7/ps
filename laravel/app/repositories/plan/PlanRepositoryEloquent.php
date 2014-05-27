@@ -5,8 +5,7 @@
  *
  * @author carlos
  */
-class PlanRepositoryEloquent implements PlanRepository
-{
+class PlanRepositoryEloquent implements PlanRepository {
 
       public function listarPlanes()
       {

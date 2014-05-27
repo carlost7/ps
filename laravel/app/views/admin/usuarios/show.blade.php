@@ -24,7 +24,7 @@
             <li>N. Ftps: {{ $usuario->dominio->ftps->count() }}</li>
             <li>N. Database: {{ $usuario->dominio->dbs->count() }}</li>
       </ul>      
-      
+
 </div>
 
 

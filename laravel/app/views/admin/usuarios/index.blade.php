@@ -25,7 +25,7 @@
                               <th>Eliminar</th>
                         </tr>
                         @if($usuarios->count())
-                        
+
                         @foreach($usuarios as $usuario)
                         <tr>
 
@@ -40,7 +40,7 @@
                               <td>pendiente</td>
                               <td></td>
                               @endif
-                              
+
                               <td>
                                     {{ Form::open(array('route' => array('admin.usuarios.destroy',$usuario->id),'method'=>'DELETE')) }}
                                     {{ Form::submit('Eliminar', array('class' => 'btn btn-danger btn-xs')) }}
@@ -48,14 +48,14 @@
                               </td>                        
                         </tr>
                         @endforeach
-                        
+
                         @endif
                   </table>
             </div>
       </div>
-      
+
       <p>{{ HTML::linkRoute('admin.usuarios.create','Agregar Usuario',null,array('class'=>'btn btn-primary btn-lg')) }}</p>
-      
+
 </div>
 
 

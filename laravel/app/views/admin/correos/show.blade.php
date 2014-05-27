@@ -17,7 +17,7 @@
 <div class="container">
 
       <h1>Aqui se mostrarán los datos del correo</h1>
-      
+
       <ul>
             <li>
                   Correo: {{ $correo->correo }}
@@ -29,8 +29,8 @@
                   Espacio Utilizado: {{ $used_quota }}Mb
             </li>
       </ul>
-      
-      
+
+
 </div>
 
 

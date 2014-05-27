@@ -5,8 +5,7 @@
  *
  * @author carlos
  */
-class PagosRepositoryMercadoPago implements PagosRepository
-{
+class PagosRepositoryMercadoPago implements PagosRepository {
 
       public function generarPreferenciaPago($preference_data)
       {
@@ -40,15 +39,42 @@ class PagosRepositoryMercadoPago implements PagosRepository
             $pago->activo = $activo;
             $pago->id_preferencia = $id_preferencia;
             $pago->status = $status;
-            if($pago->save()){
+            if ($pago->save())
+            {
                   return true;
-            }else{
+            }
+            else
+            {
                   return false;
             }
       }
 
-      public function obtenerPagosUsuario($id){
-            return Pago::where('usuario_id','=',$id)->get();
+      public function obtenerPagosUsuario($id)
+      {
+            return Pago::where('usuario_id', '=', $id)->get();
       }
-      
+
+      public function actualizarRegistroPagoExterno($preference_id, $status)
+      {
+            $pagos = Pago::where('id_preferencia', $preference_id)->get();
+            foreach ($pagos as $pago)
+            {
+                  $pago->status = $status;
+                  if ($pago->save())
+                  {
+                        $usuario = $pago->user;                        
+                        
+                  }                  
+            }
+            
+            if (isset($usuario))
+            {
+                  return $usuario;
+            }
+            else
+            {
+                  return false;
+            }
+      }
+
 }

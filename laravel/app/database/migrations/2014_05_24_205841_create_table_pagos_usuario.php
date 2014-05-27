@@ -3,8 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTablePagosUsuario extends Migration
-{
+class CreateTablePagosUsuario extends Migration {
 
       /**
        * Run the migrations.
@@ -23,7 +22,7 @@ class CreateTablePagosUsuario extends Migration
                   $table->date('vencimiento');
                   $table->boolean('activo');
                   $table->string('id_preferencia');
-                  $table->string('status');                  
+                  $table->string('status');
                   $table->timestamps();
                   $table->foreign('usuario_id')->references('id')->on('user')->unsigned();
             });

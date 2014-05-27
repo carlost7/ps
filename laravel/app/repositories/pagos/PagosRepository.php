@@ -19,5 +19,5 @@ interface PagosRepository {
 
       public function actualizarRegistroPagoExterno($preference_id, $status);
 
-      public function recibir_notificacion($id);
+      public function recibir_notificacionPago($id);
 }

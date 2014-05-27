@@ -46,16 +46,7 @@ class PagosController extends BaseController {
 
       public function aceptarPago()
       {
-            $status = Input::get('collection_status');
-            $preference_id = Input::get('preference_id');
-            
-            if ($status == 'approved')
-            {
-                  if ($this->agregarDominioSistema($preference_id, $status))
-                  {
-                        return Redirect::to('usuario/login');
-                  }
-            }
+
             return View::make('pagos.aceptado');
       }
 
@@ -91,18 +82,31 @@ class PagosController extends BaseController {
             $id = Input::get('id');
             if (isset($id))
             {
-                  if ($this->Pagos->recibirNotificacionPago($id))
+                  $response = $this->Pagos->recibirNotificacionPago($id);
+                  if (isset($response))
                   {
-                        echo "recibido";
+                        $usuario = $this->actualizarstatusPago($response['collection']['external_reference'], $response['collection']['status']);
+                        switch ($response['collection']['status'])
+                        {
+                              case 'approved':
+                                    if ($this->agregarDominioSistema($usuario))
+                                    {
+                                          return Redirect::to('usuario/login');
+                                    }
+                                    break;
+                              default:
+                                    Log::error("pagoscontroller.obtenerIPNMercadoPago: default: ".print_r($response,true));
+                                    break;
+                        } 
                   }
                   else
                   {
-                        echo "no recibido";
+                        Log::error("PagosController.ObtenerMercadoPago: no recibido el anuncio");
                   }
             }
             else
             {
-                  echo "no se obtuvo nada";
+                  Log::error("PagosController.ObtenerMercadoPago: no se obtuvo id del post");
             }
       }
 
@@ -132,11 +136,12 @@ class PagosController extends BaseController {
                         $plan = $this->Plan->mostrarPlan(Input::get('plan'));
                         if (isset($plan))
                         {
+                              $numero_orden = $this->numero_orden = $this->obtenerNumeroOrden();
                               $preference_data = array(
                                     "items" => $this->generarItems('nuevo_registro', $plan),
                                     "payer" => $this->generarPayer(),
                                     "back_urls" => $this->generarBackUrls('nuevo_registro'),
-                                    "external_reference" => '123467',
+                                    "external_reference" => $numero_orden,
                               );
                               $preference = $this->Pagos->generarPreferenciaPago($preference_data);
 
@@ -144,7 +149,7 @@ class PagosController extends BaseController {
                               $usuario = $this->agregarUsuarioSistema();
                               if (isset($usuario) && $usuario != false)
                               {
-                                    if ($this->agregarPagoInicialSistema($usuario, $preference))
+                                    if ($this->agregarPagoInicialSistema($usuario, $numero_orden))
                                     {
                                           if ($this->apartardominio($usuario, Input::get('dominio'), $this->is_dominio_propio(), $plan))
                                           {
@@ -156,7 +161,7 @@ class PagosController extends BaseController {
                                                 });
 
                                                 DB::commit();
-                                                Log::error('PagosController : '.print_r($preference,true));
+                                                Log::error('PagosController : ' . print_r($preference, true));
                                                 $link = $this->Pagos->generarLinkPago($preference);
                                                 return Redirect::away($link);
                                           }
@@ -194,7 +199,7 @@ class PagosController extends BaseController {
                   {
                         $resultado = false;
                         $mensaje = $validator->messages()->first('dominio');
-                        Session::flash('error',$mensaje);
+                        Session::flash('error', $mensaje);
                         return Redirect::back()->withInput();
                   }
             }
@@ -229,6 +234,16 @@ class PagosController extends BaseController {
                   $servicio['descripcion'] = $servicio['descripcion'] . ', ' . $dominio['descripcion'];
             }
             return $servicio;
+      }
+
+      /*
+       * Obtener numero de orden para los articulos
+       */
+
+      protected function obtenerNumeroOrden()
+      {
+            $valor = Input::get('correo');
+            return Crypt::encrypt($valor);
       }
 
       /*
@@ -347,7 +362,7 @@ class PagosController extends BaseController {
        * Agrega los pagos pendientes del usuario a la base de datos
        */
 
-      protected function agregarPagoInicialSistema($usuario, $preference)
+      protected function agregarPagoInicialSistema($usuario, $numero_orden)
       {
             $plan = $this->Plan->mostrarPlan(Input::get('plan'));
             $costo_servicio = $this->getCostoServicio($plan);
@@ -360,12 +375,12 @@ class PagosController extends BaseController {
             {
                   $vencimiento = Carbon::now()->addMonths(Input::get('tiempo_servicio'));
             }
-            if ($this->Pagos->generarPagoBase('Servicio', $usuario, $costo_servicio['total'], $costo_servicio['descripcion'], $inicio, $vencimiento, true, $preference['response']['id'], 'inicio'))
+            if ($this->Pagos->generarPagoBase('Servicio', $usuario, $costo_servicio['total'], $costo_servicio['descripcion'], $inicio, $vencimiento, true, $numero_orden, 'inicio'))
             {
                   if (!$this->is_dominio_propio())
                   {
                         $costo_dominio = $this->getCostoDominio();
-                        if (!$this->Pagos->generarPagoBase('Dominio', $usuario, $costo_dominio['total'], $costo_dominio['descripcion'], $inicio, $vencimiento, true, $preference['response']['id'], 'inicio'))
+                        if (!$this->Pagos->generarPagoBase('Dominio', $usuario, $costo_dominio['total'], $costo_dominio['descripcion'], $inicio, $vencimiento, true, $numero_orden, 'inicio'))
                         {
                               Session::flash('error', 'Ocurrio un error al registrar el pago del domiminio en la base de datos');
                               return false;
@@ -401,10 +416,22 @@ class PagosController extends BaseController {
        * 
        * Agrega el FTP para el usuario y envia un correo con los datos al correo;
        */
+      
+      protected function actualizarStatusPago($numero_orden,$status){
+            $usuario = $this->Pagos->actualizarRegistroPagoExterno($numero_orden, $status);
+            if($usuario != false && $usuario->id){
+                  return $usuario;
+            }
+            else
+            {
+                  Log::error('PagosController.actualizarStatusPago: '.$numero_orden.' '.$status);
+                  return null;
+            }
+      }
 
-      protected function agregarDominioSistema($preference_id, $status)
+      protected function agregarDominioSistema($usuario)
       {
-            $usuario = $this->Pagos->actualizarRegistroPagoExterno($preference_id, $status);
+            
             if ($usuario != false && $usuario->id)
             {
                   DB::beginTransaction();
@@ -423,7 +450,7 @@ class PagosController extends BaseController {
                               $ftp = $this->Ftp->agregarFtp($username, $hostname, $home_dir, $password, true);
                               if ($ftp->id)
                               {
-                                    if ($this->actualizarUsuarioPagado($usuario,true,false))
+                                    if ($this->actualizarUsuarioPagado($usuario, true, false))
                                     {
                                           Session::put('message', 'La cuenta esta lista para usarse');
                                           DB::commit();
@@ -437,8 +464,10 @@ class PagosController extends BaseController {
                                           });
 
                                           return true;
-                                    }else{
-                                          Session::flash('error','Error al actualizar el usuario');
+                                    }
+                                    else
+                                    {
+                                          Session::flash('error', 'Error al actualizar el usuario');
                                     }
                               }
                               else
@@ -456,10 +485,7 @@ class PagosController extends BaseController {
                         Session::flash('Error al obtener el dominio pendiente');
                   }
             }
-            else
-            {
-                  Session::flash('error', 'Error al cambiar el status de pago');
-            }
+            
             return false;
       }
 
@@ -483,19 +509,22 @@ class PagosController extends BaseController {
       /*
        * Actualizar el usuario para registrar que el pago esta realizado
        */
-      
-      protected function actualizarUsuarioPagado($usuario,$is_activo,$is_deudor){
-            
+
+      protected function actualizarUsuarioPagado($usuario, $is_activo, $is_deudor)
+      {
+
             $usuario = $this->Usuario->editarUsuarioPagado($usuario->id, $is_activo, $is_deudor);
-            if($usuario != false && $usuario->id){
+            if ($usuario != false && $usuario->id)
+            {
                   return true;
-            }else{
-                  Session::flash('error','Error al actualizar el usuario');
+            }
+            else
+            {
+                  Session::flash('error', 'Error al actualizar el usuario');
                   return false;
             }
-            
       }
-      
+
       /*
        * Obtiene el validador para los datos de confirmacion del dominio y usuario
        */
@@ -507,7 +536,7 @@ class PagosController extends BaseController {
                         'password' => 'required|min:2',
                         'password_confirmation' => 'required|same:password',
                         'dominio' => 'required',
-                        'correo' => 'required|email',//|unique:user,email
+                        'correo' => 'required|email', //|unique:user,email
                         'plan' => 'required|exists:planes,id',
                         'aceptar' => 'required|accepted',
                         'tipo_pago' => 'required',

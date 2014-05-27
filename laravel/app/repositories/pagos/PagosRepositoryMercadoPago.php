@@ -54,9 +54,9 @@ class PagosRepositoryMercadoPago implements PagosRepository {
             return Pago::where('usuario_id', '=', $id)->get();
       }
 
-      public function actualizarRegistroPagoExterno($preference_id, $status)
+      public function actualizarRegistroPagoExterno($numero_orden, $status)
       {
-            $pagos = Pago::where('id_preferencia', $preference_id)->get();
+            $pagos = Pago::where('no_orden', $numero_orden)->get();
             foreach ($pagos as $pago)
             {
                   $pago->status = $status;
@@ -79,7 +79,15 @@ class PagosRepositoryMercadoPago implements PagosRepository {
       public function recibirNotificacionPago($id)
       {
             $pagos = new MercadoPagoFunciones();
-            $pagos->recibir_notificacion($id);
+            $response = $pagos->recibir_notificacion($id);
+            if (isset($response))
+            {
+                  return $response;
+            }
+            else
+            {
+                  return null;
+            }
       }
 
 }

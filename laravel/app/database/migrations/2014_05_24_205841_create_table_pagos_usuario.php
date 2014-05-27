@@ -21,7 +21,7 @@ class CreateTablePagosUsuario extends Migration {
                   $table->date('inicio');
                   $table->date('vencimiento');
                   $table->boolean('activo');
-                  $table->string('id_preferencia');
+                  $table->string('no_orden');
                   $table->string('status');
                   $table->timestamps();
                   $table->foreign('usuario_id')->references('id')->on('user')->unsigned();

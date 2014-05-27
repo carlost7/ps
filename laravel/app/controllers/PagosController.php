@@ -136,7 +136,7 @@ class PagosController extends BaseController {
                                     "items" => $this->generarItems('nuevo_registro', $plan),
                                     "payer" => $this->generarPayer(),
                                     "back_urls" => $this->generarBackUrls('nuevo_registro'),
-                                    "external_reference" => '1234567',
+                                    "external_reference" => '123467',
                               );
                               $preference = $this->Pagos->generarPreferenciaPago($preference_data);
 

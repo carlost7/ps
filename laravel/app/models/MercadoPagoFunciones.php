@@ -33,6 +33,17 @@ class MercadoPagoFunciones {
             return $preapproval['response'][config::get('payment.init_point')];
       }
 
+      public function recibir_notificacion($id)
+      {
+            $payment_info = $mp->get_payment_info($id);
+
+            // Show payment information
+            if ($payment_info["status"] == 200)
+            {
+                  Log::error('MercadoPago: '.$id.' '.$payment_info["response"]);
+            }
+      }
+
       public function prueba()
       {
             

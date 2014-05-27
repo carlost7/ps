@@ -40,10 +40,10 @@ class PagosController extends BaseController {
             return View::make('pagos.index', array('pagos' => $pagos));
       }
 
-      
       /*
        * Funcion para aceptar los pagos--> viene de mercado pago
        */
+
       public function aceptarPago()
       {
             $status = Input::get('collection_status');
@@ -51,18 +51,18 @@ class PagosController extends BaseController {
 
             if ($status == 'approved')
             {
-                  if ($this->agregarDominioSistema($preference_id,$status))
+                  if ($this->agregarDominioSistema($preference_id, $status))
                   {
                         return Redirect::to('usuario/login');
-                  }                  
+                  }
             }
             return View::make('pagos.aceptado');
       }
 
-      
       /*
        * Funcion para pagos cancelados por el usuario -> viene de mercado pago
        */
+
       public function cancelarPago()
       {
             var_dump(Input::all());
@@ -70,15 +70,32 @@ class PagosController extends BaseController {
             return View::make('pagos.cancelado');
       }
 
-      
       /*
        * Funcion para pagos pendientes --> viene de mercado pago
        */
+
       public function pagoPendiente()
       {
             var_dump(Input::all());
             exit();
             return View::make('pagos.pendiente');
+      }
+
+      /*
+       * Función para obtener las notificaciones de mercado pago
+       */
+
+      public function obtenerIPNMercadoPago()
+      {
+            $id = Input::get('id');            
+            if(isset($id)){
+                  if($this->Pagos->recibir_notificacion($id)){
+                        echo "recibido";
+                  }else{
+                        echo "no recibido";
+                  }
+            }            
+            
       }
 
       /*
@@ -175,7 +192,7 @@ class PagosController extends BaseController {
       /*
        * Obtiene el costo total de los servicios y lo redirige a la pagina /ajax
        */
-      
+
       public function getCostoTotal()
       {
             $servicio = $this->getCostoTotalPreferencia();
@@ -183,10 +200,10 @@ class PagosController extends BaseController {
             return Response::json($servicio);
       }
 
-      
       /*
        * Obtiene el costo total para usar en la preferencia de mercado pago;
        */
+
       public function getCostoTotalPreferencia()
       {
             $plan = $this->Plan->mostrarPlan(Input::get('plan'));
@@ -206,6 +223,7 @@ class PagosController extends BaseController {
       /*
        * Obtiene el costo del servicio a partir de los datos introducidos por el usuario
        */
+
       protected function getCostoServicio($plan)
       {
             $resultado = 0.00;
@@ -228,16 +246,17 @@ class PagosController extends BaseController {
       /*
        * Si vamos a comprar el dominio, selecciona el costo que tendra
        */
+
       protected function getCostoDominio()
       {
             $costo_dominio = Session::get('costo_dominio');
             return array('total' => $costo_dominio, 'descripcion' => 'Dominio: ' . $costo_dominio . ' Anual');
       }
 
-      
       /*
        * Genera un array de items para la preferencia de pago
        */
+
       protected function generarItems($tipo, $plan)
       {
             switch ($tipo)
@@ -266,6 +285,7 @@ class PagosController extends BaseController {
       /*
        * Genera un array con los datos del pagador para la preferencia
        */
+
       protected function generarPayer()
       {
             return array(
@@ -277,6 +297,7 @@ class PagosController extends BaseController {
       /*
        * Genera un array con las urls de retorno para la preferencia
        */
+
       protected function generarBackUrls($tipo)
       {
             switch ($tipo)
@@ -296,6 +317,7 @@ class PagosController extends BaseController {
       /*
        * Agrega el usuario nuevo al sistema
        */
+
       protected function agregarUsuarioSistema()
       {
             $usuario = $this->Usuario->agregarUsuario(Input::get('nombre'), Input::get('password'), Input::get('correo'), false, false, true);
@@ -313,6 +335,7 @@ class PagosController extends BaseController {
       /*
        * Agrega los pagos pendientes del usuario a la base de datos
        */
+
       protected function agregarPagoInicialSistema($usuario, $preference)
       {
             $plan = $this->Plan->mostrarPlan(Input::get('plan'));
@@ -349,6 +372,7 @@ class PagosController extends BaseController {
       /*
        * Agregar los datos del dominio a una tabla de la bd, para usarlos cuando termine de pagar
        */
+
       protected function apartarDominio($usuario, $dominio, $is_propio, $plan)
       {
             if ($this->Dominio->apartarDominio($usuario, $dominio, $is_propio, $plan))
@@ -366,7 +390,8 @@ class PagosController extends BaseController {
        * 
        * Agrega el FTP para el usuario y envia un correo con los datos al correo;
        */
-      protected function agregarDominioSistema($preference_id,$status)
+
+      protected function agregarDominioSistema($preference_id, $status)
       {
             $usuario = $this->Pagos->actualizarRegistroPagoExterno($preference_id, $status);
             if ($usuario != false && $usuario->id)
@@ -390,7 +415,7 @@ class PagosController extends BaseController {
                                     Session::put('message', 'La cuenta esta lista para usarse');
                                     DB::commit();
                                     $data = array('dominio' => $dominio->dominio,
-                                          'usuario' => $usuario->email,                                          
+                                          'usuario' => $usuario->email,
                                           'ftp_user' => $ftp->username,
                                           'ftp_pass' => Input::get('password'));
 
@@ -425,6 +450,7 @@ class PagosController extends BaseController {
       /*
        * Checa en la session si el usuario introdujo un dominio propio
        */
+
       protected function is_dominio_propio()
       {
             $existente = Session::get('existente');
@@ -441,6 +467,7 @@ class PagosController extends BaseController {
       /*
        * Obtiene el validador para los datos de confirmacion del dominio y usuario
        */
+
       protected function getValidatorConfirmacion()
       {
             return Validator::make(Input::all(), array(
@@ -459,6 +486,7 @@ class PagosController extends BaseController {
       /*
        * Obtiene el validador para comprobar el nombre del dominio
        */
+
       protected function getValidatorComprobarNombreDominio()
       {
             return Validator::make(Input::all(), array(

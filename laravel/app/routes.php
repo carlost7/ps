@@ -44,6 +44,7 @@ Route::any('pagos/descripcion', array('as' => 'pagos/descripcion', 'uses' => 'Pa
 Route::get('pagos/pago_cancelado', array('as' => 'pagos/pago_cancelado', 'uses' => 'PagosController@cancelarPago'));
 Route::get('pagos/pago_aceptado', array('as' => 'pagos/pago_aceptado', 'uses' => 'PagosController@aceptarPago'));
 Route::get('pagos/pago_pendiente', array('as' => 'pagos/pago_pendiente', 'uses' => 'PagosController@pagoPendiente'));
+Route::get('pagos/notificacion_mercadopago',array('as' => 'pagos/notificacion_mercadopago', 'uses'=>'PagosController@obtenerIPNMercadoPago'));
 
 /*
   |--------------------------------------------------------

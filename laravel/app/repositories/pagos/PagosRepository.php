@@ -18,4 +18,6 @@ interface PagosRepository {
       public function generarPagoBase($tipo_pago, $usuario_model, $monto, $descripcion, $inicio, $vencimiento, $activo, $id_preferencia, $status);
 
       public function actualizarRegistroPagoExterno($preference_id, $status);
+
+      public function recibir_notificacion($id);
 }

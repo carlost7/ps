@@ -62,11 +62,10 @@ class PagosRepositoryMercadoPago implements PagosRepository {
                   $pago->status = $status;
                   if ($pago->save())
                   {
-                        $usuario = $pago->user;                        
-                        
-                  }                  
+                        $usuario = $pago->user;
+                  }
             }
-            
+
             if (isset($usuario))
             {
                   return $usuario;
@@ -75,6 +74,12 @@ class PagosRepositoryMercadoPago implements PagosRepository {
             {
                   return false;
             }
+      }
+
+      public function recibirNotificacionPago($id)
+      {
+            MercadoPagoFunciones::recibir_notificacion($id);
+            return true;
       }
 
 }

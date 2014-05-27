@@ -78,8 +78,7 @@ class PagosRepositoryMercadoPago implements PagosRepository {
 
       public function recibirNotificacionPago($id)
       {
-            MercadoPagoFunciones::recibir_notificacion($id);
-            return true;
+            
       }
 
 }

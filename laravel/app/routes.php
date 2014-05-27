@@ -41,10 +41,10 @@ Route::any('dominio/confirmar', array('as' => 'dominio/confirmar', 'uses' => 'Do
 
 Route::any('pagos/confirmar_registro', array('as' => 'pagos/confirmar_registro', 'uses' => 'PagosController@confirmarRegistro'));
 Route::any('pagos/descripcion', array('as' => 'pagos/descripcion', 'uses' => 'PagosController@getCostoTotal'));
-Route::get('pagos/pago_cancelado', array('as' => 'pagos/pago_cancelado', 'uses' => 'PagosController@cancelarPago'));
-Route::get('pagos/pago_aceptado', array('as' => 'pagos/pago_aceptado', 'uses' => 'PagosController@aceptarPago'));
-Route::get('pagos/pago_pendiente', array('as' => 'pagos/pago_pendiente', 'uses' => 'PagosController@pagoPendiente'));
-Route::get('pagos/notificacion_mercadopago',array('as' => 'pagos/notificacion_mercadopago', 'uses'=>'PagosController@obtenerIPNMercadoPago'));
+Route::any('pagos/pago_cancelado', array('as' => 'pagos/pago_cancelado', 'uses' => 'PagosController@cancelarPago'));
+Route::any('pagos/pago_aceptado', array('as' => 'pagos/pago_aceptado', 'uses' => 'PagosController@aceptarPago'));
+Route::any('pagos/pago_pendiente', array('as' => 'pagos/pago_pendiente', 'uses' => 'PagosController@pagoPendiente'));
+Route::any('pagos/notificacion_mercadopago',array('as' => 'pagos/notificacion_mercadopago', 'uses'=>'PagosController@obtenerIPNMercadoPago'));
 
 /*
   |--------------------------------------------------------

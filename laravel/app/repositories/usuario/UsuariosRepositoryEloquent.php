@@ -121,7 +121,7 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
             }
       }
 
-      public function editarUsuario($id, $nombre, $password, $correo, $is_admin)
+      public function editarUsuario($id, $nombre, $password, $correo, $is_admin,$is_activo,$is_deudor)
       {
             $usuario = User::find($id);
             if ($usuario)
@@ -130,6 +130,8 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
                   $usuario->password = Hash::make($password);
                   $usuario->email = $correo;
                   $usuario->is_admin = $is_admin;
+                  $usuario->is_activo = $is_activo;
+                  $usuario->is_deudor = $is_deudor;
                   if ($usuario->save())
                   {
                         return $usuario;

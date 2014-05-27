@@ -87,19 +87,25 @@ class PagosController extends BaseController {
 
       public function obtenerIPNMercadoPago()
       {
-            
-            Log::error('Mercado pago ids '.print_r(Input::all(),true));
-            
+
+            Log::error('Mercado pago ids ' . print_r(Input::all(), true));
+
             $id = Input::get('id');
-            if(isset($id)){
-                  if($this->Pagos->recibirNotificacionPago($id)){
+            if (isset($id))
+            {
+                  if ($this->Pagos->recibirNotificacionPago($id))
+                  {
                         echo "recibido";
-                  }else{
+                  }
+                  else
+                  {
                         echo "no recibido";
                   }
-            }else{
+            }
+            else
+            {
                   echo "no se obtuvo nada";
-            }            
+            }
       }
 
       /*
@@ -416,22 +422,27 @@ class PagosController extends BaseController {
                               $ftp = $this->Ftp->agregarFtp($username, $hostname, $home_dir, $password, true);
                               if ($ftp->id)
                               {
-                                    Session::put('message', 'La cuenta esta lista para usarse');
-                                    DB::commit();
-                                    $data = array('dominio' => $dominio->dominio,
-                                          'usuario' => $usuario->email,
-                                          'ftp_user' => $ftp->username,
-                                          'ftp_pass' => Input::get('password'));
+                                    if ($this->actualizarUsuarioPagado($usuario))
+                                    {
+                                          Session::put('message', 'La cuenta esta lista para usarse');
+                                          DB::commit();
+                                          $data = array('dominio' => $dominio->dominio,
+                                                'usuario' => $usuario->email,
+                                                'ftp_user' => $ftp->username,
+                                                'ftp_pass' => $password);
 
-                                    Mail::queue('email.welcome', $data, function($message) use ($usuario) {
-                                          $message->to($usuario->email, $usuario->nombre)->subject('Creado dominio en primer server');
-                                    });
+                                          Mail::queue('email.welcome', $data, function($message) use ($usuario) {
+                                                $message->to($usuario->email, $usuario->nombre)->subject('Creado dominio en primer server');
+                                          });
 
-                                    return true;
+                                          return true;
+                                    }else{
+                                          Session::flash('error','Error al actualizar el usuario');
+                                    }
                               }
                               else
                               {
-                                    Session::put('error', 'Error al agregar el FTP');
+                                    Session::flash('error', 'Error al agregar el FTP');
                               }
                         }
                         else
@@ -468,6 +479,22 @@ class PagosController extends BaseController {
             }
       }
 
+      /*
+       * Actualizar el usuario para registrar que el pago esta realizado
+       */
+      
+      protected function actualizarUsuarioPagado($usuario,$is_activo,$is_deudor){
+            
+            $usuario = $this->Usuario->editarUsuario($usuario->id, $usuario->nombre, $usuario->password, $usuario->email, $usuario->is_admin, $usuario->is_activo, $usuario->is_deudor);
+            if($usuario != false && $usuario->id){
+                  return true;
+            }else{
+                  Session::flash('error','Error al actualizar el usuario');
+                  return false;
+            }
+            
+      }
+      
       /*
        * Obtiene el validador para los datos de confirmacion del dominio y usuario
        */

@@ -40,7 +40,7 @@ class MercadoPagoFunciones {
             // Show payment information
             if ($payment_info["status"] == 200)
             {
-                  Log::error('MercadoPago: datos de notificacion '.$id.' '.$payment_info["response"]);
+                  Log::error('MercadoPago: datos de notificacion '.$id.' '.print_r($payment_info,true));
             }
       }
 

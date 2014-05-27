@@ -87,15 +87,18 @@ class PagosController extends BaseController {
 
       public function obtenerIPNMercadoPago()
       {
-            Log::error('Mercado pago '.var_dump(Input::all()));
+            
+            Log::error('Mercado pago ids '.print_r(Input::all(),true));
             
             $id = Input::get('id');
             if(isset($id)){
-                  if($this->Pagos->recibir_notificacion($id)){
+                  if($this->Pagos->recibirNotificacionPago($id)){
                         echo "recibido";
                   }else{
                         echo "no recibido";
                   }
+            }else{
+                  echo "no se obtuvo nada";
             }            
       }
 

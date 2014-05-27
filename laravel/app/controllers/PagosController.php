@@ -88,12 +88,7 @@ class PagosController extends BaseController {
       public function obtenerIPNMercadoPago()
       {
 
-            Log::error('Mercado pago ids ' . print_r(Input::all(), true));
-
-            print_r(Input::all());
-            
-            exit();
-            /*$id = Input::get('id');
+            $id = Input::get('id');
             if (isset($id))
             {
                   if ($this->Pagos->recibirNotificacionPago($id))
@@ -108,7 +103,7 @@ class PagosController extends BaseController {
             else
             {
                   echo "no se obtuvo nada";
-            }*/
+            }
       }
 
       /*
@@ -160,6 +155,7 @@ class PagosController extends BaseController {
                                                 });
 
                                                 DB::commit();
+                                                Log::error('PagosController : '.print_r($preference,true));
                                                 $link = $this->Pagos->generarLinkPago($preference);
                                                 return Redirect::away($link);
                                           }

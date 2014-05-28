@@ -110,4 +110,10 @@ class HomeController extends BaseController {
             return Response::json($response);
       }
 
+      public static function obtenerPasswordDominio()
+      {
+            $password = json_decode($this->obtenerPass(),true);
+            return $password['password'];
+      }
+
 }

@@ -56,8 +56,6 @@ class PagosController extends BaseController {
 
       public function cancelarPago()
       {
-            var_dump(Input::all());
-            exit();
             return View::make('pagos.cancelado');
       }
 
@@ -67,8 +65,6 @@ class PagosController extends BaseController {
 
       public function pagoPendiente()
       {
-            var_dump(Input::all());
-            exit();
             return View::make('pagos.pendiente');
       }
 
@@ -83,21 +79,37 @@ class PagosController extends BaseController {
             if (isset($id))
             {
                   $response = $this->Pagos->recibirNotificacionPago($id);
+                  Log::error('IPN Mercado'.print_r($response,true));
                   if (isset($response))
                   {
-                        $usuario = $this->actualizarstatusPago($response['collection']['external_reference'], $response['collection']['status']);
+                        $no_orden = $response['collection']['external_reference'];
+                        Log::error('IPN Mercado'.print_r($no_orden,true));
+                        $usuario = $this->actualizarstatusPago($no_orden, $response['collection']['status']);
                         switch ($response['collection']['status'])
                         {
                               case 'approved':
+                                    Log::error('IPN Mercado aprobado');
                                     if ($this->agregarDominioSistema($usuario))
                                     {
                                           return Redirect::to('usuario/login');
                                     }
+                                    else
+                                    {
+                                          Mail::queue('email.errorcreaciondominio', null, function($message) use ($usuario) {
+                                                $message->to($usuario->email, $usuario->username)->subject('Error al crear el dominio en primerserver.com');
+                                          });
+                                    }
+                                    break;
+                              case 'cancelled':
+                                    Log::error('IPN Mercado cancelado');
+                                          Mail::queue('email.compracancelada', null, function($message) use ($usuario) {
+                                                $message->to($usuario->email, $usuario->username)->subject('Compra cancelada');
+                                          });
                                     break;
                               default:
-                                    Log::error("pagoscontroller.obtenerIPNMercadoPago: default: ".print_r($response,true));
+                                    Log::error("pagoscontroller.obtenerIPNMercadoPago: default: " . print_r($response, true));
                                     break;
-                        } 
+                        }
                   }
                   else
                   {
@@ -136,7 +148,7 @@ class PagosController extends BaseController {
                         $plan = $this->Plan->mostrarPlan(Input::get('plan'));
                         if (isset($plan))
                         {
-                              $numero_orden = $this->numero_orden = $this->obtenerNumeroOrden();
+                              $numero_orden = $this->obtenerNumeroOrden();
                               $preference_data = array(
                                     "items" => $this->generarItems('nuevo_registro', $plan),
                                     "payer" => $this->generarPayer(),
@@ -243,7 +255,10 @@ class PagosController extends BaseController {
       protected function obtenerNumeroOrden()
       {
             $valor = Input::get('correo');
-            return Crypt::encrypt($valor);
+            $no_orden = Crypt::encrypt($valor);
+            $no_orden = 'nuevousuario_'.substr($no_orden, 0, 10);
+            dd($no_orden);
+            return $no_orden;
       }
 
       /*
@@ -416,29 +431,32 @@ class PagosController extends BaseController {
        * 
        * Agrega el FTP para el usuario y envia un correo con los datos al correo;
        */
-      
-      protected function actualizarStatusPago($numero_orden,$status){
+
+      protected function actualizarStatusPago($numero_orden, $status)
+      {
             $usuario = $this->Pagos->actualizarRegistroPagoExterno($numero_orden, $status);
-            if($usuario != false && $usuario->id){
+            Log::error('IPN Mercado registro pago externo'.print_r($response,true));
+            if ($usuario != false && $usuario->id)
+            {
                   return $usuario;
             }
             else
             {
-                  Log::error('PagosController.actualizarStatusPago: '.$numero_orden.' '.$status);
+                  Log::error('PagosController.actualizarStatusPago: ' . $numero_orden . ' ' . $status);
                   return null;
             }
       }
 
       protected function agregarDominioSistema($usuario)
       {
-            
+
             if ($usuario != false && $usuario->id)
             {
                   DB::beginTransaction();
                   $dominio_pendiente = $this->Dominio->obtenerDominioPendiente($usuario);
                   if ($dominio_pendiente != false && $dominio_pendiente->id)
                   {
-                        $password = 'afaslldfds+56487$faoer';
+                        $password = HomeController::obtenerPasswordDominio();
                         $dominio = $this->Dominio->agregarDominio($dominio_pendiente->dominio, $password, $usuario->id, $dominio_pendiente->plan->id);
                         if (isset($dominio->id))
                         {
@@ -460,7 +478,7 @@ class PagosController extends BaseController {
                                                 'ftp_pass' => $password);
 
                                           Mail::queue('email.welcome', $data, function($message) use ($usuario) {
-                                                $message->to($usuario->email, $usuario->nombre)->subject('Creado dominio en primer server');
+                                                $message->to($usuario->email, $usuario->nombre)->subject('Nuevo Dominio Existente');
                                           });
 
                                           return true;
@@ -485,7 +503,7 @@ class PagosController extends BaseController {
                         Session::flash('Error al obtener el dominio pendiente');
                   }
             }
-            
+
             return false;
       }
 

@@ -27,7 +27,7 @@ class PagosRepositoryMercadoPago implements PagosRepository {
             return $link;
       }
 
-      public function generarPagoBase($tipo_pago, $usuario_model, $monto, $descripcion, $inicio, $vencimiento, $activo, $id_preferencia, $status)
+      public function generarPagoBase($tipo_pago, $usuario_model, $monto, $descripcion, $inicio, $vencimiento, $activo, $no_orden, $status)
       {
             $pago = new Pago();
             $pago->tipo_pago = $tipo_pago;
@@ -37,7 +37,7 @@ class PagosRepositoryMercadoPago implements PagosRepository {
             $pago->inicio = $inicio;
             $pago->vencimiento = $vencimiento;
             $pago->activo = $activo;
-            $pago->id_preferencia = $id_preferencia;
+            $pago->no_orden = $no_orden;
             $pago->status = $status;
             if ($pago->save())
             {

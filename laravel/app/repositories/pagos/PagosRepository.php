@@ -15,7 +15,7 @@ interface PagosRepository {
 
       public function generarLinkPagoRecurrente($preapproval_data);
 
-      public function generarPagoBase($tipo_pago, $usuario_model, $monto, $descripcion, $inicio, $vencimiento, $activo, $id_preferencia, $status);
+      public function generarPagoBase($tipo_pago, $usuario_model, $monto, $descripcion, $inicio, $vencimiento, $activo, $no_orden, $status);
 
       public function actualizarRegistroPagoExterno($numero_orden, $status);
 

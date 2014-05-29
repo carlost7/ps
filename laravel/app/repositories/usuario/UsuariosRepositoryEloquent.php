@@ -29,7 +29,7 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
 
       public function obtenerUsuario($id)
       {
-            return User::where('id', $id)->first();
+            return User::find($id);
       }
 
       /*
@@ -38,20 +38,31 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
 
       public function agregarUsuario($nombre, $password, $correo, $is_admin, $is_activo, $is_deudor)
       {
-            $usuario = new User();
-            $usuario->username = $nombre;
-            $usuario->password = Hash::make($password);
-            $usuario->email = $correo;
-            $usuario->is_admin = $is_admin;
-            $usuario->is_activo = $is_activo;
-            $usuario->is_deudor = $is_deudor;
-            if ($usuario->save())
+            try
             {
-                  return $usuario;
+                  $usuario = new User();
+
+                  $usuario->username = $nombre;
+                  $usuario->password = Hash::make($password);
+                  $usuario->email = $correo;
+                  $usuario->is_admin = $is_admin;
+                  $usuario->is_activo = $is_activo;
+                  $usuario->is_deudor = $is_deudor;
+
+                  if ($usuario->save())
+                  {
+                        return $usuario;
+                  }
+                  else
+                  {
+                        return false;
+                  }
             }
-            else
+            catch (Exception $e)
             {
-                  return false;
+                  Session::flash('error', 'Error al crear el usuario');
+                  Log::error('UsuariosRepositoryEloquent. Agregarusuario: ' . print_r($e, true));
+                  return null;
             }
       }
 
@@ -62,7 +73,7 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
       public function eliminarUsuario($id)
       {
             $user = User::find($id);
-            if ($user != null)
+            if ($user->id)
             {
                   if ($user->delete())
                   {
@@ -79,100 +90,66 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
             }
       }
 
-      public function editarPasswordUsuario($id, $password)
-      {
-            $usuario = User::find($id);
-            if ($usuario)
-            {
-                  $usuario->password = Hash::make($password);
-                  if ($usuario->save())
-                  {
-                        return $usuario;
-                  }
-                  else
-                  {
-                        return false;
-                  }
-            }
-            else
-            {
-                  return false;
-            }
-      }
-
-      public function editarCorreoUsuario($id, $correo)
-      {
-            $usuario = User::find($id);
-            if ($usuario)
-            {
-                  $usuario->email = $correo;
-                  if ($usuario->save())
-                  {
-                        return $usuario;
-                  }
-                  else
-                  {
-                        return false;
-                  }
-            }
-            else
-            {
-                  return false;
-            }
-      }
-
       /*
-       * 
+       * Funcion para editar usuario
        */
-      public function editarUsuario($id, $nombre, $password, $correo, $is_admin,$is_activo,$is_deudor)
+
+      public function editarUsuario($id, $nombre, $password, $correo, $is_admin, $is_activo, $is_deudor)
       {
             $usuario = User::find($id);
-            if ($usuario)
+            if ($usuario->id)
             {
-                  $usuario->username = $nombre;
-                  $usuario->password = Hash::make($password);
-                  $usuario->email = $correo;
-                  $usuario->is_admin = $is_admin;
-                  $usuario->is_activo = $is_activo;
-                  $usuario->is_deudor = $is_deudor;
-                  if ($usuario->save())
+                  try
                   {
-                        return $usuario;
+
+                        if (isset($nombre))
+                        {
+                              $usuario->username = $nombre;
+                        }
+                        if (isset($password))
+                        {
+                              $usuario->password = $password;
+                        }
+                        if (isset($correo))
+                        {
+                              $usuario->email = $correo;
+                        }
+                        if (isset($is_admin))
+                        {
+                              $usuario->is_admin = $is_admin;
+                        }
+                        if (isset($is_activo))
+                        {
+                              $usuario->is_activo = $is_activo;
+                        }
+                        if (isset($is_deudor))
+                        {
+                              $usuario->is_deudo = $is_deudor;
+                        }
+                        /*
+                         * Guardar el usuario
+                         */
+                        if ($usuario->save())
+                        {
+                              return true;
+                        }
+                        else
+                        {
+                              return false;
+                        }
                   }
-                  else
+                  catch (Exception $e)
                   {
+                        Session::flash('error', 'Ocurrio un error al editar el usuario');
+                        Log::error('UsuariosRepositoryEloquent: editarUsuario ' . print_r($e, true));
                         return false;
                   }
             }
             else
             {
+                  Session::flash('error', 'No se encontro el usuario a modificar');
                   return false;
             }
       }
 
-      /*
-       * 
-       */
-      public function editarUsuarioPagado($id, $is_activo, $is_deudor)
-      {
-            $usuario = User::find($id);
-            if ($usuario)
-            {
-                  $usuario->is_activo = $is_activo;
-                  $usuario->is_deudor = $is_deudor;
-                  if ($usuario->save())
-                  {
-                        return $usuario;
-                  }
-                  else
-                  {
-                        return false;
-                  }
-            }
-            else
-            {
-                  return false;
-            }
-      }
-      
 }

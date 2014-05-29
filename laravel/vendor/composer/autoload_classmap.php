@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'AddDomainnamePlanes' => $baseDir . '/app/database/migrations/2014_05_19_060101_add_domainname_planes.php',
+    'AddDominioIsNuestro' => $baseDir . '/app/database/migrations/2014_05_29_173230_add_dominio_is_nuestro.php',
     'AddHomedirFtps' => $baseDir . '/app/database/migrations/2014_05_15_235435_add_homedir_ftps.php',
     'AddPrincipalFtp' => $baseDir . '/app/database/migrations/2014_05_16_055641_add_principal_ftp.php',
     'AdminCorreosController' => $baseDir . '/app/controllers/AdminCorreosController.php',
@@ -15,7 +16,6 @@ return array(
     'AdminPlanesController' => $baseDir . '/app/controllers/AdminPlanesController.php',
     'AdminUsersController' => $baseDir . '/app/controllers/AdminUsersController.php',
     'AlterTableAddIsActivoIsDeudor' => $baseDir . '/app/database/migrations/2014_05_25_204835_alter_table_add_is_activo_is_deudor.php',
-    'AlterTablePlanesAddCostos' => $baseDir . '/app/database/migrations/2014_05_24_205027_alter_table_planes_add_costos.php',
     'AlterUserTable' => $baseDir . '/app/database/migrations/2014_05_08_164438_alter-user-table.php',
     'AuthSignature' => $vendorDir . '/paypal/sdk-core-php/lib/auth/PPAuth.php',
     'BaseController' => $baseDir . '/app/controllers/BaseController.php',
@@ -47,6 +47,7 @@ return array(
     'CorreosRepositoryEloquent' => $baseDir . '/app/repositories/correo/CorreosRepositoryEloquent.php',
     'CreatePasswordRemindersTable' => $baseDir . '/app/database/migrations/2014_05_07_172847_create_password_reminders_table.php',
     'CreateTableCorreos' => $baseDir . '/app/database/migrations/2014_05_07_234622_create-table-correos.php',
+    'CreateTableCostosPlanes' => $baseDir . '/app/database/migrations/2014_05_29_173449_create_table_costos_planes.php',
     'CreateTableDbs' => $baseDir . '/app/database/migrations/2014_05_08_040254_create-table-dbs.php',
     'CreateTableDominios' => $baseDir . '/app/database/migrations/2014_05_07_234618_create-table-dominios.php',
     'CreateTableDominiosPendientes' => $baseDir . '/app/database/migrations/2014_05_26_144546_create_table_dominios_pendientes.php',

@@ -19,10 +19,7 @@ class PlanSeeder extends DatabaseSeeder {
                         "numero_ftps" => 1,
                         "quota_ftps" => 2000,
                         "numero_dbs" => 0,
-                        "quota_dbs" => 0,
-                        "costo_anual" => 12,
-                        "costo_mensual" => 3,
-                        "moneda" => "MXN",
+                        "quota_dbs" => 0                        
                   ),
                   array(
                         "nombre" => "startup",
@@ -33,10 +30,7 @@ class PlanSeeder extends DatabaseSeeder {
                         "numero_ftps" => 1,
                         "quota_ftps" => 5000,
                         "numero_dbs" => 1,
-                        "quota_dbs" => 1000,
-                        "costo_anual" => 24,
-                        "costo_mensual" => 5,
-                        "moneda" => "MXN",
+                        "quota_dbs" => 1000,                        
                   ),
                   array(
                         "nombre" => "enterprise",
@@ -47,10 +41,7 @@ class PlanSeeder extends DatabaseSeeder {
                         "numero_ftps" => 1,
                         "quota_ftps" => 10000,
                         "numero_dbs" => 2,
-                        "quota_dbs" => 1000,
-                        "costo_anual" => 36,
-                        "costo_mensual" => 7,
-                        "moneda" => "MXN",
+                        "quota_dbs" => 1000,                        
                   ),
             );
             foreach ($planes as $plan)

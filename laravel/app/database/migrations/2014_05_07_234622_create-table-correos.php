@@ -19,7 +19,7 @@ class CreateTableCorreos extends Migration {
                   $table->string('correo');
                   $table->string('redireccion')->nullable();
                   $table->timestamps();
-                  $table->foreign('dominio_id')->references('id')->on('dominios');
+                  $table->foreign('dominio_id')->references('id')->on('dominios')->onDelete('cascade')->onUpdate('cascade');
             });
       }
 

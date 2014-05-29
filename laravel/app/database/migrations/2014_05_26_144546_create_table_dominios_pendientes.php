@@ -15,12 +15,11 @@ class CreateTableDominiosPendientes extends Migration {
             Schema::create('dominios_pendientes', function(Blueprint $table) {
                   $table->increments('id');
                   $table->integer('usuario_id')->unsigned();
-                  $table->string('dominio');
-                  $table->boolean('is_propio');
+                  $table->string('dominio');                  
                   $table->integer('plan_id')->unsigned();                  
                   $table->timestamps();
-                  $table->foreign('usuario_id')->references('id')->on('user');
-                  $table->foreign('plan_id')->references('id')->on('planes');
+                  $table->foreign('usuario_id')->references('id')->on('user')->onDelete('cascade')->onUpdate('cascade');;
+                  $table->foreign('plan_id')->references('id')->on('planes')->onDelete('cascade')->onUpdate('cascade');;
             });
       }
 

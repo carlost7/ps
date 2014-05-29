@@ -14,7 +14,7 @@ class CreateTablePagosUsuario extends Migration {
       {
             Schema::create('pagos', function(Blueprint $table) {
                   $table->increments('id');
-                  $table->string('tipo_pago');
+                  $table->string('Concepto');
                   $table->integer('usuario_id')->unsigned();
                   $table->decimal('monto');
                   $table->string('descripcion');
@@ -24,7 +24,7 @@ class CreateTablePagosUsuario extends Migration {
                   $table->string('no_orden');
                   $table->string('status');
                   $table->timestamps();
-                  $table->foreign('usuario_id')->references('id')->on('user')->unsigned();
+                  $table->foreign('usuario_id')->references('id')->on('user')->onDelete('cascade')->onUpdate('cascade');;
             });
       }
 

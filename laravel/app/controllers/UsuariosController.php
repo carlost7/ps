@@ -93,7 +93,7 @@ class UsuariosController extends BaseController {
                         if (strlen(Input::get('old_password')) > 0 && !Hash::check(Auth::user()->password, Input::get('old_password')))
                         {
                               $usuario = Auth::user();
-                              if ($this->Usuario->editarPasswordUsuario($usuario->id, Input::get('password')))
+                              if ($this->Usuario->editarUsuario($usuario->id, null, Input::get('password'), null, null, null, null))
                               {
                                     Session::flash('message', 'Cambio de contraseña correcto');
                                     if (Auth::User()->is_admin)
@@ -138,7 +138,7 @@ class UsuariosController extends BaseController {
                         if (strlen(Input::get('password')) > 0 && !Hash::check(Auth::user()->password, Input::get('password')))
                         {
                               $usuario = Auth::user();
-                              if ($this->Usuario->editarCorreoUsuario($usuario->id, Input::get('new_email')))
+                              if ($this->Usuario->editarUsuario($usuario->id, null, Input::get('new_email'), null, null, null, null))
                               {
                                     Session::flash('message', 'Tu correo se ha actualizado');
                                     return Redirect::to('usuario/inicio');

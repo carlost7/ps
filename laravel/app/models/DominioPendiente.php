@@ -17,7 +17,7 @@ class DominioPendiente extends Eloquent {
 
       public function usuario()
       {
-            return $this->belongsTo('user');
+            return $this->belongsTo('User');
       }
 
       public function plan()

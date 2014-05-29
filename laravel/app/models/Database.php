@@ -7,8 +7,7 @@
  */
 class Database extends Eloquent {
 
-      protected $table = 'dbs';
-      protected $fillable = array('nombre', 'usuario');
+      protected $table = 'dbs';      
 
       public function dominio()
       {

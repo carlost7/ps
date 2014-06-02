@@ -203,7 +203,7 @@ class CorreosController extends \BaseController {
             return Validator::make(Input::all(), array(
                         'password' => 'min:4',
                         'password_confirmation' => 'same:password',
-                        'redireccion' => 'email',
+                        //'redireccion' => 'email',
             ));
       }
 

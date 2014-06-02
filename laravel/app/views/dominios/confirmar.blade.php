@@ -19,7 +19,7 @@
 </div>
 <div class="container">
 
-      {{ Form::open(array('route'=>'pagos/confirmar_registro','id'=>'form_confirm')) }}
+      {{ Form::open(array('route'=>'dominio/confirmar_dominio','id'=>'form_confirm')) }}
 
       @foreach($errors->all() as $message)
       <div class="alert alert-danger">{{ $message }}</div>

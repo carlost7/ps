@@ -37,7 +37,7 @@ Route::any('dominio', array('as' => 'dominio/inicio', 'uses' => 'DominiosControl
 Route::any('dominio/nuevo', array('as' => 'dominio/nuevo', 'uses' => 'DominiosController@dominioNuevo'));
 Route::any('dominio/existente', array('as' => 'dominio/existente', 'uses' => 'DominiosController@dominioExistente'));
 Route::any('dominio/comprobar', array('as' => 'dominio/comprobar', 'uses' => 'DominiosController@comprobarDominio'));
-Route::any('dominio/confirmar', array('as' => 'dominio/confirmar', 'uses' => 'DominiosController@confirmarDominio'));
+Route::any('dominio/confirmar_dominio', array('as' => 'dominio/confirmar_dominio', 'uses' => 'DominiosController@confirmarDominio'));
 
 Route::any('pagos/confirmar_registro', array('as' => 'pagos/confirmar_registro', 'uses' => 'PagosController@confirmarRegistro'));
 Route::any('pagos/descripcion', array('as' => 'pagos/descripcion', 'uses' => 'PagosController@getCostoTotal'));

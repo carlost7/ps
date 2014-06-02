@@ -39,7 +39,7 @@
                               <td>{{ HTML::link('admin/correos/'.$correo->id,$correo->correo) }}</td>
                               <td>{{ $correo->redireccion }}</td>
                               <td>{{ $quotas[$correo->correo]['diskused'].'Mb / '.$quotas[$correo->correo]['diskquota'].'Mb'}}</td>
-                              <td>{{ HTML::link('admin/correos/'.$correo->id,'Mostrarr',array('class'=>'btn btn-primary btn-xs')) }}</td>
+                              <td>{{ HTML::link('admin/correos/'.$correo->id,'Mostrar',array('class'=>'btn btn-primary btn-xs')) }}</td>
                               <td>{{ HTML::link('admin/correos/'.$correo->id.'/edit','Editar',array('class'=>'btn btn-primary btn-xs')) }}</td>
                               <td>
                                     {{ Form::open(array('route' => array('admin.correos.destroy',$correo->id),'method'=>'DELETE')) }}

@@ -51,10 +51,7 @@ class AdminPlanesController extends \BaseController {
                   $numero_ftps = Input::get('numero_ftps');
                   $quota_ftps = Input::get('quota_ftps');
                   $numero_dbs = Input::get('numero_dbs');
-                  $quota_dbs = Input::get('quota_dbs');
-                  $costo_anual = Input::get('costo_anual');
-                  $costo_mensual = Input::get('costo_mensual');
-                  $moneda = Input::get('moneda');
+                  $quota_dbs = Input::get('quota_dbs');                  
 
                   if ($this->Plan->agregarPlan($nombre, $dominio, $name_server, $numero_correos, $quota_correos, $numero_ftps, $quota_ftps, $numero_dbs, $quota_dbs))
                   {
@@ -123,13 +120,10 @@ class AdminPlanesController extends \BaseController {
                         $numero_ftps = Input::get('numero_ftps');
                         $quota_ftps = Input::get('quota_ftps');
                         $numero_dbs = Input::get('numero_dbs');
-                        $quota_dbs = Input::get('quota_dbs');
-                        $costo_anual = Input::get('costo_anual');
-                        $costo_mensual = Input::get('costo_mensual');
-                        $moneda = Input::get('moneda');
+                        $quota_dbs = Input::get('quota_dbs');                        
 
 
-                        if ($this->Plan->editarPlan($id, $nombre, $dominio, $name_server, $numero_correos, $quota_correos, $numero_ftps, $quota_ftps, $numero_dbs, $quota_dbs, $costo_anual, $costo_mensual, $moneda))
+                        if ($this->Plan->editarPlan($id, $nombre, $dominio, $name_server, $numero_correos, $quota_correos, $numero_ftps, $quota_ftps, $numero_dbs, $quota_dbs))
                         {
                               Session::flash('message', 'Plan editado con exito');
                               return Redirect::to('admin/planes');
@@ -187,10 +181,7 @@ class AdminPlanesController extends \BaseController {
                         'numero_ftps' => 'required',
                         'quota_ftps' => 'required',
                         'numero_dbs' => 'required',
-                        'quota_dbs' => 'required',
-                        'costo_anual' => 'required',
-                        'costo_mensual' => 'required',
-                        'moneda' => 'required',
+                        'quota_dbs' => 'required'                        
             ));
       }
 

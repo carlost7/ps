@@ -8,18 +8,21 @@
 use UsuariosRepository as Usuario;
 use DominioRepository as Dominio;
 use FtpsRepository as Ftp;
+use PlanRepository as Plan;
 
 class DominiosController extends BaseController {
 
       protected $Usuario;
       protected $Dominio;
       protected $Ftp;
+      protected $Plan;
 
-      public function __construct(Usuario $usuario, Dominio $dominio, Ftp $ftp)
+      public function __construct(Usuario $usuario, Dominio $dominio, Ftp $ftp, Plan $plan)
       {
             $this->Usuario = $usuario;
             $this->Dominio = $dominio;
             $this->Ftp = $ftp;
+            $this->Plan = $plan;
       }
 
       /*
@@ -51,6 +54,7 @@ class DominiosController extends BaseController {
 
       /*
        * Comprobar si se puede agregar el dominio, se tiene que usar ajax
+       * //Modificar acorde con el vendedor de hosts
        */
 
       public function comprobarDominio()
@@ -76,10 +80,88 @@ class DominiosController extends BaseController {
                   $mensaje = $validator->messages()->first('dominio');
             }
 
-
             $response = array('resultado' => $resultado, 'mensaje' => $mensaje);
 
             return Response::json($response);
+      }
+
+      
+      
+      public function confirmarDominio()
+      {
+            if ($this->isPostRequest())
+            {
+                  DB::beginTransaction();
+                  $validator = $this->getValidatorConfirmUser();
+
+                  if ($validator->passes())
+                  {
+                        $usuario = $this->Usuario->agregarUsuario(Input::get('nombre'), Input::get('password'), Input::get('correo'), false, true, false);
+                        if ($usuario->id != null)
+                        {
+                              $plan = $this->Plan->mostrarPlan(Input::get('plan'));
+                              $dominio = $this->Dominio->agregarDominio(Input::get('dominio'), Input::get('password'), $usuario->id, $plan->id);
+                              if (isset($dominio->id))
+                              {
+                                    $this->Ftp->set_attributes($dominio);
+                                    $user = explode('.', $dominio->dominio);
+                                    $username = $user[0];
+                                    $hostname = 'primerserver.com';
+                                    $home_dir = 'public_html/' . $dominio->dominio;
+                                    $ftp = $this->Ftp->agregarFtp($username, $hostname, $home_dir, Input::get('password'), true);
+                                    if ($ftp->id)
+                                    {
+                                          Session::put('message', 'La cuenta esta lista para usarse');
+                                          DB::commit();
+                                          $data = array('dominio' => $dominio->dominio,
+                                                'usuario' => $usuario->email,
+                                                'password' => Input::get('password'),
+                                                'ftp_user' => $ftp->username,
+                                                'ftp_pass' => Input::get('password'));
+
+                                          Mail::queue('email.welcome', $data, function($message) {
+                                                $message->to(Input::get('correo'), Input::get('nombre'))->subject('Bienvenido a PrimerServer');
+                                          });
+
+                                          return Redirect::to('usuario/login');
+                                    }
+                                    else
+                                    {
+                                          Session::put('error', 'Error al agregar el FTP');
+                                    }
+                              }
+                              else
+                              {
+                                    Session::flash('error', 'Error al agregar el dominio al servidor');
+                              }
+                        }
+                        else
+                        {
+                              Session::flash('error', 'Error al agregar usuario');
+                        }
+                  }
+                  DB::rollback();
+                  return Redirect::back()->withInput()->withErrors($validator->messages());
+            }
+            else
+            {
+                  $dominio = Input::get('dominio');
+                  $validator = $this->getValidatorComprobarNombreDominio($dominio);
+                  if ($validator->passes())
+                  {
+                        Session::put('posible_dominio', Input::get('dominio'));
+                        Session::put('existente', Input::get('existente'));
+                        Session::put('costo_dominio', '8.00');
+                        $planes = $this->Plan->listarPlanes();
+                        return View::make('dominios.confirmar', array('dominio' => Input::get('dominio'), 'planes' => $planes));
+                  }
+                  else
+                  {
+                        $resultado = false;
+                        $mensaje = $validator->messages()->first('dominio');
+                        return Redirect::back()->withErrors($validator)->withInput();
+                  }
+            }
       }
 
       protected function agregarUsuarioSistema()
@@ -89,7 +171,7 @@ class DominiosController extends BaseController {
 
             if ($validator->passes())
             {
-                  $usuario = $this->Usuario->agregarUsuario(Input::get('nombre'), Input::get('password'), Input::get('correo'), false);
+                  $usuario = $this->Usuario->agregarUsuario(Input::get('nombre'), Input::get('password'), Input::get('correo'), false, true, false);
                   if ($usuario->id != null)
                   {
                         $plan = Plan::where('nombre', '=', Input::get('plan'))->first();
@@ -145,7 +227,7 @@ class DominiosController extends BaseController {
                         'password_confirmation' => 'required|same:password',
                         'dominio' => 'required',
                         'correo' => 'required|email|unique:user,email',
-                        'plan' => 'required|exists:planes,nombre',
+                        //'plan' => 'required|exists:planes,nombre',
                         'aceptar' => 'required|accepted'
             ));
       }

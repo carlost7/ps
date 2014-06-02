@@ -12,7 +12,7 @@ class Dominio extends Eloquent {
 
       public function user()
       {
-            return $this->belongsTo('User','usuario_id','id');
+            return $this->belongsTo('User');
       }
 
       public function plan()
@@ -27,7 +27,7 @@ class Dominio extends Eloquent {
 
       public function ftps()
       {
-            return $this->hasOne('Ftp', 'dominio_id', 'id');
+            return $this->hasMany('Ftp', 'dominio_id', 'id');
       }
 
       public function dbs()

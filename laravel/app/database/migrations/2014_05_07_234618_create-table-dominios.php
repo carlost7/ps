@@ -20,7 +20,7 @@ class CreateTableDominios extends Migration {
                   $table->integer('plan_id')->unsigned();
                   $table->timestamps();
                   $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade')->onUpdate('cascade');
-                  $table->foreign('plan_id')->references('id')->on('planes')->onDelete('cascade')->onUpdate('cascade');
+                  $table->foreign('plan_id')->references('id')->on('planes');
             });
       }
 

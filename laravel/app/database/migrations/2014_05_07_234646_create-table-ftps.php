@@ -18,7 +18,7 @@ class CreateTableFtps extends Migration {
                   $table->string('username');
                   $table->string('hostname');
                   $table->timestamps();
-                  $table->foreign('dominio_id')->references('id')->on('dominios')->onDelete('cascade')->onUpdate('cascade');
+                  $table->foreign('dominio_id')->references('id')->on('dominios');
             });
       }
 

@@ -7,7 +7,8 @@
  */
 class Ftp extends Eloquent {
 
-      protected $table = 'ftps';      
+      protected $table = 'ftps';
+      protected $fillable = array('username', 'hostname');
 
       public function dominio()
       {

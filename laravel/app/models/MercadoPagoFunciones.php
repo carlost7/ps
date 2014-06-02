@@ -27,6 +27,12 @@ class MercadoPagoFunciones {
             return $preference;
       }
 
+      public function create_preapproval_payment($preapproval_data)
+      {
+            $preapproval = $this->mp->create_preapproval_payment($preapproval_data);
+            return $preapproval['response'][config::get('payment.init_point')];
+      }
+
       public function recibir_notificacion($id)
       {
             $payment_info = $this->mp->get_payment_info($id);
@@ -40,6 +46,11 @@ class MercadoPagoFunciones {
             {
                   return null;
             }
-      }     
-      
+      }
+
+      public function prueba()
+      {
+            
+      }
+
 }

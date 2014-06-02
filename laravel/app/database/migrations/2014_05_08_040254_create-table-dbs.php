@@ -18,7 +18,7 @@ class CreateTableDbs extends Migration {
                   $table->string('nombre');
                   $table->string('usuario');
                   $table->timestamps();
-                  $table->foreign('dominio_id')->references('id')->on('dominios')->unsigned();
+                  $table->foreign('dominio_id')->references('id')->on('dominios')->onDelete('cascade')->onUpdate('cascade');
             });
       }
 

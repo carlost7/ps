@@ -15,11 +15,5 @@ interface UsuariosRepository {
 
       public function editarUsuario($id, $nombre, $password, $correo, $is_admin, $is_activo, $is_deudor);
       
-      public function editarUsuarioPagado($id, $is_activo, $is_deudor);
-
       public function eliminarUsuario($id);
-
-      public function editarPasswordUsuario($id, $password);
-
-      public function editarCorreoUsuario($id, $correo);
 }

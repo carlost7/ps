@@ -33,6 +33,7 @@
                               <th>Eliminar</th>
                         </tr>
                         @foreach($correos as $correo)
+                        @if($quotas[$correo->correo]!=null)
                         <tr>
 
                               <td>{{ $correo->nombre }}</td>
@@ -47,6 +48,7 @@
                                     {{ Form::close() }}
                               </td>                        
                         </tr>
+                        @endif
                         @endforeach
                   </table>
             </div>

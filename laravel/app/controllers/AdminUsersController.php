@@ -137,7 +137,26 @@ class AdminUsersController extends \BaseController {
        */
       public function update($id)
       {
-            
+            $validator = $this->getValidatorEditUser();
+
+            if ($validator->passes())
+            {
+                  $nombre = Input::get('nombre');
+                  $correo = Input::get('correo');
+                  $password = Input::get('password');
+                  $is_activo = (Input::get('is_activo') == '1' ? 1 : 0 );
+                  $is_deudor = (Input::get('is_deudor') == '1' ? 1 : 0 );
+                  if ($this->Usuario->editarUsuario($id, $nombre, $password, $correo, false, $is_activo, $is_deudor))
+                  {
+                        Session::flash('message', 'La cuenta esta lista para usarse');                        
+                        return Redirect::to('admin/usuarios');
+                  }
+                  else
+                  {
+                        Session::flash('error', "Error al editar el usuario");
+                  }
+            }
+            return Redirect::back()->withInput()->withErrors($validator->messages());
       }
 
       /**
@@ -185,6 +204,16 @@ class AdminUsersController extends \BaseController {
                         'dominio' => 'required',
                         'correo' => 'required|email|unique:user,email',
                         'plan' => 'required|exists:planes,nombre',
+            ));
+      }
+
+      protected function getValidatorEditUser()
+      {
+            return Validator::make(Input::all(), array(
+                        'nombre' => 'min:4',
+                        'password' => 'min:2',
+                        'password_confirmation' => 'same:password',
+                        'correo' => 'email',
             ));
       }
 

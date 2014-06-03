@@ -99,6 +99,7 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
             $usuario = User::find($id);
             if ($usuario->id)
             {
+                  
                   try
                   {
 
@@ -108,7 +109,7 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
                         }
                         if (isset($password))
                         {
-                              $usuario->password = $password;
+                              $usuario->password = Hash::make($password);
                         }
                         if (isset($correo))
                         {
@@ -124,8 +125,9 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
                         }
                         if (isset($is_deudor))
                         {
-                              $usuario->is_deudo = $is_deudor;
+                              $usuario->is_deudor = $is_deudor;
                         }
+                        
                         /*
                          * Guardar el usuario
                          */

@@ -440,4 +440,28 @@ class WHMFunciones {
             }
       }
 
+      public function obtenerQuotaDBServidor($dbname)
+      {
+
+            if (!isset($dbname))
+            {
+                  Log::error('WHMFunciones: obtenerQuotaDBServidor: Error no especifico nombre de base de datos');
+                  return false;
+            }
+
+            $response = $this->xmlapi->api2_query($this->plan->name_server, 'MysqlFE', 'listdbs', array('regex' => $dbname));
+
+            $resultado = json_decode($response, true);
+            if (isset($resultado['cpanelresult']['data'][0]['db']))
+            {    
+                  $database = $resultado['cpanelresult']['data'];                  
+                  return $database;
+            }
+            else
+            {
+                  Log::error('Error en WHM: EliminarFTPServidor ' . $resultado['cpanelresult']['data'][0]['reason']);
+                  return false;
+            }
+      }
+
 }

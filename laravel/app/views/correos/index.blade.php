@@ -39,12 +39,12 @@
                               <th>Eliminar</th>
                         </tr>
                         @foreach($correos as $correo)
-                        <tr>
-
+                        @if($quotas[$correo->correo]!=null)
+                        <tr>                              
                               <td>{{ $correo->nombre }}</td>
                               <td>{{ HTML::link('correos/'.$correo->id,$correo->correo) }}</td>
-                              <td>{{ $correo->redireccion }}</td>
-                              <td>{{ $quotas[$correo->correo]['diskused'].'Mb / '.$quotas[$correo->correo]['diskquota'].'Mb'}}</td>
+                              <td>{{ $correo->redireccion }}</td>                                                            
+                              <td>{{ $quotas[$correo->correo]['diskused'].'mb / '.$quotas[$correo->correo]['diskquota'].'mb'}}</td>                              
                               <td>{{ HTML::link('https://rs4.websitehostserver.net:2096/?locale=es','Webmail') }}</td>
                               <td>{{ HTML::link('correos/'.$correo->id.'/edit','Editar',array('class'=>'btn btn-primary btn-xs')) }}</td>
                               <td>
@@ -53,6 +53,7 @@
                                     {{ Form::close() }}
                               </td>                        
                         </tr>
+                        @endif
                         @endforeach
                   </table>
             </div>

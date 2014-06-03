@@ -21,7 +21,12 @@ class DbsController extends \BaseController {
       {
             $dbs = $this->Database->listarDatabases();
             $total = $dbs->count();
-            return View::make('dbs.index')->with(array('dbs' => $dbs, 'total' => $total));
+            $quotas = array();
+            foreach($dbs as $db){
+                  $size = $this->Database->listarQuotaDB($db->nombre);
+                  $quotas[$db->nombre] = $size;
+            }            
+            return View::make('dbs.index')->with(array('dbs' => $dbs, 'total' => $total,'quotas'=>$quotas));
       }
 
       /**
@@ -51,8 +56,8 @@ class DbsController extends \BaseController {
             $validator = $this->getDbsValidator();
             if ($validator->passes())
             {
-                  $username = Input::get('username');
-                  $dbname = Input::get('dbname');
+                  $username = $dbs->count()+1;
+                  $dbname = $dbs->count()+1;
                   $password = Input::get('password');
                   if ($this->Database->agregarDatabase($username, $password, $dbname))
                   {
@@ -119,8 +124,6 @@ class DbsController extends \BaseController {
       protected function getDbsValidator()
       {
             return Validator::make(Input::all(), array(
-                        'username' => 'required',
-                        'dbname' => 'required',
                         'password' => 'required|min:2',
                         'password_confirmation' => 'required|same:password',
             ));

@@ -26,6 +26,21 @@ class DatabaseRepositoryEloquent implements DatabaseRepository {
             return Database::where('dominio_id', '=', $this->dominio_model->id)->get();
       }
 
+      public function listarQuotaDB($dbname)
+      {
+            $whmfuncion = new WHMFunciones($this->plan);
+            $quotadb = $whmfuncion->obtenerQuotaDBServidor($dbname);
+            if(isset($quotadb))
+            {
+                  $tamano_mb = $quotadb['0']['sizemeg'];
+                  return $tamano_mb;
+            }
+            else
+            {
+                  return 0;
+            }
+      }
+
       /*
        * Obtener Database unico
        * TODO: obtener size
@@ -50,9 +65,8 @@ class DatabaseRepositoryEloquent implements DatabaseRepository {
       public function agregarDatabase($username, $password, $dbname)
       {
             DB::beginTransaction();
-            $dom = explode('.', $this->dominio_model->dominio);
-            $username = $dom[0] . '_' . $username;
-            $dbname = $dom[0] . '_' . $dbname;
+            $username = $this->dominio_model->id . '_' . $username;
+            $dbname = $this->dominio_model->id . '_' . $dbname;
             if ($this->agregarDatabaseServidor($username, $password, $dbname))
             {
                   $Database_model = $this->agregarDatabaseBase($username, $dbname, $this->dominio_model->id);

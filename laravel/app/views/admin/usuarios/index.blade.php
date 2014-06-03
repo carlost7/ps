@@ -21,7 +21,8 @@
                               <th>Correo</th>
                               <th>Dominio</th>                              
                               <th>Plan</th>
-                              <th>Agregar</th>
+                              <th>Agregar Elementos</th>
+                              <th>Editar</th>
                               <th>Eliminar</th>
                         </tr>
                         @if($usuarios->count())
@@ -31,16 +32,19 @@
 
                               <td>{{ $usuario->username }}</td>
                               <td>{{ HTML::link('admin/usuarios/'.$usuario->id,$usuario->email) }}</td>
+                              
                               @if($usuario->dominio != null)
                               <td>{{ $usuario->dominio->dominio }}</td>
                               <td>{{ $usuario->dominio->plan->nombre }}</td>
                               <td>{{ HTML::link('admin/usuarios/'.$usuario->id.'/edit','Agregar',array('class'=>'btn btn-primary btn-xs')) }}</td>
+                              
                               @else
                               <td>pendiente</td>
                               <td>pendiente</td>
-                              <td></td>
+                              <td>pendiente</td>                             
+                              
                               @endif
-
+                              <td>{{ HTML::link('admin/usuarios/'.$usuario->id.'/edit','Editar',array('class'=>'btn btn-primary btn-xs')) }}</td>
                               <td>
                                     {{ Form::open(array('route' => array('admin.usuarios.destroy',$usuario->id),'method'=>'DELETE')) }}
                                     {{ Form::submit('Eliminar', array('class' => 'btn btn-danger btn-xs')) }}

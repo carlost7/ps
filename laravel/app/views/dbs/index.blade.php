@@ -31,8 +31,9 @@
             <div class="table-responsive">
                   <table class="table">
                         <tr>
-                              <th>Nombre</th>
-                              <th>Usuario</th>                    
+                              <th>Nombre base de datos</th>
+                              <th>Nombre de Usuario</th>                    
+                              <th>Tamaño</th>
                               <th>Eliminar</th>
                         </tr>
                         @foreach($dbs as $db)
@@ -40,6 +41,7 @@
 
                               <td>{{ HTML::link('dbs/'.$db->id,$db->nombre) }}</td>
                               <td>{{ $db->usuario }}</td>
+                              <td>{{ $quotas[$db->nombre].'mb' }}</td>
                               <td>
                                     {{ Form::open(array('route' => array('dbs.destroy',$db->id),'method'=>'DELETE')) }}
                                     {{ Form::submit('Eliminar', array('class' => 'btn btn-danger btn-xs')) }}

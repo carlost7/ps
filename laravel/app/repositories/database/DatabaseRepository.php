@@ -16,4 +16,6 @@ interface DatabaseRepository {
       public function agregarDatabase($username, $password, $dbname);
 
       public function eliminarDatabase($Database_model);
+
+      public function listarQuotaDB($dbname);
 }

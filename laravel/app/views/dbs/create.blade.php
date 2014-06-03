@@ -23,15 +23,6 @@
 
       <br />
       {{ Form::open(array('url'=>'dbs','id'=>'form_confirm')) }}
-
-      <div class="form-group">
-            <label for="username">Nombre de Usuario</label>
-            <input type="text" name="username" value="{{ Input::old('username')}}" class="form-control" id="Nombre" placeholder="Nombre de usuario">
-      </div>
-      <div class="form-group">
-            <label for="dbname">Nombre de la base</label>
-            <input type="text" name="dbname" value="{{ Input::old('dbname')}}" class="form-control" id="Correo" placeholder="Nombre de la base de datos">
-      </div>
       <div class="form-group">
             <label for="password">Password</label>            
             <div class="input-group">
@@ -47,7 +38,7 @@
             <label for="password_confirmation">Confirmar</label>
             <input type="password" name="password_confirmation" class="form-control" id="Password_confirmation" placeholder="Confirma tu contraseña">
       </div>      
-      <button type="submit" id='confirmar' class="btn btn-success">Agregar Correo</button>
+      <button type="submit" id='confirmar' class="btn btn-success">Agregar Base de Datos</button>
       {{ Form::close() }}
 
 </div>

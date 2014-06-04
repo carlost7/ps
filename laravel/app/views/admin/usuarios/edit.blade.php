@@ -57,9 +57,6 @@
       {{ Form::close() }}
 </div>
 
-
-<br />
-
 @include('layouts.modal_password')
 
 @stop

@@ -25,14 +25,6 @@
       {{ Form::open(array('url'=>'admin/dbs','id'=>'form_confirm')) }}
 
       <div class="form-group">
-            <label for="username">Nombre de Usuario</label>
-            <input type="text" name="username" value="{{ Input::old('username')}}" class="form-control" id="Nombre" placeholder="Nombre de usuario">
-      </div>
-      <div class="form-group">
-            <label for="dbname">Nombre de la base</label>
-            <input type="text" name="dbname" value="{{ Input::old('dbname')}}" class="form-control" id="Correo" placeholder="Nombre de la base de datos">
-      </div>
-      <div class="form-group">
             <label for="password">Password</label>            
             <div class="input-group">
                   <input type="password" name="password" class="form-control" id="Password" placeholder="Contraseña">

@@ -34,6 +34,13 @@ class AdminUsersController extends \BaseController {
             return View::make('admin.usuarios.index')->with('usuarios', $usuarios);
       }
 
+      
+      public function agregar()
+      {
+            Session::put('dominio_usuario', $usuario->dominio);
+            return View::make('admin.usuarios.agregar');
+      }
+      
       /**
        * Show the form for creating a new resource.
        *
@@ -125,7 +132,6 @@ class AdminUsersController extends \BaseController {
       public function edit($id)
       {
             $usuario = $this->Usuario->obtenerUsuario($id);
-            Session::put('dominio_usuario', $usuario->dominio);
             return View::make('admin.usuarios.edit')->with('usuario', $usuario);
       }
 

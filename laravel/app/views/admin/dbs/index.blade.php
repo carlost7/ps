@@ -33,6 +33,7 @@
                         <tr>
                               <th>Nombre</th>
                               <th>Usuario</th>                    
+                              <th>Tamaño</th>
                               <th>Eliminar</th>
                         </tr>
                         @foreach($dbs as $db)
@@ -40,6 +41,7 @@
 
                               <td>{{ HTML::link('admin/dbs/'.$db->id,$db->nombre) }}</td>
                               <td>{{ $db->usuario }}</td>
+                              <td>{{ $quotas[$db->nombre].'mb' }}</td>
                               <td>
                                     {{ Form::open(array('route' => array('admin.dbs.destroy',$db->id),'method'=>'DELETE')) }}
                                     {{ Form::submit('Eliminar', array('class' => 'btn btn-danger btn-xs')) }}

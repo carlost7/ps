@@ -48,8 +48,8 @@
                               <td>{{ HTML::link('https://rs4.websitehostserver.net:2096/?locale=es','Webmail') }}</td>
                               <td>{{ HTML::link('correos/'.$correo->id.'/edit','Editar',array('class'=>'btn btn-primary btn-xs')) }}</td>
                               <td>
-                                    {{ Form::open(array('route' => array('correos.destroy',$correo->id),'method'=>'DELETE')) }}
-                                    {{ Form::submit('Eliminar', array('class' => 'btn btn-danger btn-xs')) }}
+                                    {{ Form::open(array('route' => array('correos.destroy',$correo->id),'method'=>'DELETE','id'=>$correo->id)) }}
+                                    <input type="submit" value="Eliminar" name="eliminar" class='btn btn-danger btn-xs' onclick="confirmDelete('{{$correo->correo}}','{{$correo->id}}')"/>
                                     {{ Form::close() }}
                               </td>                        
                         </tr>
@@ -71,4 +71,17 @@
 
 @stop
 
-@section('footer')@stop
+@section('scripts')
+{{ HTML::script('js/vendor/bootbox.min.js') }}
+
+<script>
+      function confirmDelete(email,id){
+            bootbox.confirm("Estas seguro que deseas eliminar la cuenta "+email, function(result) {
+                  if(result){
+                        $('#'+id).submit();
+                  }
+            });
+            return false;
+      }
+</script>
+@stop

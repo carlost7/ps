@@ -43,8 +43,8 @@
                               <td>{{ $db->usuario }}</td>
                               <td>{{ $quotas[$db->nombre].'mb' }}</td>
                               <td>
-                                    {{ Form::open(array('route' => array('dbs.destroy',$db->id),'method'=>'DELETE')) }}
-                                    {{ Form::submit('Eliminar', array('class' => 'btn btn-danger btn-xs')) }}
+                                    {{ Form::open(array('route' => array('dbs.destroy',$db->id),'method'=>'DELETE','id'=>$db->id)) }}
+                                    <input type="submit" value="Eliminar" name="eliminar" class='btn btn-danger btn-xs' onclick="confirmDelete('{{$db->id}}')"/>
                                     {{ Form::close() }}
                               </td>                        
                         </tr>
@@ -67,4 +67,19 @@
 
 @include('layouts.menu_usuario', array('activo'=>'correos'))
 
+@stop
+
+@section('scripts')
+{{ HTML::script('js/vendor/bootbox.min.js') }}
+
+<script>
+      function confirmDelete(id){
+            bootbox.confirm("Estas seguro que deseas eliminar la base de datos ", function(result) {
+                  if(result){
+                        $('#'+id).submit();
+                  }
+            });
+            return false;
+      }
+</script>
 @stop

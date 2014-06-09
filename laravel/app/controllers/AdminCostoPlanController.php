@@ -42,7 +42,7 @@ class AdminCostoPlanController extends \BaseController {
 
                   if ($this->Plan->agregarCostoPlan($plan_id, $costo_mensual, $costo_anual, $moneda))
                   {
-                        return Redirect::route('admin.planes');
+                        return Redirect::to('admin/planes');
                   }
                   Session::flash('error', 'Error al agregar el costo del plan');
             }
@@ -70,7 +70,7 @@ class AdminCostoPlanController extends \BaseController {
        */
       public function edit($id)
       {
-            $costoplan = $this->Plan->mostrarPlan($id);
+            $costoplan = $this->Plan->mostrarCostoPlan($id);
             return View::make('admin.costo_planes.edit')->with(array('costo_plan' => $costoplan));
       }
 
@@ -89,10 +89,9 @@ class AdminCostoPlanController extends \BaseController {
                   $costo_anual = Input::get('costo_anual');
                   $moneda = Input::get('moneda');
 
-
                   if ($this->Plan->editarCostoPlan($id, $costo_mensual, $costo_anual, $moneda))
                   {
-                        return Redirect::route('admin.planes');
+                        return Redirect::to('admin/planes');
                   }
                   Session::flash('error', 'Error al editar el costo del plan');
             }

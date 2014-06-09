@@ -200,7 +200,6 @@ class PlanRepositoryEloquent implements PlanRepository {
                   $costo_plan = CostoPlan::find($id);
                   if ($costo_plan->id)
                   {
-                        $costo_plan->plan_id = $costoplan_model;
                         $costo_plan->costo_mensual = $costo_mensual;
                         $costo_plan->costo_anual = $costo_anual;
                         $costo_plan->moneda = $moneda;

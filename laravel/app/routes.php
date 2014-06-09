@@ -113,8 +113,10 @@ Route::group(array('before' => 'auth'), function() {
 
             Route::resource('planes', 'AdminPlanesController');
             
-            Route::resource('costos_planes', 'AdminCostoPlanController');
             Route::get('costos_planes/{plan_id}/add_costo',array('as'=>'costos.planes.add','uses'=>'AdminCostoPlanController@create'));
+            
+            Route::resource('costos_planes', 'AdminCostoPlanController');
+            
       });
 });
 

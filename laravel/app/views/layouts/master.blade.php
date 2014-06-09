@@ -34,8 +34,12 @@
                                     <span class="icon-bar"></span>
                                     <span class="icon-bar"></span>
                               </button>
-
-                              {{ HTML::linkRoute('inicio','Primer Server',null,array('class'=>'navbar-brand')) ;}}"
+                              
+                              @if(Auth::check())
+                              {{ HTML::linkRoute('usuario/inicio','PrimerServer',null,array('class'=>'navbar-brand')) ;}}
+                              @else
+                              {{ HTML::linkRoute('inicio','PrimerServer',null,array('class'=>'navbar-brand')) ;}}                              
+                              @endif                              
                         </div>
 
                         <div class="navbar-collapse collapse">
@@ -92,6 +96,13 @@
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                   {{ Session::get('error') }}
                   {{ Session::forget('error'); }}
+            </div>                    
+            @endif
+            @if(Session::has('mensaje_servidor'))
+            <div class="alert alert-danger alert-dismissable">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                  {{ Session::get('mensaje_servidor') }}
+                  {{ Session::forget('mensaje_servidor'); }}
             </div>                    
             @endif
 

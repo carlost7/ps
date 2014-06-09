@@ -205,11 +205,15 @@ class AdminUsersController extends \BaseController {
       {
             return Validator::make(Input::all(), array(
                         'nombre' => 'required|min:4',
-                        'password' => 'required|min:2',
+                        'password' => 'required|min:9',
+                        'password' => array('regex:/^.*(?=.{8,15})(?=.*[a-z])(?=.*[A-Z])(?=.*[\d\W]).*$/'),
                         'password_confirmation' => 'required|same:password',
                         'dominio' => 'required',
                         'correo' => 'required|email|unique:user,email',
                         'plan' => 'required|exists:planes,nombre',
+            ), array(
+                        'password.regex' => 'La contraseña debe ser mayor de 9 caracteres. puedes utilizar mayúsculas, minúsculas, números y ¡ # $ *',
+                        'password_confirmation.same' => 'Las contraseñas no concuerdan'
             ));
       }
 
@@ -220,6 +224,9 @@ class AdminUsersController extends \BaseController {
                         'password' => 'min:2',
                         'password_confirmation' => 'same:password',
                         'correo' => 'email',
+            ), array(
+                        'password.regex' => 'La contraseña debe ser mayor de 9 caracteres. puedes utilizar mayúsculas, minúsculas, números y ¡ # $ *',
+                        'password_confirmation.same' => 'Las contraseñas no concuerdan'
             ));
       }
 

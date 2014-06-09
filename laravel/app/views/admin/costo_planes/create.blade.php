@@ -17,7 +17,7 @@
 </div>
 <div class="container">
 
-      {{ Form::open(array('route'=>'admin.costo_planes.store','id'=>'form_confirm')) }}
+      {{ Form::open(array('route'=>'admin.costos_planes.store','id'=>'form_confirm')) }}
 
       @foreach($errors->all() as $message)
       <div class="alert alert-danger">{{ $message }}</div>

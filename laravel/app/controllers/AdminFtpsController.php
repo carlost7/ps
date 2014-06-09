@@ -181,16 +181,24 @@ class AdminFtpsController extends \BaseController {
             return Validator::make(Input::all(), array(
                         'username' => 'required',
                         'home_dir' => '',
-                        'password' => 'required|min:4',
+                        'password' => 'required|min:9',
+                        'password' => array('regex:/^.*(?=.{8,15})(?=.*[a-z])(?=.*[A-Z])(?=.*[\d\W]).*$/'),
                         'password_confirmation' => 'required|same:password',
+                        ), array(
+                        'password.regex' => 'La contraseña debe ser mayor de 9 caracteres. puedes utilizar mayúsculas, minúsculas, números y ¡ # $ *',
+                        'password_confirmation.same' => 'Las contraseñas no concuerdan'
             ));
       }
 
       protected function getEditarFtpValidator()
       {
             return Validator::make(Input::all(), array(
-                        'password' => 'min:4',
+                        'password' => 'min:9',
+                        'password' => array('regex:/^.*(?=.{8,15})(?=.*[a-z])(?=.*[A-Z])(?=.*[\d\W]).*$/'),
                         'password_confirmation' => 'same:password',
+                        ), array(
+                        'password.regex' => 'La contraseña debe ser mayor de 9 caracteres. puedes utilizar mayúsculas, minúsculas, números y ¡ # $ *',
+                        'password_confirmation.same' => 'Las contraseñas no concuerdan'
             ));
       }
 

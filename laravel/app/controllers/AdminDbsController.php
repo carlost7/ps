@@ -133,8 +133,12 @@ class AdminDbsController extends \BaseController {
       protected function getDbsValidator()
       {
             return Validator::make(Input::all(), array(
-                        'password' => 'required|min:2',
+                        'password' => 'required|min:9',
+                        'password' => array('regex:/^.*(?=.{8,15})(?=.*[a-z])(?=.*[A-Z]).*$/'),
                         'password_confirmation' => 'required|same:password',
+            ), array(
+                        'password.regex' => 'La contraseña debe ser mayor de 9 caracteres. puedes utilizar mayúsculas, minúsculas, números y ¡ # $ *',
+                        'password_confirmation.same' => 'Las contraseñas no concuerdan'
             ));
       }
 

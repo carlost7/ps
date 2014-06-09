@@ -9,9 +9,9 @@ class CostoPlan extends Eloquent{
  
       protected $table = 'costos_planes';
       
-      public function dominio()
+      public function plan()
       {
-            return $this->belongsTo('Planes');
+            return $this->belongsTo('Plan');
       }      
 
 }

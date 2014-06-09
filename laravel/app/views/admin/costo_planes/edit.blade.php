@@ -3,7 +3,7 @@
 @section('title')
 @parent
 
-- Plan {{ $plan->nombre }} 
+- Editar Costo Plan {{ $costo_plan->plan->nombre }} <
 @stop
 
 
@@ -12,34 +12,33 @@
 
 <div class="jumbotron">
       <div class="container">
-            <h3>Agregar Plan</h3>
+            <h3>Editar Plan {{$costo_plan->plan->nombre}}</h3>
       </div>
 </div>
 <div class="container">
 
-      {{ Form::open(array('url'=>'admin/costos_planes/'.$correo->id,'id'=>'form_confirm')) }}
+      {{ Form::model($costo_plan, array('url'=>array('admin/costos_planes/'.$costo_plan->id),'method'=>'PUT')) }}
+      
 
       @foreach($errors->all() as $message)
       <div class="alert alert-danger">{{ $message }}</div>
       @endforeach
 
-      <div class="form-group">
-            <label for="nombre">Nombre plan</label>
-            <input type="text" name="nombre" value="{{ $plan->nombre }}" class="form-control" id="nombre" disabled="disabled" >
-      </div>
+      
+      
       <div class="form-group">
             <label for="costo_mensual">Costo Mensual</label>
-            <input type="text" name="costo_mensual" value="{{ Input::old('nombre')}}" class="form-control" id="Costo_mensual" >
+            <input type="text" name="costo_mensual" value="{{ $costo_plan->costo_mensual }}" class="form-control" id="Costo_mensual" >
       </div>
       <div class="form-group">
             <label for="costo_anual">Costo Anual</label>
-            <input type="text" name="costo_anual" value="{{ Input::old('costo_anual')}}" class="form-control" id="Costo_anual" >
+            <input type="text" name="costo_anual" value="{{ $costo_plan->costo_anual}}" class="form-control" id="Costo_anual" >
       </div>
       <div class="form-group">
             <label for="moneda">Moneda</label>
-            <input type="text" name="moneda" value="{{ Input::old('moneda')}}" class="form-control" id="Moneda" >
+            <input type="text" name="moneda" value="{{ $costo_plan->moneda}}" class="form-control" id="Moneda" >
       </div>      
-      <button type="submit" id='confirmar' class="btn btn-success">Crear Plan</button>
+      <button type="submit" id='confirmar' class="btn btn-success">Editar Plan</button>
       {{ Form::close() }}
 </div>
 

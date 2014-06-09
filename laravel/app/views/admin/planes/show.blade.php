@@ -27,6 +27,10 @@
             <li>Q. Database: {{ $plan->quota_dbs }}</li>
       </ul>    
       
+      <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Lista de Planes</div>
+      
       <div class="table-responsive">
             <h2>Costo de los planes</h2>
                   <table class="table">
@@ -37,9 +41,9 @@
                               <th>Editar</th>
                               <th>Eliminar</th>
                         </tr>
-                        @if($costo_planes->count())
+                        @if($costo_plan->count())
 
-                        @foreach($costo_planes as $costo)
+                        @foreach($costo_plan as $costo)
                         <tr>
 
                               <td>{{$costo->costo_mensual}}</td>
@@ -57,9 +61,10 @@
                         @endif
                   </table>
                   
-            <p>{{ HTML::link('costos_planes/'.$plan->id.'/add_costo','Agregar Correo',null,array('class'=>'btn btn-primary btn-lg')) }}</p>  
+            <p>{{ HTML::link('admin/costos_planes/'.$plan->id.'/add_costo','Agregar Nuevo Costo',array('class'=>'btn btn-primary btn-lg')) }}</p>  
             
             </div>
+      </div>
 
 </div>
 

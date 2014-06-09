@@ -266,7 +266,7 @@ class UsuariosController extends BaseController {
 
             return Validator::make(Input::all(), array(
                         'correo' => 'required|email',
-                        'password' => 'required',
+                        'password' => 'required|min:9',
             ));
       }
 
@@ -278,8 +278,7 @@ class UsuariosController extends BaseController {
       {
             return Validator::make(Input::all(), array(
                         'email' => 'required|email',
-                        'password' => 'required',
-                        'password_confirmation' => 'required|same:password',
+                        'password' => 'required',                        
             ));
       }
 

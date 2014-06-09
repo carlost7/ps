@@ -5,7 +5,7 @@
  *
  * @author carlos
  */
-class CostoPlan {
+class CostoPlan extends Eloquent{
  
       protected $table = 'costos_planes';
       

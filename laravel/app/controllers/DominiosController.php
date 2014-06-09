@@ -29,27 +29,9 @@ class DominiosController extends BaseController {
        * Pagina inicial de dominios (inicial de la aplicación
        */
 
-      public function iniciarDominios()
+      public function index()
       {
-            return View::make('dominios.dominios');
-      }
-
-      /*
-       * Carga la vista de nuevo dominio 
-       */
-
-      public function dominioNuevo()
-      {
-            return View::make('dominios.nuevo');
-      }
-
-      /*
-       * Carga la vista de dominio existente
-       */
-
-      public function dominioExistente()
-      {
-            return View::make('dominios.existente');
+            return View::make('dominios.index');
       }
 
       /*
@@ -85,9 +67,74 @@ class DominiosController extends BaseController {
             return Response::json($response);
       }
 
-      
-      
+      /*
+        |-----------------------------------
+        | Esta función permite agregar usuarios al sistema y agregar su nombre de dominio
+        | cuando el usuario pague sus servicios, se agregará el dominio a su usuario;
+        | Pasos:
+        | 1.- Comprobar los datos, nombre de dominio, nombre de usuario, correo, etc.
+        | 2.- Obtener los datos del formulario
+        | 3.- Crear un usuario nuevo
+        | 4.- Agregar el dominio requerido a dominio pendiente
+        | 5.- Agregar el pago a la base de datos
+        | 6.- Enviar al usuario a la página de mercado pago o servicios de cobro
+        | 7.- Obtener del usuario el pago.
+        |------------------------------------
+       */
+
       public function confirmarDominio()
+      {
+            $dominio_pendiente = Session::get('dominio_pendiente');
+            if (!isset($dominio_pendiente))
+            {
+                  Session::flash('error', 'No existe el dominio que se agregará');
+                  return Redirect::back();
+            }
+            $validator = $this->getValidatorConfirmUser();
+            if ($validator->passes())
+            {
+                  $nombre = Input::get('nombre');
+                  $correo = Input::get('correo');
+                  $password = Input::get('password');
+                  $plan = Input::get('plan');
+                  $tipo_pago = Input::get('tipo_pago');
+                  $tiempo_servicio = Input::get('tiempo_servicio');
+                  $moneda = 'MXN';
+                  
+                  if (Session::get('dominio_existente') == 1)
+                  {
+                        $precio_dominio = 12.00;                        
+                        $precio_dominio_moneda = PagosController::convertirMoneda($precio_dominio, 'USD', $moneda);
+                  }
+                  
+                  dd($precio_dominio_moneda);
+                  
+            }
+            return Redirect::back()->withErrors($validator->messages);
+      }
+
+      /*
+       * Esta funcion obtendrá los datos del usuario anonimo para redirigirlo a la página de servicios
+       */
+
+      public function obtenerDominioRequerido()
+      {
+            $validator = $this->getValidatorComprobarNombreDominio();
+            if ($validator->passes())
+            {
+                  Session::put('dominio_pendiente', Input::get('dominio'));
+                  Session::put('dominio_existente', Input::get('existente'));
+                  $planes = $this->Plan->listarPlanes();
+                  return View::make('dominios.confirmar')->with(array('planes'=>$planes));
+            }
+            return Redirect::back()->withErrors($validator->messages);
+      }
+
+      /*
+       * Confirmar la compra del dominio;
+       */
+
+      public function confirmarDominio1()
       {
             if ($this->isPostRequest())
             {
@@ -142,25 +189,6 @@ class DominiosController extends BaseController {
                   }
                   DB::rollback();
                   return Redirect::back()->withInput()->withErrors($validator->messages());
-            }
-            else
-            {
-                  $dominio = Input::get('dominio');
-                  $validator = $this->getValidatorComprobarNombreDominio($dominio);
-                  if ($validator->passes())
-                  {
-                        Session::put('posible_dominio', Input::get('dominio'));
-                        Session::put('existente', Input::get('existente'));
-                        Session::put('costo_dominio', '8.00');
-                        $planes = $this->Plan->listarPlanes();
-                        return View::make('dominios.confirmar', array('dominio' => Input::get('dominio'), 'planes' => $planes));
-                  }
-                  else
-                  {
-                        $resultado = false;
-                        $mensaje = $validator->messages()->first('dominio');
-                        return Redirect::back()->withErrors($validator)->withInput();
-                  }
             }
       }
 
@@ -218,20 +246,32 @@ class DominiosController extends BaseController {
             DB::rollback();
             return Redirect::back()->withInput()->withErrors($validator->messages());
       }
-
+      
+      /*
+       */
+      public static function getCostoDominio($dominio){
+            
+            return $costo_dominio = 12.00;
+            
+      }
+      
+      /*
+       * 
+       */
       protected function getValidatorConfirmUser()
       {
             return Validator::make(Input::all(), array(
                         'nombre' => 'required|min:4',
                         'password' => 'required|min:2',
                         'password_confirmation' => 'required|same:password',
-                        'dominio' => 'required',
                         'correo' => 'required|email|unique:user,email',
-                        //'plan' => 'required|exists:planes,nombre',
+                        'plan' => 'required|exists:planes,id',
                         'aceptar' => 'required|accepted'
             ));
       }
 
+      /*
+       */
       protected function getValidatorComprobarNombreDominio()
       {
             return Validator::make(Input::all(), array(

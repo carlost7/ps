@@ -7,87 +7,121 @@
  */
 class PagosRepositoryMercadoPago implements PagosRepository {
 
-      public function generarPreferenciaPago($preference_data)
-      {
-            $pagos = new MercadoPagoFunciones();
-            $preference = $pagos->create_preference($preference_data);
-            return $preference;
-      }
+      protected $usuario_model;
 
-      public function generarLinkPago($preference)
+      public function agregar_pago($concepto, $usuario_model, $monto, $descripcion, $inicio, $vencimiento, $activo, $no_orden, $status)
       {
-            $link = $preference['response'][config::get('payment.init_point')];
-            return $link;
-      }
-
-      public function generarLinkPagoRecurrente($preapproval_data)
-      {
-            $pagos = new MercadoPagoFunciones();
-            $link = $pagos->create_preapproval_payment($preapproval_data);
-            return $link;
-      }
-
-      public function generarPagoBase($tipo_pago, $usuario_model, $monto, $descripcion, $inicio, $vencimiento, $activo, $no_orden, $status)
-      {
-            $pago = new Pago();
-            $pago->tipo_pago = $tipo_pago;
-            $pago->usuario_id = $usuario_model->id;
-            $pago->monto = $monto;
-            $pago->descripcion = $descripcion;
-            $pago->inicio = $inicio;
-            $pago->vencimiento = $vencimiento;
-            $pago->activo = $activo;
-            $pago->no_orden = $no_orden;
-            $pago->status = $status;
-            if ($pago->save())
+            try
             {
-                  return true;
-            }
-            else
-            {
-                  return false;
-            }
-      }
-
-      public function obtenerPagosUsuario($id)
-      {
-            return Pago::where('usuario_id', '=', $id)->get();
-      }
-
-      public function actualizarRegistroPagoExterno($numero_orden, $status)
-      {
-            $pagos = Pago::where('no_orden', $numero_orden)->get();
-            foreach ($pagos as $pago)
-            {
+                  $pago = new Pago();
+                  $pago->concepto = $concepto;
+                  $pago->usuario_id = $usuario_model->id;
+                  $pago->monto = $monto;
+                  $pago->descripcion = $descripcion;
+                  $pago->inicio = new DateTime($inicio);
+                  $pago->vencimiento = new DateTime($vencimiento);
+                  $pago->activo = $activo;
+                  $pago->no_orden = $no_orden;
                   $pago->status = $status;
+
                   if ($pago->save())
                   {
-                        $usuario = $pago->user;
+                        return $pago;
+                  }
+                  else
+                  {
+                        Session::put('error','No se guardo el pago en la base de datos');
+                        return null;
                   }
             }
-
-            if (isset($usuario))
+            catch (Exception $e)
             {
-                  return $usuario;
-            }
-            else
-            {
-                  return false;
+                  Log::error('PagosRepositoryMercadoPago.Agregar_pago ' . print_r($e, true));
+                  Session::put('error', 'Ocurrio un error al guardar el pago en la base de datos');
+                  return null;
             }
       }
 
-      public function recibirNotificacionPago($id)
+      public function editar_pago($id, $concepto, $usuario_model, $monto, $descripcion, $inicio, $vencimiento, $activo, $no_orden, $status)
       {
-            $pagos = new MercadoPagoFunciones();
-            $response = $pagos->recibir_notificacion($id);
-            if (isset($response))
+            try
             {
-                  return $response;
+                  $pago = Pago::find($id);
+
+                  if (isset($pago))
+                  {
+                        $pago->concepto = $concepto;
+                        $pago->usuario_id = $usuario_model->id;
+                        $pago->monto = $monto;
+                        $pago->descripcion = $descripcion;
+                        $pago->inicio = new DateTime($inicio);
+                        $pago->vencimiento = new DateTime($vencimiento);
+                        $pago->activo = $activo;
+                        $pago->no_orden = $no_orden;
+                        $pago->status = $status;
+
+                        if ($pago->save())
+                        {
+                              return $pago;
+                        }
+                        else
+                        {
+                              return null;
+                        }
+                  }else{
+                        Session::put('error','No existe el pago en la base');
+                        return null;
+                  }
             }
-            else
+            catch (Exception $e)
             {
+                  Log::error('PagosRepositoryMercadoPago.Agregar_pago ' . print_r($e, true));
+                  Session::put('error', 'Ocurrio un error al editar el pago en la base de datos');
                   return null;
             }
+      }
+
+      public function eliminar_pago($id)
+      {
+       
+            try{
+                  
+                  $pago = Pago::find($id);
+                  
+                  if(isset($pago)&& $pago->id){
+                        
+                  }else{
+                        
+                  }
+                  
+            }catch(Exception $e){
+                  Log::error('PagosRepositoryMercadoPago.Agregar_pago ' . print_r($e, true));
+                  Session::put('error', 'Ocurrio un error al eliminar el pago de la base de datos');
+                  return null;
+            }
+            
+      }
+
+      public function generar_preferencia()
+      {
+            
+      }
+
+      public function listar_pagos()
+      {
+            $pagos = Pago::where('usuario_id', $this->usuario_model->id)->get();
+            return $pagos;
+      }
+
+      public function obtener_pago($id)
+      {
+            $pagos = Pago::find($id);
+            return $pago;
+      }
+
+      public function set_attributes($usuario_model)
+      {
+            $this->usuario_model = $usuario_model;
       }
 
 }

@@ -33,18 +33,24 @@ Route::any('usuario/reset/{token}', array('as' => 'usuario/reset', 'uses' => 'Us
   | Rutas para agregar dominios
   |--------------------------------
  */
-Route::any('dominio', array('as' => 'dominio/inicio', 'uses' => 'DominiosController@iniciarDominios'));
-Route::any('dominio/nuevo', array('as' => 'dominio/nuevo', 'uses' => 'DominiosController@dominioNuevo'));
-Route::any('dominio/existente', array('as' => 'dominio/existente', 'uses' => 'DominiosController@dominioExistente'));
-Route::any('dominio/comprobar', array('as' => 'dominio/comprobar', 'uses' => 'DominiosController@comprobarDominio'));
-Route::any('dominio/confirmar_dominio', array('as' => 'dominio/confirmar_dominio', 'uses' => 'DominiosController@confirmarDominio'));
+Route::get('dominio', array('as' => 'dominio.inicio', 'uses' => 'DominiosController@index'));
+Route::post('dominio/datos_usuario', array('as' => 'dominio.datos_usuario', 'uses' => 'DominiosController@obtenerDominioRequerido'));
+Route::post('dominio/confirmar_dominio', array('as' => 'dominio.confirmar_dominio', 'uses' => 'DominiosController@confirmarDominio'));
+Route::post('dominio/comprobar', array('as' => 'dominio/comprobar', 'uses' => 'DominiosController@comprobarDominio'));
+
+
+/*
+  |----------------------------------
+  | Rutas para pagos
+  |----------------------------------
+ */
 
 Route::any('pagos/confirmar_registro', array('as' => 'pagos/confirmar_registro', 'uses' => 'PagosController@confirmarRegistro'));
-Route::any('pagos/descripcion', array('as' => 'pagos/descripcion', 'uses' => 'PagosController@getCostoTotal'));
+Route::any('pagos/descripcion', array('as' => 'pagos/descripcion', 'uses' => 'PagosController@obtenerCostoServiciosInicialesAjax'));
 Route::any('pagos/pago_cancelado', array('as' => 'pagos/pago_cancelado', 'uses' => 'PagosController@cancelarPago'));
 Route::any('pagos/pago_aceptado', array('as' => 'pagos/pago_aceptado', 'uses' => 'PagosController@aceptarPago'));
 Route::any('pagos/pago_pendiente', array('as' => 'pagos/pago_pendiente', 'uses' => 'PagosController@pagoPendiente'));
-Route::any('pagos/notificacion_mercadopago',array('as' => 'pagos/notificacion_mercadopago', 'uses'=>'PagosController@obtenerIPNMercadoPago'));
+Route::any('pagos/notificacion_mercadopago', array('as' => 'pagos/notificacion_mercadopago', 'uses' => 'PagosController@obtenerIPNMercadoPago'));
 
 /*
   |--------------------------------------------------------
@@ -106,6 +112,9 @@ Route::group(array('before' => 'auth'), function() {
             Route::resource('dbs', 'AdminDbsController');
 
             Route::resource('planes', 'AdminPlanesController');
+            
+            Route::resource('costos_planes', 'AdminCostoPlanController');
+            Route::get('costos_planes/{plan_id}/add_costo',array('as'=>'costos.planes.add','uses'=>'AdminCostoPlanController@create'));
       });
 });
 

@@ -16,7 +16,7 @@
       <div class="container">
             <h1>Bienvenido a Primer Server!</h1>
             <p>La forma más facil de tener tu página y correos en internet.</p>
-            <p>{{ HTML::linkRoute('dominio/inicio','Iniciar',null,array('class'=>'btn btn-primary btn-lg')) }}</p>
+            <p>{{ HTML::linkRoute('dominio.inicio','Iniciar',null,array('class'=>'btn btn-primary btn-lg')) }}</p>
       </div>
 </div>
 

@@ -74,8 +74,9 @@ class AdminPlanesController extends \BaseController {
        */
       public function show($id)
       {
-            $plan = $this->Plan->Usuario->obtenerUsuario($id);
-            return View::make('admin.planes.show')->with('plan', $plan);
+            $plan = $this->Plan->mostrarPlan($id);
+            $costo_planes = $this->Plan->obtenerCostosPlanes($plan);
+            return View::make('admin.planes.show')->with(array('plan'=>$plan,'costo_plan'=>$costo_planes));
       }
 
       /**

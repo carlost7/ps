@@ -34,7 +34,7 @@
                         @foreach($planes as $plan)
                         <tr>
 
-                              <td>{{$plan->nombre}}</td>
+                              <td>{{ HTML::link('admin/planes/'.$plan->id,$plan->nombre) }}</td>
                               <td>{{$plan->domain}}</td>
                               <td>{{$plan->name_server}}</td>
                               <td>{{$plan->numero_correos}}</td>

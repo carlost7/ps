@@ -24,4 +24,19 @@ interface PlanRepository {
       public function editarPlan($id, $nombre, $dominio, $name_server, $numero_correos, $quota_correos, $numero_ftps, $quota_ftps, $numero_dbs, $quota_dbs);
 
       public function eliminarPlan($id);
+
+      /* Costo de los planes */
+
+      public function mostrarCostoPlan($id);
+      
+      public function obtenerCostoPlan($id, $moneda);
+      
+      public function obtenerCostosPlanes($plan_model);
+
+      public function agregarCostoPlan($id_plan, $costo_mensual, $costo_anual, $moneda);
+
+      public function editarCostoPlan($id, $costo_mensual, $costo_anual, $moneda);
+
+      public function eliminarCostoPlan($id);
+      
 }

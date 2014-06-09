@@ -27,13 +27,15 @@ function comprobar_dominio(dominio,callback) {
     });
 }
 
-function obtener_descripcion_costo(plan,tipo_pago,tiempo_servicio,callback) {
+function obtener_descripcion_costo(dominio,plan,tipo_pago,tiempo_servicio,moneda,callback) {
     var result = $.post(
             base_url + '/pagos/descripcion',
             {"_token": $(document).find('input[name=_token]').val()
                 ,"plan": plan
                 ,"tipo_pago":tipo_pago
                 ,"tiempo_servicio":tiempo_servicio
+                ,"moneda":moneda
+                ,"dominio":dominio
             }
     );
     result.done(function(data){

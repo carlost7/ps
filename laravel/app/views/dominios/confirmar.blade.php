@@ -13,19 +13,18 @@
 <div class="jumbotron">
 
       <div class="container">
-            <h1>{{ $dominio }} casí esta listo</h1>
+            <h1>{{ Session::get('dominio_pendiente') }} casí esta listo</h1>
             <h2>Solo llena los datos para terminar</h2>
       </div>
 </div>
 <div class="container">
 
-      {{ Form::open(array('route'=>'dominio/confirmar_dominio','id'=>'form_confirm')) }}
+      {{ Form::open(array('route'=>'dominio.confirmar_dominio','id'=>'form_confirm')) }}
 
       @foreach($errors->all() as $message)
       <div class="alert alert-danger">{{ $message }}</div>
       @endforeach
-
-      <input type="hidden" name="dominio" value="{{ $dominio }}">
+      
       <div class="form-group">
             <label for="Nombre">Nombre</label>
             <input type="text" name="nombre" value="{{ Input::old('nombre')}}" class="form-control" id="Nombre" placeholder="Escribe tu nombre">
@@ -52,6 +51,7 @@
       <div class="form-group">
             <label>Elegir plan</label>
             @foreach($planes as $plan)
+            
             <div class="radio">
                   <label>
                         {{Form::radio('plan', $plan->id) }}
@@ -96,7 +96,7 @@
             </div>
       </div>
 
-      <div class="alert hidden" id="resultado"><p></p></div>
+      <div class="alert alert-info hidden" id="resultado"></div>
 
       <button type="submit" id='confirmar' class="btn btn-success">Confirmar Compra</button>
       {{ Form::close() }}
@@ -144,15 +144,30 @@
       });
 
       function obtenerCosto() {
-
+            
+            var dominio = "{{Session::get('dominio_pendiente')}}";
             var plan = $('[name="plan"]:checked').val();
             var tipo_pago = $('[name="tipo_pago"]:checked').val();
             var tiempo_servicio = $('[name="tiempo_servicio"]:checked').val();
+            var moneda = 'MXN';
 
-            obtener_descripcion_costo(plan, tipo_pago, tiempo_servicio, function(result) {
+            obtener_descripcion_costo(dominio, plan, tipo_pago, tiempo_servicio, moneda, function(result) {
                   $('#resultado').removeClass('hidden');
                   $('#resultado').addClass('show');
-                  $('#resultado').text("Total: " + result['total'] + " Descripción: " + result['descripcion']);
+                  
+                  result[0]['costo_servicio'];
+                  
+                  
+                  resultado = '<ul>';
+                  resultado += '<li>'+result[0]['costo_servicio']+' '+result[0]['descripcion_servicio']+'</li>';
+                  if(result[0]['costo_dominio']!=null){
+                        resultado += '<li>'+result[0]['costo_dominio']+' '+result[0]['descripcion_dominio']+'</li>';
+                  }
+                  resultado += '<li>Total: '+result[0]['total']+'</li>';
+                  resultado += '</ul>';                  
+                  
+                  $('#resultado').html(resultado);
+                  
             });
 
 

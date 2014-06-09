@@ -14,7 +14,7 @@ class CreateTablePagosUsuario extends Migration {
       {
             Schema::create('pagos', function(Blueprint $table) {
                   $table->increments('id');
-                  $table->string('Concepto');
+                  $table->string('concepto');
                   $table->integer('usuario_id')->unsigned();
                   $table->decimal('monto');
                   $table->string('descripcion');

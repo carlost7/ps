@@ -80,7 +80,7 @@ class HomeController extends BaseController {
             }
             if (strpos($available_sets, 'd') !== false)
             {
-                  $sets[] = '23456789';
+                  $sets[] = '123456789';
             }
             if (strpos($available_sets, 's') !== false)
             {

@@ -22,7 +22,7 @@
             </div>                        
       </div>
       <div class="clearfix"></div>
-      {{ Form::open(array('route'=>'dominio/confirmar_dominio','id'=>'form_confirm','method'=>'GET')) }}
+      {{ Form::open(array('route'=>'dominio.datos_usuario','id'=>'form_confirm')) }}
       <div class="form-group">                       
             <div class="input-group">
                   <span class="input-group-addon">

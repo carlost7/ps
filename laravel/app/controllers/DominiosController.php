@@ -83,23 +83,31 @@ class DominiosController extends BaseController {
 
       public function obtenerDominioRequerido()
       {
-            $validator = $this->getValidatorComprobarNombreDominio();
-            if ($validator->passes())
+            if ($this->isPostRequest())
             {
-                  Session::put('dominio_pendiente', Input::get('dominio'));
-                  if (Input::get('ajeno'))
+                  $validator = $this->getValidatorComprobarNombreDominio();
+                  if ($validator->fails())
                   {
-                        Session::put('dominio_ajeno', true);
+
+                        return Redirect::back()->withErrors($validator->messages());
                   }
                   else
                   {
-                        Session::put('dominio_ajeno', false);
-                  }
 
-                  $planes = $this->Plan->listarPlanes();
-                  return View::make('dominios.confirmar')->with(array('planes' => $planes));
+                        Session::put('dominio_pendiente', Input::get('dominio'));
+                        if (Input::get('ajeno'))
+                        {
+                              Session::put('dominio_ajeno', true);                              
+                        }
+                        else
+                        {
+                              
+                              Session::put('dominio_ajeno', false);
+                        }
+                  }
             }
-            return Redirect::back()->withErrors($validator->messages());
+            $planes = $this->Plan->listarPlanes();
+            return View::make('dominios.confirmar')->with(array('planes' => $planes));
       }
 
       /*

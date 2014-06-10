@@ -24,7 +24,7 @@ class DominioRepositoryEloquent implements DominioRepository {
             Db::beginTransaction();
             if ($this->agregarDominioServidor($nombre_dominio, $plan_id, $password))
             {
-                  Log::error('Agregar Dominio');                  
+                  Log::error('Agregar Dominio');
                   $dominio = $this->agregarDominioBase($usuario_id, $nombre_dominio, true, $plan_id);
                   if (isset($dominio->id))
                   {
@@ -150,22 +150,30 @@ class DominioRepositoryEloquent implements DominioRepository {
        * Apartar domnio para un usuario
        */
 
-      public function apartarDominio($user_model, $dominio, $is_propio, $plan_model)
+      public function apartarDominio($user_model, $dominio, $is_ajeno, $plan_model)
       {
-
-            $dominio_pendiente = new DominioPendiente();
-
-            $dominio_pendiente->usuario_id = $user_model->id;
-            $dominio_pendiente->dominio = $dominio;
-            $dominio_pendiente->is_propio = $is_propio;
-            $dominio_pendiente->plan_id = $plan_model->id;
-
-            if ($dominio_pendiente->save())
+            try
             {
-                  return true;
+                  $dominio_pendiente = new DominioPendiente();
+
+                  $dominio_pendiente->usuario_id = $user_model->id;
+                  $dominio_pendiente->dominio = $dominio;
+                  $dominio_pendiente->is_ajeno = $is_ajeno;
+                  $dominio_pendiente->plan_id = $plan_model->id;
+
+                  if ($dominio_pendiente->save())
+                  {
+                        return true;
+                  }
+                  else
+                  {
+                        return false;
+                  }
             }
-            else
+            catch (Exception $e)
             {
+                  Session::flash('error',"ocurrio un error al tratar de apartar el dominio");
+                  Log::error('DominiosRepositoryEloquent. apartarDominio ' . print_r($e, true));
                   return false;
             }
       }

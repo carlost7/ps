@@ -20,7 +20,7 @@ class PlanRepositoryEloquent implements PlanRepository {
             return $plan;
       }
 
-      public function obtenerPlanNombre($nombre)
+      public function obtenerPlanByNombre($nombre)
       {
             $plan = Plan::where('nombre', '=', $nombre)->first();
             if ($plan->id)
@@ -147,7 +147,7 @@ class PlanRepositoryEloquent implements PlanRepository {
             }
       }
 
-      public function obtenerCostoPlan($id, $moneda)
+      public function obtenerCostoPlanByMoneda($id, $moneda)
       {
             $costo_plan = CostoPlan::where('plan_id', $id, 'and')->where('moneda', $moneda)->first();
             return $costo_plan;

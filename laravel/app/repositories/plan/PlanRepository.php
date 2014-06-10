@@ -17,19 +17,18 @@ interface PlanRepository {
 
       public function mostrarPlan($id);
 
-      public function obtenerPlanNombre($nombre);
-
       public function agregarPlan($nombre, $dominio, $name_server, $numero_correos, $quota_correos, $numero_ftps, $quota_ftps, $numero_dbs, $quota_dbs);
 
       public function editarPlan($id, $nombre, $dominio, $name_server, $numero_correos, $quota_correos, $numero_ftps, $quota_ftps, $numero_dbs, $quota_dbs);
 
       public function eliminarPlan($id);
 
+      
       /* Costo de los planes */
 
       public function mostrarCostoPlan($id);
       
-      public function obtenerCostoPlan($id, $moneda);
+      public function obtenerCostoPlanByMoneda($id, $moneda);
       
       public function obtenerCostosPlanes($plan_model);
 

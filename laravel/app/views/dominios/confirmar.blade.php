@@ -100,6 +100,8 @@
       </div>
 
       <div class="alert alert-info hidden" id="resultado"></div>
+      
+      <input type="hidden" name='moneda' value="MXN" id='moneda' />
 
       <button type="submit" id='confirmar' class="btn btn-success">Confirmar Compra</button>
       {{ Form::close() }}
@@ -158,7 +160,7 @@
             var plan = $('[name="plan"]:checked').val();
             var tipo_pago = $('[name="tipo_pago"]:checked').val();
             var tiempo_servicio = $('[name="tiempo_servicio"]:checked').val();
-            var moneda = 'MXN';
+            var moneda = $('#moneda').val();
 
             obtener_descripcion_costo(dominio, plan, tipo_pago, tiempo_servicio, moneda, function(result) {
                   $('#resultado').removeClass('hidden');

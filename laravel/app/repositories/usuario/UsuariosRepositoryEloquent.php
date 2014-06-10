@@ -55,7 +55,7 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
                   }
                   else
                   {
-                        return false;
+                        return null;
                   }
             }
             catch (Exception $e)

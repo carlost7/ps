@@ -19,7 +19,7 @@ interface DominioRepository {
 
       public function eliminarDominio($dominio_model);
 
-      public function apartarDominio($user_model, $dominio, $is_propio, $plan_model);
+      public function apartarDominio($user_model, $dominio, $is_ajeno, $plan_model);
 
       public function obtenerDominioPendiente($user_model);
 }

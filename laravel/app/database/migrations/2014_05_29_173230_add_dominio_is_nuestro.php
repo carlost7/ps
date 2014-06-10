@@ -14,7 +14,7 @@ class AddDominioIsNuestro extends Migration {
 	{
 		Schema::table('dominios', function(Blueprint $table)
 		{
-			$table->boolean('is_nuestro');
+			$table->boolean('is_ajeno');
 		});
 	}
 
@@ -27,7 +27,7 @@ class AddDominioIsNuestro extends Migration {
 	{
 		Schema::table('dominios', function(Blueprint $table)
 		{
-			$table->dropColumn('is_nuestro');
+			$table->dropColumn('is_ajeno');
 		});
 	}
 

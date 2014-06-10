@@ -26,7 +26,7 @@
       <div class="form-group">                       
             <div class="input-group">
                   <span class="input-group-addon">
-                        <input type="checkbox" id="existente" name="existente" value="1"> Ya tengo dominio:
+                        <input type="checkbox" id="existente" name="ajeno" value="1"> Ya tengo dominio:
                   </span>
                   <input type="text" class="form-control" id="dominio" name="dominio" placeholder="Escribir el nombre del dominio que quieres utilizar">
                   <span class="input-group-btn">
@@ -75,8 +75,8 @@
             $('#crear').attr('disabled',true);            
       }
 
-      $('#existente').click(function() {
-            if ($('#existente').is(':checked')) {
+      $('#ajeno').click(function() {
+            if ($('#ajeno').is(':checked')) {
                   $('#crear').removeAttr('disabled');
                   $('#crear').addClass('btn-success');
                   $('#Comprobar').attr('disabled', 'disabled');

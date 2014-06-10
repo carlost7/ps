@@ -63,13 +63,13 @@ class PagosController extends \BaseController {
 
             $planes = new PlanRepositoryEloquent();
             //Obtenemos el costo del servicio
-            $costo_servicio = $planes->obtenerCostoPlan($plan, $moneda);
+            $costo_servicio = $planes->obtenerCostoPlanByMoneda($plan, $moneda);
 
             //Obtenemos el costo del dominio, si es que el dominio será nuestro
-            $dominio_existente = Session::get('dominio_existente');
+            $dominio_ajeno = Session::get('dominio_ajeno');
             $costo_dominio_moneda = null;
             $descripcion_dominio = null;
-            if ($dominio_existente != 1)
+            if ($dominio_ajeno)
             {
                   $costo_dominio = DominiosController::getCostoDominio($dominio);
                   $costo_dominio_moneda = $this->convertirMoneda($costo_dominio, 'USD', $moneda);
@@ -88,13 +88,13 @@ class PagosController extends \BaseController {
             }
 
             $total = $costo_servicio + $costo_dominio_moneda;
-            
-            $costo = array('costo_servicio'=>$costo_servicio,
-                  'descripcion_servicio'=>$descripcion_servicio,
-                  'costo_dominio'=>$costo_dominio_moneda,
-                  'descripcion_dominio'=>$descripcion_dominio,
-                  'total'=>$total);
-            
+
+            $costo = array('costo_servicio' => $costo_servicio,
+                  'descripcion_servicio' => $descripcion_servicio,
+                  'costo_dominio' => $costo_dominio_moneda,
+                  'descripcion_dominio' => $descripcion_dominio,
+                  'total' => $total);
+
             return array($costo);
       }
 
@@ -109,6 +109,40 @@ class PagosController extends \BaseController {
             preg_match("/<span class=bld>(.*)<\/span>/", $data, $converted);
             $converted = preg_replace("/[^0-9.]/", "", $converted[1]);
             return round($converted, 2);
+      }
+
+      /*
+       * Guarda el pago de servicio en la base de datos para un usuario 
+       * y genera una referencia para que el usuario pueda pagar
+       * 
+       * Generar los datos de preferencia
+       * 
+       * Guardar los datos en la base de datos.
+       * 
+       * 
+       * 
+       */
+
+      public static function generarPagoServiciosIniciales()
+      {
+
+            $preference_data = $this->generarPreferenceData();
+
+            $this->Pagos->agregar_pago($concepto, $usuario_model, $monto, $descripcion, $inicio, $vencimiento, $activo, $no_orden, $status);
+      }
+
+      /*
+       * Generar xml con datos de la preferencia
+       */
+      protected function generarPreferenceData()
+      {
+            $preference_data = array(
+                  "items" => $this->generarItems('nuevo_registro', $plan),
+                  
+                  "payer" => $this->generarPayer(),
+                  
+                  "back_urls" => $this->generarBackUrls('nuevo_registro'),
+            );
       }
 
 }

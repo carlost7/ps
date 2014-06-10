@@ -68,6 +68,31 @@ class DominiosController extends BaseController {
       }
 
       /*
+       * Esta funcion obtendrá los datos del usuario anonimo para redirigirlo a la página de servicios
+       */
+
+      public function obtenerDominioRequerido()
+      {
+            $validator = $this->getValidatorComprobarNombreDominio();
+            if ($validator->passes())
+            {
+                  Session::put('dominio_pendiente', Input::get('dominio'));
+                  if (Input::get('ajeno'))
+                  {
+                        Session::put('dominio_ajeno', true);
+                  }
+                  else
+                  {
+                        Session::put('dominio_ajeno', false);
+                  }
+
+                  $planes = $this->Plan->listarPlanes();
+                  return View::make('dominios.confirmar')->with(array('planes' => $planes));
+            }
+            return Redirect::back()->withErrors($validator->messages);
+      }
+
+      /*
         |-----------------------------------
         | Esta función permite agregar usuarios al sistema y agregar su nombre de dominio
         | cuando el usuario pague sus servicios, se agregará el dominio a su usuario;
@@ -78,8 +103,7 @@ class DominiosController extends BaseController {
         | 4.- Agregar el dominio requerido a dominio pendiente
         | 5.- Agregar el pago a la base de datos
         | 6.- Enviar al usuario a la página de mercado pago o servicios de cobro
-        | 7.- Obtener del usuario el pago.
-        |------------------------------------
+        |--------------------------------------
        */
 
       public function confirmarDominio()
@@ -90,160 +114,56 @@ class DominiosController extends BaseController {
                   Session::flash('error', 'No existe el dominio que se agregará');
                   return Redirect::back();
             }
+            //1.- 
             $validator = $this->getValidatorConfirmUser();
             if ($validator->passes())
             {
+                  //2.-
                   $nombre = Input::get('nombre');
                   $correo = Input::get('correo');
                   $password = Input::get('password');
-                  $plan = Input::get('plan');
+                  $plan_id = Input::get('plan');
                   $tipo_pago = Input::get('tipo_pago');
                   $tiempo_servicio = Input::get('tiempo_servicio');
-                  $moneda = 'MXN';
-
-                  if (Session::get('dominio_existente') == 1)
-                  {
-                        $precio_dominio = 12.00;
-                        $precio_dominio_moneda = PagosController::convertirMoneda($precio_dominio, 'USD', $moneda);
-                  }
-
-                  dd($precio_dominio_moneda);
-            }
-            return Redirect::back()->withErrors($validator->messages);
-      }
-
-      /*
-       * Esta funcion obtendrá los datos del usuario anonimo para redirigirlo a la página de servicios
-       */
-
-      public function obtenerDominioRequerido()
-      {
-            $validator = $this->getValidatorComprobarNombreDominio();
-            if ($validator->passes())
-            {
-                  Session::put('dominio_pendiente', Input::get('dominio'));
-                  Session::put('dominio_existente', Input::get('existente'));
-                  $planes = $this->Plan->listarPlanes();
-                  return View::make('dominios.confirmar')->with(array('planes' => $planes));
-            }
-            return Redirect::back()->withErrors($validator->messages);
-      }
-
-      /*
-       * Confirmar la compra del dominio;
-       */
-
-      public function confirmarDominio1()
-      {
-            if ($this->isPostRequest())
-            {
+                  $moneda = Input::get('moneda');
+                  $dominio_ajeno = Session::get('dominio_ajeno');
+                  $dominio = Session::get('dominio_pendiente');
+                  //3.-
                   DB::beginTransaction();
-                  $validator = $this->getValidatorConfirmUser();
 
-                  if ($validator->passes())
+                  $usuario = $this->agregarUsuario($nombre, $password, $correo);
+                  if (isset($usuario) && $usuario->id)
                   {
-                        $usuario = $this->Usuario->agregarUsuario(Input::get('nombre'), Input::get('password'), Input::get('correo'), false, true, false);
-                        if ($usuario->id != null)
+                        //4.-
+                        $plan_model = $this->Plan->mostrarPlan($plan_id);
+                        if ($this->Dominio->apartarDominio($usuario, $dominio, $dominio_ajeno, $plan_model))
                         {
-                              $plan = $this->Plan->mostrarPlan(Input::get('plan'));
-                              $dominio = $this->Dominio->agregarDominio(Input::get('dominio'), Input::get('password'), $usuario->id, $plan->id);
-                              if (isset($dominio->id))
-                              {
-                                    $this->Ftp->set_attributes($dominio);
-                                    $user = explode('.', $dominio->dominio);
-                                    $username = $user[0];
-                                    $hostname = 'primerserver.com';
-                                    $home_dir = 'public_html/' . $dominio->dominio;
-                                    $ftp = $this->Ftp->agregarFtp($username, $hostname, $home_dir, Input::get('password'), true);
-                                    if ($ftp->id)
-                                    {
-                                          Session::put('message', 'La cuenta esta lista para usarse');
-                                          DB::commit();
-                                          $data = array('dominio' => $dominio->dominio,
-                                                'usuario' => $usuario->email,
-                                                'password' => Input::get('password'),
-                                                'ftp_user' => $ftp->username,
-                                                'ftp_pass' => Input::get('password'));
-
-                                          Mail::queue('email.welcome', $data, function($message) {
-                                                $message->to(Input::get('correo'), Input::get('nombre'))->subject('Bienvenido a PrimerServer');
-                                          });
-
-                                          return Redirect::to('usuario/login');
-                                    }
-                                    else
-                                    {
-                                          Session::put('error', 'Error al agregar el FTP');
-                                    }
-                              }
-                              else
-                              {
-                                    Session::flash('error', 'Error al agregar el dominio al servidor');
-                              }
-                        }
-                        else
-                        {
-                              Session::flash('error', 'Error al agregar usuario');
+                              //5.-
                         }
                   }
+
                   DB::rollback();
-                  return Redirect::back()->withInput()->withErrors($validator->messages());
             }
+            return Redirect::back()->withErrors($validator->messages);
       }
 
-      protected function agregarUsuarioSistema()
+      /*
+       * Funcion para agregar usuario al sistema
+       */
+
+      protected function agregarUsuario($nombre, $passwod, $correo)
       {
-            DB::beginTransaction();
-            $validator = $this->getValidatorConfirmUser();
+            return $this->Usuario->agregarUsuario($nombre, $password, $correo, false, false, true);
+      }
 
-            if ($validator->passes())
-            {
-                  $usuario = $this->Usuario->agregarUsuario(Input::get('nombre'), Input::get('password'), Input::get('correo'), false, true, false);
-                  if ($usuario->id != null)
-                  {
-                        $plan = Plan::where('nombre', '=', Input::get('plan'))->first();
-                        $dominio = $this->Dominio->agregarDominio(Input::get('dominio'), Input::get('password'), $usuario->id, $plan->id);
-                        if (isset($dominio->id))
-                        {
-                              $this->Ftp->set_attributes($dominio);
-                              $user = explode('.', $dominio->dominio);
-                              $username = $user[0];
-                              $hostname = 'primerserver.com';
-                              $home_dir = 'public_html/' . $dominio->dominio;
-                              $ftp = $this->Ftp->agregarFtp($username, $hostname, $home_dir, Input::get('password'), true);
-                              if ($ftp->id)
-                              {
-                                    Session::put('message', 'La cuenta esta lista para usarse');
-                                    DB::commit();
-                                    $data = array('dominio' => $dominio->dominio,
-                                          'usuario' => $usuario->email,
-                                          'password' => Input::get('password'),
-                                          'ftp_user' => $ftp->username,
-                                          'ftp_pass' => Input::get('password'));
-
-                                    Mail::queue('email.welcome', $data, function($message) {
-                                          $message->to(Input::get('correo'), Input::get('nombre'))->subject('Bienvenido a PrimerServer');
-                                    });
-
-                                    return Redirect::to('usuario/login');
-                              }
-                              else
-                              {
-                                    Session::put('error', 'Error al agregar el FTP');
-                              }
-                        }
-                        else
-                        {
-                              Session::flash('error', 'Error al agregar el dominio al servidor');
-                        }
-                  }
-                  else
-                  {
-                        Session::flash('error', 'Error al agregar usuario');
-                  }
-            }
-            DB::rollback();
-            return Redirect::back()->withInput()->withErrors($validator->messages());
+      
+      /*
+       * Usa la clase de pago Controller para guardar el pago en el sistema 
+       * y generar un link para que el usuario pueda pagar.
+       */
+      protected function obtenerPagoServicio()
+      {
+            
       }
 
       /*

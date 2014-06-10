@@ -51,24 +51,29 @@
             } else {
                   comprobar_dominio(dom, function(result) {
                         if (result['resultado']) {
+                              $(".comprobacion").removeClass('alert-danger');
                               $(".comprobacion").addClass('alert-success');
                               $(".result").text(result['mensaje']);
                               $(".comprobacion").show();
-                              proceed();
+                              proceedDomain();
                         } else {
+                              $(".comprobacion").removeClass('alert-success');
                               $(".comprobacion").addClass('alert-danger');
                               $(".result").text(result['mensaje']);
                               $(".comprobacion").show();
+                              stopDomain();
                         }
                   });
             }
       });
 
-      function proceed() {
-            $('#crear').removeAttr('disabled');
-            $('#crear').addClass('btn-success');
+      function proceedDomain() {
+            $('#crear').removeAttr('disabled');            
       }
 
+      function stopDomain(){
+            $('#crear').attr('disabled',true);            
+      }
 
       $('#existente').click(function() {
             if ($('#existente').is(':checked')) {

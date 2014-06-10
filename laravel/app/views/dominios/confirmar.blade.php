@@ -50,10 +50,10 @@
       </div>
       <div class="form-group">
             <label>Elegir plan</label>
-            @foreach($planes as $plan)
-            
+            @foreach($planes as $index => $plan)            
             <div class="radio">
                   <label>
+                       @if($index)
                         {{Form::radio('plan', $plan->id) }}
                         {{ $plan->nombre }}
                   </label>                  
@@ -112,6 +112,9 @@
 
 @section('scripts')
 <script>
+      
+      
+      
       $('[name="tipo_pago"]').change(function(e) {
             if ($('#pagomensual').is(':checked')) {
                   $('#Tiemposervicio').addClass('show');

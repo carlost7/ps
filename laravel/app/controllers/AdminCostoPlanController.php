@@ -47,7 +47,7 @@ class AdminCostoPlanController extends \BaseController {
                   Session::flash('error', 'Error al agregar el costo del plan');
             }
 
-            return Redirect::back()->withErrors($validator->messages);
+            return Redirect::back()->withErrors($validator->messages());
       }
 
       /**
@@ -96,7 +96,7 @@ class AdminCostoPlanController extends \BaseController {
                   Session::flash('error', 'Error al editar el costo del plan');
             }
 
-            return Redirect::back()->withErrors($validator->messages);
+            return Redirect::back()->withErrors($validator->messages());
       }
 
       /**

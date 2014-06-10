@@ -14,7 +14,7 @@
                   :) Muchas gracias
             </h1>
             <h2>
-                  Estamos procesando tu pago
+                  El sistema esta procesando tu pago
             </h2>
             <h3>
                   En cuanto el pago este completado te enviaremos un correo con los datos de tu dominio

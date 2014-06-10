@@ -68,6 +68,16 @@ class DominiosController extends BaseController {
       }
 
       /*
+       * Usando la api de Enom generar el costo del dominio
+       */
+
+      public static function getCostoDominio($dominio)
+      {
+
+            return $costo_dominio = 12.00;
+      }
+
+      /*
        * Esta funcion obtendrá los datos del usuario anonimo para redirigirlo a la página de servicios
        */
 
@@ -89,7 +99,7 @@ class DominiosController extends BaseController {
                   $planes = $this->Plan->listarPlanes();
                   return View::make('dominios.confirmar')->with(array('planes' => $planes));
             }
-            return Redirect::back()->withErrors($validator->messages);
+            return Redirect::back()->withErrors($validator->messages());
       }
 
       /*
@@ -139,40 +149,34 @@ class DominiosController extends BaseController {
                         if ($this->Dominio->apartarDominio($usuario, $dominio, $dominio_ajeno, $plan_model))
                         {
                               //5.-
+                              $preference = PagosController::generarPagoServiciosIniciales($usuario, $dominio, $plan_model->id, $tipo_pago, $tiempo_servicio, $moneda);
+                              //6.-
+                              $data = array('usuario' => $usuario->email,
+                                    'password' => Input::get('password'),
+                              );
+                              Mail::queue('email.nuevousuario', $data, function($message) {
+                                    $message->to(Input::get('correo'), Input::get('nombre'))->subject('Bienvenido a PrimerServer');
+                              });
+                              DB::rollback();
+                              $link = $preference['response'][Config::get('init_point')];
+
+                              dd($link);
+                              return Redirect::away($link);
                         }
                   }
 
                   DB::rollback();
             }
-            return Redirect::back()->withErrors($validator->messages);
+            return Redirect::back()->withInput()->withErrors($validator->messages());
       }
 
       /*
        * Funcion para agregar usuario al sistema
        */
 
-      protected function agregarUsuario($nombre, $passwod, $correo)
+      protected function agregarUsuario($nombre, $password, $correo)
       {
             return $this->Usuario->agregarUsuario($nombre, $password, $correo, false, false, true);
-      }
-
-      
-      /*
-       * Usa la clase de pago Controller para guardar el pago en el sistema 
-       * y generar un link para que el usuario pueda pagar.
-       */
-      protected function obtenerPagoServicio()
-      {
-            
-      }
-
-      /*
-       */
-
-      public static function getCostoDominio($dominio)
-      {
-
-            return $costo_dominio = 12.00;
       }
 
       /*

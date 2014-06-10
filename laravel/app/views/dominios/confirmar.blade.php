@@ -11,7 +11,6 @@
 @section('content')
 
 <div class="jumbotron">
-
       <div class="container">
             <h1>{{ Session::get('dominio_pendiente') }} casí esta listo</h1>
             <h2>Solo llena los datos para terminar</h2>
@@ -102,9 +101,11 @@
       <div class="alert alert-info hidden" id="resultado"></div>
       
       <input type="hidden" name='moneda' value="MXN" id='moneda' />
-
-      <button type="submit" id='confirmar' class="btn btn-success">Confirmar Compra</button>
+      
+      <input type="button" value="Confirmar Compra" name="confirmar" class='btn btn-success btn-md' onclick="confirmarCompra()"/>
+      
       {{ Form::close() }}
+      
 </div>
 
 @include('layouts.modal_password')
@@ -116,6 +117,9 @@
 @stop
 
 @section('scripts')
+
+{{ HTML::script('js/vendor/bootbox.min.js') }}
+
 <script>
 
       $(document).ready(function(){
@@ -144,7 +148,7 @@
       });
 
 
-      $('#form_confirm').submit(function(e) {
+      /*$('#form_confirm').submit(function(e) {
             if ($('#aceptar').is(':checked')) {
                   $('#form_confirm').submit();
             } else {
@@ -152,7 +156,7 @@
                   e.preventDefault();
             }
 
-      });
+      });*/
 
       function obtenerCosto() {
 
@@ -184,6 +188,14 @@
 
       }
 
-
+      function confirmarCompra(){
+            
+            bootbox.confirm("<p>Te redireccionaremos al sitio de MercadoPago, una vez realizado el pago, te enviaremos un correo con tus datos</p>", function(result) {
+                  if(result){
+                        $('#form_confirm').submit();
+                  }
+            });            
+            
+      }
 </script>
 @stop

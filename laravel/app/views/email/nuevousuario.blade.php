@@ -14,7 +14,7 @@
                         Actualmente estamos validando tu pago, en cuanto este listo, te enviaremos un correo para que puedas empezar
                   </p>
 
-                  <p>Datos de usuario</p>
+                  <p>A continuación te presentmos los datos de usuario que registrate, para ingresar</p>
                   <ul>
                         <li>
                               Usuario: {{ $usuario }}

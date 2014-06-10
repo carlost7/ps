@@ -13,12 +13,12 @@ interface PagosRepository {
       
       public function obtener_pago($id);
       
-      public function agregar_pago($concepto, $usuario_model, $monto, $descripcion, $inicio, $vencimiento, $activo, $no_orden, $status);
+      public function agregar_pago($concepto, $usuario_model, $monto, $moneda, $descripcion, $inicio, $vencimiento, $activo, $no_orden, $status);
       
-      public function editar_pago($id,$concepto, $usuario_model, $monto, $descripcion, $inicio, $vencimiento, $activo, $no_orden, $status);
+      public function editar_pago($id,$concepto, $usuario_model, $monto, $moneda, $descripcion, $inicio, $vencimiento, $activo, $no_orden, $status);
       
       public function eliminar_pago($id);
       
-      public function generar_preferencia();
+      public function generar_preferencia($preference_data);
             
 }

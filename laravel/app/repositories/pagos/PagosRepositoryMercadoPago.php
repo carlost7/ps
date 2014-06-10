@@ -9,7 +9,7 @@ class PagosRepositoryMercadoPago implements PagosRepository {
 
       protected $usuario_model;
 
-      public function agregar_pago($concepto, $usuario_model, $monto, $descripcion, $inicio, $vencimiento, $activo, $no_orden, $status)
+      public function agregar_pago($concepto, $usuario_model, $monto, $moneda,$descripcion, $inicio, $vencimiento, $activo, $no_orden, $status)
       {
             try
             {
@@ -17,6 +17,7 @@ class PagosRepositoryMercadoPago implements PagosRepository {
                   $pago->concepto = $concepto;
                   $pago->usuario_id = $usuario_model->id;
                   $pago->monto = $monto;
+                  $pago->moneda = $moneda;
                   $pago->descripcion = $descripcion;
                   $pago->inicio = new DateTime($inicio);
                   $pago->vencimiento = new DateTime($vencimiento);
@@ -30,19 +31,19 @@ class PagosRepositoryMercadoPago implements PagosRepository {
                   }
                   else
                   {
-                        Session::put('error','No se guardo el pago en la base de datos');
+                        Session::flash('error','No se guardo el pago en la base de datos');
                         return null;
                   }
             }
             catch (Exception $e)
             {
                   Log::error('PagosRepositoryMercadoPago.Agregar_pago ' . print_r($e, true));
-                  Session::put('error', 'Ocurrio un error al guardar el pago en la base de datos');
+                  Session::flash('error', 'Ocurrio un error al guardar el pago en la base de datos');
                   return null;
             }
       }
 
-      public function editar_pago($id, $concepto, $usuario_model, $monto, $descripcion, $inicio, $vencimiento, $activo, $no_orden, $status)
+      public function editar_pago($id, $concepto, $usuario_model, $monto, $moneda, $descripcion, $inicio, $vencimiento, $activo, $no_orden, $status)
       {
             try
             {
@@ -53,6 +54,7 @@ class PagosRepositoryMercadoPago implements PagosRepository {
                         $pago->concepto = $concepto;
                         $pago->usuario_id = $usuario_model->id;
                         $pago->monto = $monto;
+                        $pago->moneda = $moneda;
                         $pago->descripcion = $descripcion;
                         $pago->inicio = new DateTime($inicio);
                         $pago->vencimiento = new DateTime($vencimiento);
@@ -76,7 +78,7 @@ class PagosRepositoryMercadoPago implements PagosRepository {
             catch (Exception $e)
             {
                   Log::error('PagosRepositoryMercadoPago.Agregar_pago ' . print_r($e, true));
-                  Session::put('error', 'Ocurrio un error al editar el pago en la base de datos');
+                  Session::flash('error', 'Ocurrio un error al editar el pago en la base de datos');
                   return null;
             }
       }
@@ -96,15 +98,17 @@ class PagosRepositoryMercadoPago implements PagosRepository {
                   
             }catch(Exception $e){
                   Log::error('PagosRepositoryMercadoPago.Agregar_pago ' . print_r($e, true));
-                  Session::put('error', 'Ocurrio un error al eliminar el pago de la base de datos');
+                  Session::flash('error', 'Ocurrio un error al eliminar el pago de la base de datos');
                   return null;
             }
             
       }
 
-      public function generar_preferencia()
+      public function generar_preferencia($preference_data)
       {
-            
+            $pagos = new MercadoPagoFunciones();
+            $preference = $pagos->create_preference($preference_data);
+            return $preference;
       }
 
       public function listar_pagos()

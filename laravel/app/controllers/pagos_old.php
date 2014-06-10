@@ -271,7 +271,7 @@ class PagosController extends BaseController {
                                     "currency_id" => $plan->moneda,
                                     "unit_price" => $costos['total'],
                                     "description" => $costos['descripcion'],
-                              ),
+                              )
                         );
 
                         return $items;

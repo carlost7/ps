@@ -34,7 +34,7 @@ Route::any('usuario/reset/{token}', array('as' => 'usuario/reset', 'uses' => 'Us
   |--------------------------------
  */
 Route::get('dominio', array('as' => 'dominio.inicio', 'uses' => 'DominiosController@index'));
-Route::post('dominio/datos_usuario', array('as' => 'dominio.datos_usuario', 'uses' => 'DominiosController@obtenerDominioRequerido'));
+Route::match(array('GET','POST'),'dominio/datos_usuario', array('as' => 'dominio.datos_usuario', 'uses' => 'DominiosController@obtenerDominioRequerido'));
 Route::post('dominio/confirmar_dominio', array('as' => 'dominio.confirmar_dominio', 'uses' => 'DominiosController@confirmarDominio'));
 Route::post('dominio/comprobar', array('as' => 'dominio/comprobar', 'uses' => 'DominiosController@comprobarDominio'));
 
@@ -47,8 +47,8 @@ Route::post('dominio/comprobar', array('as' => 'dominio/comprobar', 'uses' => 'D
 
 Route::any('pagos/confirmar_registro', array('as' => 'pagos/confirmar_registro', 'uses' => 'PagosController@confirmarRegistro'));
 Route::any('pagos/descripcion', array('as' => 'pagos/descripcion', 'uses' => 'PagosController@obtenerCostoServiciosInicialesAjax'));
-Route::any('pagos/pago_cancelado', array('as' => 'pagos/pago_cancelado', 'uses' => 'PagosController@cancelarPago'));
-Route::any('pagos/pago_aceptado', array('as' => 'pagos/pago_aceptado', 'uses' => 'PagosController@aceptarPago'));
+Route::any('pagos/pago_cancelado', array('as' => 'pagos/pago_cancelado', 'uses' => 'PagosController@pagoCancelado'));
+Route::any('pagos/pago_aceptado', array('as' => 'pagos/pago_aceptado', 'uses' => 'PagosController@pagoAceptado'));
 Route::any('pagos/pago_pendiente', array('as' => 'pagos/pago_pendiente', 'uses' => 'PagosController@pagoPendiente'));
 Route::any('pagos/notificacion_mercadopago', array('as' => 'pagos/notificacion_mercadopago', 'uses' => 'PagosController@obtenerIPNMercadoPago'));
 

@@ -24,7 +24,7 @@
       @foreach($errors->all() as $message)
       <div class="alert alert-danger">{{ $message }}</div>
       @endforeach
-      
+
       <div class="form-group">
             <label for="Nombre">Nombre</label>
             <input type="text" name="nombre" value="{{ Input::old('nombre')}}" class="form-control" id="Nombre" placeholder="Escribe tu nombre">
@@ -53,8 +53,11 @@
             @foreach($planes as $index => $plan)            
             <div class="radio">
                   <label>
-                       @if($index)
+                        @if($index == 1)
+                        {{Form::radio('plan', $plan->id,array('checked'=>'checked')) }}
+                        @else
                         {{Form::radio('plan', $plan->id) }}
+                        @endif
                         {{ $plan->nombre }}
                   </label>                  
             </div>                  
@@ -112,9 +115,12 @@
 
 @section('scripts')
 <script>
-      
-      
-      
+
+      $(document).ready(function(){
+            obtenerCosto();
+      });
+              
+
       $('[name="tipo_pago"]').change(function(e) {
             if ($('#pagomensual').is(':checked')) {
                   $('#Tiemposervicio').addClass('show');
@@ -147,7 +153,7 @@
       });
 
       function obtenerCosto() {
-            
+
             var dominio = "{{Session::get('dominio_pendiente')}}";
             var plan = $('[name="plan"]:checked').val();
             var tipo_pago = $('[name="tipo_pago"]:checked').val();
@@ -157,20 +163,20 @@
             obtener_descripcion_costo(dominio, plan, tipo_pago, tiempo_servicio, moneda, function(result) {
                   $('#resultado').removeClass('hidden');
                   $('#resultado').addClass('show');
-                  
+
                   result[0]['costo_servicio'];
-                  
-                  
+
+
                   resultado = '<ul>';
-                  resultado += '<li>'+result[0]['costo_servicio']+' '+result[0]['descripcion_servicio']+'</li>';
-                  if(result[0]['costo_dominio']!=null){
-                        resultado += '<li>'+result[0]['costo_dominio']+' '+result[0]['descripcion_dominio']+'</li>';
+                  resultado += '<li>' + result[0]['costo_servicio'] + ' ' + result[0]['descripcion_servicio'] + '</li>';
+                  if (result[0]['costo_dominio'] != null) {
+                        resultado += '<li>' + result[0]['costo_dominio'] + ' ' + result[0]['descripcion_dominio'] + '</li>';
                   }
-                  resultado += '<li>Total: '+result[0]['total']+'</li>';
-                  resultado += '</ul>';                  
-                  
+                  resultado += '<li>Total: ' + result[0]['total'] + '</li>';
+                  resultado += '</ul>';
+
                   $('#resultado').html(resultado);
-                  
+
             });
 
 

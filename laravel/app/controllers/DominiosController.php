@@ -100,15 +100,14 @@ class DominiosController extends BaseController {
                   $tipo_pago = Input::get('tipo_pago');
                   $tiempo_servicio = Input::get('tiempo_servicio');
                   $moneda = 'MXN';
-                  
+
                   if (Session::get('dominio_existente') == 1)
                   {
-                        $precio_dominio = 12.00;                        
+                        $precio_dominio = 12.00;
                         $precio_dominio_moneda = PagosController::convertirMoneda($precio_dominio, 'USD', $moneda);
                   }
-                  
+
                   dd($precio_dominio_moneda);
-                  
             }
             return Redirect::back()->withErrors($validator->messages);
       }
@@ -125,7 +124,7 @@ class DominiosController extends BaseController {
                   Session::put('dominio_pendiente', Input::get('dominio'));
                   Session::put('dominio_existente', Input::get('existente'));
                   $planes = $this->Plan->listarPlanes();
-                  return View::make('dominios.confirmar')->with(array('planes'=>$planes));
+                  return View::make('dominios.confirmar')->with(array('planes' => $planes));
             }
             return Redirect::back()->withErrors($validator->messages);
       }
@@ -246,32 +245,40 @@ class DominiosController extends BaseController {
             DB::rollback();
             return Redirect::back()->withInput()->withErrors($validator->messages());
       }
-      
+
       /*
        */
-      public static function getCostoDominio($dominio){
-            
+
+      public static function getCostoDominio($dominio)
+      {
+
             return $costo_dominio = 12.00;
-            
       }
-      
+
       /*
        * 
        */
+
       protected function getValidatorConfirmUser()
       {
             return Validator::make(Input::all(), array(
                         'nombre' => 'required|min:4',
-                        'password' => 'required|min:2',
+                        'password' => 'required|min:9',
+                        'password' => array('regex:/^.*(?=.{8,15})(?=.*[a-z])(?=.*[A-Z])(?=.*[\d\W]).*$/'),
                         'password_confirmation' => 'required|same:password',
                         'correo' => 'required|email|unique:user,email',
                         'plan' => 'required|exists:planes,id',
                         'aceptar' => 'required|accepted'
+                        ), array(
+                        'old_password.required' => 'Escriba su contraseña anterior',
+                        'password.regex' => 'La contraseña debe ser mayor de 9 caracteres. puedes utilizar mayúsculas, minúsculas, números y ¡ # $ *',
+                        'password_confirmation.same' => 'Las contraseñas no concuerdan'
             ));
       }
 
       /*
        */
+
       protected function getValidatorComprobarNombreDominio()
       {
             return Validator::make(Input::all(), array(
@@ -279,7 +286,7 @@ class DominiosController extends BaseController {
                         'dominio' => array('regex:/^([a-z0-9]([-a-z0-9]*[a-z0-9])?\\.)+((a[cdefgilmnoqrstuwxz]|aero|arpa)|(b[abdefghijmnorstvwyz]|biz)|(c[acdfghiklmnorsuvxyz]|cat|com|coop)|d[ejkmoz]|(e[ceghrstu]|edu)|f[ijkmor]|(g[abdefghilmnpqrstuwy]|gov)|h[kmnrtu]|(i[delmnoqrst]|info|int)|(j[emop]|jobs)|k[eghimnprwyz]|l[abcikrstuvy]|(m[acdghklmnopqrstuvwxyz]|mil|mobi|museum)|(n[acefgilopruz]|name|net)|(om|org)|(p[aefghklmnrstwy]|pro)|qa|r[eouw]|s[abcdeghijklmnortvyz]|(t[cdfghjklmnoprtvwz]|travel)|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw])$/'),
                         ), array(
                         'dominio.required' => 'Es necesario especificar un dominio',
-                        'dominio.regex' => 'El dominio tiene que ser de la forma [nombredominio].[com|pais].[pais]',
+                        'dominio.regex' => 'El dominio ',
                         )
             );
       }

@@ -286,8 +286,13 @@ class UsuariosController extends BaseController {
       {
             return Validator::make(Input::all(), array(
                         'old_password' => 'required',
-                        'password' => 'required',
+                        'password' => 'required|min:9',
+                        'password' => array('regex:/^.*(?=.{8,15})(?=.*[a-z])(?=.*[A-Z])(?=.*[\d\W]).*$/'),
                         'password_confirmation' => 'required|same:password',
+            ), array(
+                        'old_password.required' => 'Escriba su contraseña anterior',
+                        'password.regex' => 'La contraseña debe ser mayor de 9 caracteres. puedes utilizar mayúsculas, minúsculas, números y ¡ # $ *',
+                        'password_confirmation.same' => 'Las contraseñas no concuerdan'
             ));
       }
 
@@ -297,6 +302,8 @@ class UsuariosController extends BaseController {
                         'password' => 'required',
                         'old_email' => 'required|email',
                         'new_email' => 'required|email',
+            ), array(
+                        'password.required' => 'Escriba la contraseña de su usuario',                        
             ));
       }
 

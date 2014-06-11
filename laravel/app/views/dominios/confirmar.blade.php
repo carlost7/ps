@@ -170,7 +170,7 @@
                   $('#resultado').removeClass('hidden');
                   $('#resultado').addClass('show');
 
-                  alert(result['costo_servicio']);
+                  alert(result[0]['costo_servicio']);
 
 
                   resultado = '<ul>';

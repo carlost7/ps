@@ -190,21 +190,25 @@ class FtpsRepositoryEloquent implements FtpsRepository {
       }
 
       /*
-       * Eliminar el correo del servidor
-       * 
-       * Si el correo tiene redirección borrar la redireccion
+       * Eliminar el Ftp del servidor
+       *        
        */
 
       protected function eliminarFtpServidor($ftp_model, $borrar)
       {
-            $whmfuncion = new WHMFunciones($this->plan);
-            if ($whmfuncion->eliminarFtpServidor($ftp_model->username, $borrar))
+            if (isset($ftp_model))
             {
+                  $whmfuncion = new WHMFunciones($this->plan);
+                  if ($whmfuncion->eliminarFtpServidor($ftp_model->username, $borrar))
+                  {
+                        return true;
+                  }
+                  else
+                  {
+                        return false;
+                  }
+            }else{
                   return true;
-            }
-            else
-            {
-                  return false;
             }
       }
 

@@ -103,7 +103,8 @@ Route::group(array('before' => 'auth'), function() {
             /*
              * Admin / t7marketing
              */
-            Route::resource('usuarios', 'AdminUsersController');
+            Route::resource('usuarios', 'AdminUsersController');            
+            Route::get('usuarios/agregar_elementos',array('as'=>'usuarios.agregar_elementos','uses'=>'AdminUsersController@agregarElementos'));
 
             Route::resource('correos', 'AdminCorreosController');
 

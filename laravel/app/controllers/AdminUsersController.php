@@ -34,13 +34,12 @@ class AdminUsersController extends \BaseController {
             return View::make('admin.usuarios.index')->with('usuarios', $usuarios);
       }
 
-      
       public function agregar()
       {
             Session::put('dominio_usuario', $usuario->dominio);
             return View::make('admin.usuarios.agregar');
       }
-      
+
       /**
        * Show the form for creating a new resource.
        *
@@ -68,7 +67,7 @@ class AdminUsersController extends \BaseController {
                   $usuario = $this->Usuario->agregarUsuario(Input::get('nombre'), Input::get('password'), Input::get('correo'), false, false, false);
                   if ($usuario->id != null)
                   {
-                        $plan = $this->Plan->obtenerPlanNombre(Input::get('plan'));
+                        $plan = $this->Plan->obtenerPlanByNombre(Input::get('plan'));
                         $dominio = $this->Dominio->agregarDominio(Input::get('dominio'), Input::get('password'), $usuario->id, $plan->id);
                         if (isset($dominio->id))
                         {
@@ -154,7 +153,7 @@ class AdminUsersController extends \BaseController {
                   $is_deudor = (Input::get('is_deudor') == '1' ? 1 : 0 );
                   if ($this->Usuario->editarUsuario($id, $nombre, $password, $correo, false, $is_activo, $is_deudor))
                   {
-                        Session::flash('message', 'La cuenta esta lista para usarse');                        
+                        Session::flash('message', 'La cuenta esta lista para usarse');
                         return Redirect::to('admin/usuarios');
                   }
                   else
@@ -175,10 +174,12 @@ class AdminUsersController extends \BaseController {
       {
             $usuario = $this->Usuario->obtenerUsuario($id);
             $this->Ftp->set_attributes($usuario->dominio);
-            foreach ($usuario->dominio->ftps as $ftp)
-            {
-                  $this->Ftp->eliminarFtp($ftp, true);
-            }
+            $ftps = $usuario->dominio->ftps;
+
+
+
+            $this->Ftp->eliminarFtp($ftps, true);
+
 
             $this->Correo->set_attributes($usuario->dominio);
             foreach ($usuario->dominio->correos as $correo)
@@ -211,7 +212,7 @@ class AdminUsersController extends \BaseController {
                         'dominio' => 'required',
                         'correo' => 'required|email|unique:user,email',
                         'plan' => 'required|exists:planes,nombre',
-            ), array(
+                        ), array(
                         'password.regex' => 'La contraseña debe ser mayor de 9 caracteres. puedes utilizar mayúsculas, minúsculas, números y ¡ # $ *',
                         'password_confirmation.same' => 'Las contraseñas no concuerdan'
             ));
@@ -224,7 +225,7 @@ class AdminUsersController extends \BaseController {
                         'password' => 'min:2',
                         'password_confirmation' => 'same:password',
                         'correo' => 'email',
-            ), array(
+                        ), array(
                         'password.regex' => 'La contraseña debe ser mayor de 9 caracteres. puedes utilizar mayúsculas, minúsculas, números y ¡ # $ *',
                         'password_confirmation.same' => 'Las contraseñas no concuerdan'
             ));

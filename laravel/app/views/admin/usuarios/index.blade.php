@@ -20,8 +20,7 @@
                               <th>Nombre de usuario</th>
                               <th>Correo</th>
                               <th>Dominio</th>                              
-                              <th>Plan</th>
-                              <th>Agregar Elementos</th>
+                              <th>Plan</th>                              
                               <th>Editar</th>
                               <th>Eliminar</th>
                         </tr>
@@ -36,12 +35,12 @@
                               @if($usuario->dominio != null)
                               <td>{{ $usuario->dominio->dominio }}</td>
                               <td>{{ $usuario->dominio->plan->nombre }}</td>
-                              <td>{{ HTML::link('admin/usuarios/'.$usuario->id.'/edit','Agregar',array('class'=>'btn btn-primary btn-xs')) }}</td>
+                              
                               
                               @else
                               <td>pendiente</td>
                               <td>pendiente</td>
-                              <td>pendiente</td>                             
+                              
                               
                               @endif
                               <td>{{ HTML::link('admin/usuarios/'.$usuario->id.'/edit','Editar',array('class'=>'btn btn-primary btn-xs')) }}</td>

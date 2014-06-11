@@ -27,6 +27,14 @@
 
 </div>
 
+<div class="container">
+      
+            <p>{{ $usuario->email }}</p>
+            <p>{{ HTML::linkRoute('admin.correos.index','correos') }}</p>
+            <p>{{ HTML::linkRoute('admin.ftps.index','ftps') }}</p>
+            <p>{{ HTML::linkRoute('admin.dbs.index','Bases de datos') }}</p>
+      
+</div>      
 
 
 @stop

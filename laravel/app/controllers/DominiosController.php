@@ -154,6 +154,7 @@ class DominiosController extends BaseController {
                   {
                         //4.-
                         $plan_model = $this->Plan->mostrarPlan($plan_id);
+                        dd($plan_model);
                         if ($this->Dominio->apartarDominio($usuario, $dominio, $dominio_ajeno, $plan_model))
                         {
                               //5.-

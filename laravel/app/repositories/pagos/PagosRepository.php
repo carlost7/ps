@@ -20,5 +20,7 @@ interface PagosRepository {
       public function eliminar_pago($id);
       
       public function generar_preferencia($preference_data);
+      
+      public function recibir_notificacion($id);
             
 }

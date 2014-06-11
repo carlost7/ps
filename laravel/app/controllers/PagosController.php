@@ -83,9 +83,10 @@ class PagosController extends \BaseController {
             
             //Obtenemos el costo del dominio, si es que el dominio será nuestro
             $dominio_ajeno = Session::get('dominio_ajeno');
+            
             $costo_dominio_moneda = null;
             $descripcion_dominio = null;
-            if ($dominio_ajeno)
+            if (!$dominio_ajeno)
             {
                   $costo_dominio = DominiosController::getCostoDominio($dominio);
                   $costo_dominio_moneda = self::convertirMoneda($costo_dominio, 'USD', $moneda);
@@ -227,4 +228,15 @@ class PagosController extends \BaseController {
             );
       }
 
+      public function obtenerIPNMercadoPago(){
+            $id = Input::get('id');
+            if(isset($id)){
+                  if($this->Pagos->recibir_notificacion($id)){
+                        echo "recibido";
+                  }else{
+                        echo "no recibido";
+                  }
+            }            
+      }
+      
 }

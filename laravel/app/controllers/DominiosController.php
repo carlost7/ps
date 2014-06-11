@@ -166,9 +166,9 @@ class DominiosController extends BaseController {
                                     $message->to(Input::get('correo'), Input::get('nombre'))->subject('Bienvenido a PrimerServer');
                               });
                               DB::rollback();
-                              $link = $preference['response'][Config::get('init_point')];
+                              
+                              $link = $preference['response'][Config::get('payment.init_point')];
 
-                              dd($link);
                               return Redirect::away($link);
                         }
                   }

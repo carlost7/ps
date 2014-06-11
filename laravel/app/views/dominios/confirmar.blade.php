@@ -170,7 +170,7 @@
                   $('#resultado').removeClass('hidden');
                   $('#resultado').addClass('show');
 
-                  alert(result[0]['costo_servicio']);
+                  alert(result['costo_servicio']);
 
 
                   resultado = '<ul>';
@@ -204,3 +204,4 @@
       }
 </script>
 @stop
+

@@ -153,12 +153,12 @@ class DominiosController extends BaseController {
                   if (isset($usuario) && $usuario->id)
                   {
                         //4.-
-                        dd($usuario);
                         $plan_model = $this->Plan->mostrarPlan($plan_id);
                         if ($this->Dominio->apartarDominio($usuario, $dominio, $dominio_ajeno, $plan_model))
                         {
                               //5.-
                               $preference = PagosController::generarPagoServiciosIniciales($usuario, $dominio, $plan_model->id, $tipo_pago, $tiempo_servicio, $moneda);
+                              dd($preference);
                               //6.-
                               $data = array('usuario' => $usuario->email,
                                     'password' => Input::get('password'),

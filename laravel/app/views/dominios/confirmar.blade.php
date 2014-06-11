@@ -170,7 +170,7 @@
                   $('#resultado').removeClass('hidden');
                   $('#resultado').addClass('show');
 
-                  result[0]['costo_servicio'];
+                  alert(result[0]['costo_servicio']);
 
 
                   resultado = '<ul>';
@@ -189,6 +189,11 @@
       }
 
       function confirmarCompra(){
+            
+            if (!$('#aceptar').is(':checked')) {
+                  alert('Para continuar tienes que dar click en aceptar los terminos');
+                  return false;
+            }
             
             bootbox.confirm("<p>Te redireccionaremos al sitio de MercadoPago, una vez realizado el pago, te enviaremos un correo con tus datos</p>", function(result) {
                   if(result){

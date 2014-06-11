@@ -153,6 +153,7 @@ class DominiosController extends BaseController {
                   if (isset($usuario) && $usuario->id)
                   {
                         //4.-
+                        dd($usuario);
                         $plan_model = $this->Plan->mostrarPlan($plan_id);
                         if ($this->Dominio->apartarDominio($usuario, $dominio, $dominio_ajeno, $plan_model))
                         {

@@ -50,8 +50,7 @@
                   $(".result").text("Debe escribir un dominio para poder continuar");
             } else {
                   comprobar_dominio(dom, function(result) {
-                        alert(result);
-                        alert(JSON.stringify(result));
+                        alert($.type(result));
                         if (result['resultado']) {
                               $(".comprobacion").removeClass('alert-danger');
                               $(".comprobacion").addClass('alert-success');

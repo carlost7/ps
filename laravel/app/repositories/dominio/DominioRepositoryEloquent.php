@@ -163,10 +163,12 @@ class DominioRepositoryEloquent implements DominioRepository {
 
                   if ($dominio_pendiente->save())
                   {
+                        Log::info('agregado dominio pendiente');
                         return true;
                   }
                   else
                   {
+                        Log::info('no se agrego dominio pendiente');
                         return false;
                   }
             }

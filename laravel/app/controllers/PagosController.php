@@ -142,7 +142,7 @@ class PagosController extends \BaseController {
 
       public static function generarPagoServiciosIniciales($usuario, $dominio, $plan, $tipo_pago, $tiempo_servicio, $moneda)
       {
-            $costo_total = self::obtenerCostoServiciosIniciales($dominio, $plan, $tipo_pago, $tiempo_servicio, $moneda);
+            $costo_total = self::obtenerCostoServiciosIniciales($dominio, $plan, $tipo_pago, $tiempo_servicio, $moneda);            
             $preference_data = self::generarPreferenceDataInicial($costo_total, $usuario, $moneda);
             
             Log::info('PagosController. generarPagoServiciosIniciales. '.print_r($preference_data,true));

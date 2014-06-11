@@ -158,7 +158,6 @@ class DominiosController extends BaseController {
                         {
                               //5.-
                               $preference = PagosController::generarPagoServiciosIniciales($usuario, $dominio, $plan_model->id, $tipo_pago, $tiempo_servicio, $moneda);
-                              dd($preference);
                               //6.-
                               $data = array('usuario' => $usuario->email,
                                     'password' => Input::get('password'),

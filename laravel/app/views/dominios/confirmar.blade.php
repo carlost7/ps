@@ -170,9 +170,6 @@
                   $('#resultado').removeClass('hidden');
                   $('#resultado').addClass('show');
 
-                  alert(result[0]['costo_servicio']);
-
-
                   resultado = '<ul>';
                   resultado += '<li>' + result[0]['costo_servicio'] + ' ' + result[0]['descripcion_servicio'] + '</li>';
                   if (result[0]['costo_dominio'] != null) {

@@ -31,6 +31,8 @@ class MercadoPagoFunciones {
       {
             $payment_info = $this->mp->get_payment_info($id);
 
+            Log::info($payment_info);
+            
             // Show payment information
             if ($payment_info["status"] == 200)
             {

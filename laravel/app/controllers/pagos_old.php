@@ -12,7 +12,7 @@ use DominioRepository as Dominio;
 use FtpsRepository as FTP;
 use Carbon\Carbon;
 
-class PagosController extends BaseController {
+class Pagos_old extends BaseController {
 
       protected $Pagos;
       protected $Plan;

@@ -159,7 +159,6 @@ class AdminCorreosController extends \BaseController {
       public function destroy($id)
       {
             $correo = $this->Correo->obtenerCorreo($id);
-            dd($correo);
             if ($this->isIdDomain($correo))
             {
                   if ($this->Correo->eliminarCorreo($correo))

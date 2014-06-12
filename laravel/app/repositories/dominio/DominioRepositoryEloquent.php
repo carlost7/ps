@@ -161,11 +161,8 @@ class DominioRepositoryEloquent implements DominioRepository {
                   $dominio_pendiente->is_ajeno = $is_ajeno;
                   $dominio_pendiente->plan_id = $plan_model->id;
 
-                  
-                  
                   if ($dominio_pendiente->save())
                   {
-                        dd("terminado");
                         Log::info('agregado dominio pendiente');
                         return true;
                   }

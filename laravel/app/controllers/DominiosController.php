@@ -210,8 +210,9 @@ class DominiosController extends BaseController
                           'plan' => 'required|exists:planes,id',
                           'aceptar' => 'required|accepted'
                             ), array(
-                          'old_password.required' => 'Escriba su contraseña anterior',
+                          'password.required' => 'Escriba su contraseña anterior',
                           'password.regex' => 'La contraseña debe ser mayor de 9 caracteres. puedes utilizar mayúsculas, minúsculas, números y ¡ # $ *',
+                          'password_confirmation.required' => 'Repita la contraseña',
                           'password_confirmation.same' => 'Las contraseñas no concuerdan'
             ));
       }

@@ -33,7 +33,7 @@
             <input type="email" name="correo" value="{{ Input::old('correo')}}" class="form-control" id="Correo" placeholder="Escribe tu correo">
       </div>
       <div class="form-group">
-            <label for="password">Password</label>            
+            <label for="password">Contraseña</label>            
             <div class="input-group">
                   <input type="password" name="password" class="form-control" id="Password" placeholder="Contraseña">
                   <span class="input-group-btn">

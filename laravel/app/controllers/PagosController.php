@@ -193,8 +193,8 @@ class PagosController extends \BaseController
                   "unit_price" => floatval($costo_total[0]['costo_servicio']),
                   "description" => $costo_total[0]['descripcion_servicio'],
             );
-
-            if (isset($costo_total['costo_dominio']))
+            
+            if (isset($costo_total[0]['costo_dominio']))
             {
                   $dominio = array(
                         "title" => "Dominio",
@@ -206,11 +206,11 @@ class PagosController extends \BaseController
             }
 
             $items = array($servicio);
-            if (isset($dominoi))
+            if(isset($dominio))
             {
                   array_push($items, $dominio);
             }
-
+            
             //Payer
 
             $payer = array(

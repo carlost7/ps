@@ -80,7 +80,6 @@ class PagosController extends \BaseController {
             $planes = new PlanRepositoryEloquent();
             //Obtenemos el costo del servicio
             $costo_servicio = $planes->obtenerCostoPlanByMoneda($plan_id, $moneda);
-            dd($costo_servicio);
             //Obtenemos el costo del dominio, si es que el dominio será nuestro
             $dominio_ajeno = Session::get('dominio_ajeno');
             
@@ -143,7 +142,6 @@ class PagosController extends \BaseController {
       public static function generarPagoServiciosIniciales($usuario, $dominio, $plan, $tipo_pago, $tiempo_servicio, $moneda)
       {
             $costo_total = self::obtenerCostoServiciosIniciales($dominio, $plan, $tipo_pago, $tiempo_servicio, $moneda);            
-            dd($costo_total);
             $preference_data = self::generarPreferenceDataInicial($costo_total, $usuario, $moneda);
             dd($preference_data);
             Log::info('PagosController. generarPagoServiciosIniciales. '.print_r($preference_data,true));

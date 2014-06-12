@@ -143,13 +143,14 @@ class PagosController extends \BaseController {
       {
             $costo_total = self::obtenerCostoServiciosIniciales($dominio, $plan, $tipo_pago, $tiempo_servicio, $moneda);            
             $preference_data = self::generarPreferenceDataInicial($costo_total, $usuario, $moneda);
-            dd($preference_data);
+            
             Log::info('PagosController. generarPagoServiciosIniciales. '.print_r($preference_data,true));
 
             $pagoRepository = new PagosRepositoryMercadoPago();
             
             $preference = $pagoRepository->generar_preferencia($preference_data);
 
+            dd($preference);
             $inicio = Carbon::now();
             if ($tipo_pago == 'anual')
             {

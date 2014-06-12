@@ -24,7 +24,9 @@ class PagosRepositoryMercadoPago implements PagosRepository {
                   $pago->activo = $activo;
                   $pago->no_orden = $no_orden;
                   $pago->status = $status;
-
+                  
+                  dd($pago);
+                  
                   if ($pago->save())
                   {
                         return $pago;

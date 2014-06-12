@@ -80,7 +80,7 @@ class PagosController extends \BaseController {
             $planes = new PlanRepositoryEloquent();
             //Obtenemos el costo del servicio
             $costo_servicio = $planes->obtenerCostoPlanByMoneda($plan_id, $moneda);
-            
+            dd($costo_servicio);
             //Obtenemos el costo del dominio, si es que el dominio será nuestro
             $dominio_ajeno = Session::get('dominio_ajeno');
             

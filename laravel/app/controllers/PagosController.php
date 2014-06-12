@@ -4,7 +4,8 @@ use PagosRepository as Pagos;
 use PlanRepository as Planes;
 use Carbon\Carbon;
 
-class PagosController extends \BaseController {
+class PagosController extends \BaseController
+{
 
       protected $Pagos;
       protected $Planes;
@@ -82,7 +83,7 @@ class PagosController extends \BaseController {
             $costo_servicio = $planes->obtenerCostoPlanByMoneda($plan_id, $moneda);
             //Obtenemos el costo del dominio, si es que el dominio será nuestro
             $dominio_ajeno = Session::get('dominio_ajeno');
-            
+
             $costo_dominio_moneda = null;
             $descripcion_dominio = null;
             if (!$dominio_ajeno)
@@ -141,16 +142,16 @@ class PagosController extends \BaseController {
 
       public static function generarPagoServiciosIniciales($usuario, $dominio, $plan, $tipo_pago, $tiempo_servicio, $moneda)
       {
-            $costo_total = self::obtenerCostoServiciosIniciales($dominio, $plan, $tipo_pago, $tiempo_servicio, $moneda);            
+            $costo_total = self::obtenerCostoServiciosIniciales($dominio, $plan, $tipo_pago, $tiempo_servicio, $moneda);
             $preference_data = self::generarPreferenceDataInicial($costo_total, $usuario, $moneda);
-            
-            Log::info('PagosController. generarPagoServiciosIniciales. '.print_r($preference_data,true));
+
+            Log::info('PagosController. generarPagoServiciosIniciales. ' . print_r($preference_data, true));
 
             $pagoRepository = new PagosRepositoryMercadoPago();
-            
+
             $preference = $pagoRepository->generar_preferencia($preference_data);
 
-            dd($preference);
+
             $inicio = Carbon::now();
             if ($tipo_pago == 'anual')
             {
@@ -160,14 +161,20 @@ class PagosController extends \BaseController {
             {
                   $vencimiento = Carbon::now()->addMonths($tiempo_servicio);
             }
-            $pagoRepository->set_attributes($usuario);            
-            $pago = $pagoRepository->agregar_pago('Pago Inicial de PrimerServer', $usuario, $costo_total[0]['costo_servicio'], $moneda,$costo_total[0]['descripcion_servicio'], $inicio, $vencimiento, true, $preference['response']['external_reference'], 'inicio');
-            if(isset($pago) && $pago->id){
-                  if(isset($costo_total['costo_dominio'])){
-                        $this->Pagos->agregar_pago('Pago Dominio', $usuario, $costo_total[0]['costo_dominio'], $moneda,$costo_total[0]['descripcion_dominio'], $inicio, $vencimiento, true, $preference['response']['external_reference'], 'inicio');
+            $pagoRepository->set_attributes($usuario);
+            $pago = $pagoRepository->agregar_pago('Pago Inicial de PrimerServer', $usuario, $costo_total[0]['costo_servicio'], $moneda, $costo_total[0]['descripcion_servicio'], $inicio, $vencimiento, true, $preference['response']['external_reference'], 'inicio');
+            if (isset($pago) && $pago->id)
+            {
+                  if (isset($costo_total['costo_dominio']))
+                  {
+                        $this->Pagos->agregar_pago('Pago Dominio', $usuario, $costo_total[0]['costo_dominio'], $moneda, $costo_total[0]['descripcion_dominio'], $inicio, $vencimiento, true, $preference['response']['external_reference'], 'inicio');
                   }
+                  return $preference;
             }
-            return $preference;
+            else
+            {
+                  return null;
+            }
       }
 
       /*
@@ -224,19 +231,24 @@ class PagosController extends \BaseController {
                   "items" => $items,
                   "payer" => $payer,
                   "back_urls" => $back_urls,
-                  "external_reference"=>'Ini_'.$usuario->id,
+                  "external_reference" => 'Ini_' . $usuario->id,
             );
       }
 
-      public function obtenerIPNMercadoPago(){
+      public function obtenerIPNMercadoPago()
+      {
             $id = Input::get('id');
-            if(isset($id)){
-                  if($this->Pagos->recibir_notificacion($id)){
+            if (isset($id))
+            {
+                  if ($this->Pagos->recibir_notificacion($id))
+                  {
                         echo "recibido";
-                  }else{
+                  }
+                  else
+                  {
                         echo "no recibido";
                   }
-            }            
+            }
       }
-      
+
 }

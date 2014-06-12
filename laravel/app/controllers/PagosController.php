@@ -235,9 +235,11 @@ class PagosController extends \BaseController
             );
       }
 
-      public function obtenerIPNMercadoPago()
+      public function obtenerIPNMercadoPago()                      
       {
-            $id = Input::get('id');
+            Log::info('Datos recibidos mercado pago. '.print_r(Input::all(),true));
+            
+            $id = Input::get('id');            
             if (isset($id))
             {
                   if ($this->Pagos->recibir_notificacion($id))
@@ -248,6 +250,8 @@ class PagosController extends \BaseController
                   {
                         echo "no recibido";
                   }
+            }else{                  
+                  echo "no recibi nada";
             }
       }
 

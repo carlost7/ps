@@ -131,7 +131,8 @@ class PagosRepositoryMercadoPago implements PagosRepository {
       
       function recibir_notificacion($id){
             $pagos = new MercadoPagoFunciones();
-            $resultado = $pagos->recibir_notificacion($id);
+            $resultado = $pagos->recibir_notificacion($id);            
+            log::info('resultado: '.$resultado);
             if(isset($resultado)){
                   Log::info('PagosRepositoryMercadoPago. recibirNotificaciones '.print_r($resultado));
                   return true;

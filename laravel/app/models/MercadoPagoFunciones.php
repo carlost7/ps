@@ -31,13 +31,12 @@ class MercadoPagoFunciones {
       {
             $payment_info = $this->mp->get_payment_info($id);
 
-            Log::info($payment_info);
-            
             // Show payment information
             if ($payment_info["status"] == 200)
             {
-                  Log::info(print_r($payment_info));
-                  return $payment_info['response'];
+                  Log::info('resultado recibir_notificacion '.$payment_info);
+                  return $payment_info['response'];                  
+                  
             }
             else
             {
@@ -46,3 +45,5 @@ class MercadoPagoFunciones {
       }     
       
 }
+
+

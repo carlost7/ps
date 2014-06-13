@@ -174,7 +174,7 @@ class DominioRepositoryEloquent implements DominioRepository {
             }
             catch (Exception $e)
             {
-                  Session::flash('error',"ocurrio un error al tratar de apartar el dominio");
+                  Session::flash('error', "ocurrio un error al tratar de apartar el dominio");
                   Log::error('DominiosRepositoryEloquent. apartarDominio ' . print_r($e, true));
                   return false;
             }
@@ -190,6 +190,21 @@ class DominioRepositoryEloquent implements DominioRepository {
             else
             {
                   return false;
+            }
+      }
+
+      public function eliminarDominioPendiente($id)
+      {
+            try{
+                  $dominio_pendiente = DominioPendiente::find($id);
+                  if($dominio_pendiente->delete()){
+                        return true;
+                  }else{
+                        return false;
+                  }
+                  
+            }catch(Exception $e){
+                  Log::error('DominioRepositoryEloquent . eliminarDominiosPendiente '.print_r($e,true));
             }
       }
 

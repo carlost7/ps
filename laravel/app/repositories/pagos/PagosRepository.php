@@ -22,5 +22,7 @@ interface PagosRepository {
       public function generar_preferencia($preference_data);
       
       public function recibir_notificacion($id);
+      
+      public function actualizarStatusPagos($external_reference,$status);
             
 }

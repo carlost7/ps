@@ -224,6 +224,19 @@ class UsuariosController extends BaseController {
             Session::flash('message', 'Vuelve pronto');
             return Redirect::route("inicio");
       }
+      
+      /*
+       * 
+       */
+      public static function eliminarUsuarioPagoCancelado($usuario){
+            
+            if($this->Usuario->eliminarUsuario($usuario->$id)){
+                  return true;
+            }else{
+                  return false;
+            }
+            
+      }
 
       /*
        * Funcion para regenerar el password

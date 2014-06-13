@@ -34,9 +34,7 @@ class MercadoPagoFunciones {
             // Show payment information
             if ($payment_info["status"] == 200)
             {
-                  Log::info('resultado recibir_notificacion '.print_r($payment_info, true));
-                  return $payment_info['response'];                  
-                  
+                  return $payment_info['response'];
             }
             else
             {

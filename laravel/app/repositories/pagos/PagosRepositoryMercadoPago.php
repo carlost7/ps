@@ -9,7 +9,7 @@ class PagosRepositoryMercadoPago implements PagosRepository {
 
       protected $usuario_model;
 
-      public function agregar_pago($concepto, $usuario_model, $monto, $moneda,$descripcion, $inicio, $vencimiento, $activo, $no_orden, $status)
+      public function agregar_pago($concepto, $usuario_model, $monto, $moneda, $descripcion, $inicio, $vencimiento, $activo, $no_orden, $status)
       {
             try
             {
@@ -24,14 +24,14 @@ class PagosRepositoryMercadoPago implements PagosRepository {
                   $pago->activo = $activo;
                   $pago->no_orden = $no_orden;
                   $pago->status = $status;
-                  
+
                   if ($pago->save())
                   {
                         return $pago;
                   }
                   else
                   {
-                        Session::flash('error','No se guardo el pago en la base de datos');
+                        Session::flash('error', 'No se guardo el pago en la base de datos');
                         return null;
                   }
             }
@@ -70,8 +70,10 @@ class PagosRepositoryMercadoPago implements PagosRepository {
                         {
                               return null;
                         }
-                  }else{
-                        Session::put('error','No existe el pago en la base');
+                  }
+                  else
+                  {
+                        Session::put('error', 'No existe el pago en la base');
                         return null;
                   }
             }
@@ -85,23 +87,27 @@ class PagosRepositoryMercadoPago implements PagosRepository {
 
       public function eliminar_pago($id)
       {
-       
-            try{
-                  
+
+            try
+            {
+
                   $pago = Pago::find($id);
-                  
-                  if(isset($pago)&& $pago->id){
-                        
-                  }else{
+
+                  if (isset($pago) && $pago->id)
+                  {
                         
                   }
-                  
-            }catch(Exception $e){
+                  else
+                  {
+                        
+                  }
+            }
+            catch (Exception $e)
+            {
                   Log::error('PagosRepositoryMercadoPago.Agregar_pago ' . print_r($e, true));
                   Session::flash('error', 'Ocurrio un error al eliminar el pago de la base de datos');
                   return null;
             }
-            
       }
 
       public function generar_preferencia($preference_data)
@@ -123,21 +129,49 @@ class PagosRepositoryMercadoPago implements PagosRepository {
             return $pago;
       }
 
+      public function actualizarStatusPagos($external_reference, $status)
+      {
+            try
+            {
+                  $pagos = Pago::where('no_orden', $external_reference)->get();
+                  if ($pagos->count())
+                  {
+                        foreach ($pagos as $pago)
+                        {
+                              $pago->status=$status;
+                              $pago->save();
+                        }
+                        $user = $pago->user;
+                        return $user;
+                  }
+                  else
+                  {
+                        return null;
+                  }
+            }
+            catch (Exception $e)
+            {
+                  Log::error('PagosRepositoryMercadoPago . ActualizarStatusPagos' . print_r($e));
+            }
+      }
+
       public function set_attributes($usuario_model)
       {
             $this->usuario_model = $usuario_model;
       }
 
-      
-      function recibir_notificacion($id){
+      public function recibir_notificacion($id)
+      {
             $pagos = new MercadoPagoFunciones();
-            $resultado = $pagos->recibir_notificacion($id);            
-            log::info('resultado: '.$resultado);
-            if(isset($resultado)){
-                  Log::info('PagosRepositoryMercadoPago. recibirNotificaciones '.print_r($resultado));
-                  return true;
-            }else{
-                  return false;
+            $resultado = $pagos->recibir_notificacion($id);
+            if (isset($resultado))
+            {
+                  return $resultado;
+            }
+            else
+            {
+                  return null;
             }
       }
+
 }

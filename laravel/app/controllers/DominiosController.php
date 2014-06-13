@@ -10,8 +10,7 @@ use DominioRepository as Dominio;
 use FtpsRepository as Ftp;
 use PlanRepository as Plan;
 
-class DominiosController extends BaseController
-{
+class DominiosController extends BaseController {
 
       protected $Usuario;
       protected $Dominio;
@@ -168,7 +167,7 @@ class DominiosController extends BaseController
                                     Mail::queue('email.nuevousuario', $data, function($message) {
                                           $message->to(Input::get('correo'), Input::get('nombre'))->subject('Bienvenido a PrimerServer');
                                     });
-                                    DB::rollback();
+                                    DB::commit();
 
                                     $link = $preference['response'][Config::get('payment.init_point')];
 
@@ -184,6 +183,15 @@ class DominiosController extends BaseController
                   DB::rollback();
             }
             return Redirect::back()->withInput()->withErrors($validator->messages());
+      }
+
+      public static function eliminarDominioPendiente($dominio_pendiente)
+      {
+            if($this->Dominio->eliminarDominioPendiente($dominio_pendiente->id)){
+                  return true;
+            }else{
+                  return false;
+            }
       }
 
       /*
@@ -202,18 +210,18 @@ class DominiosController extends BaseController
       protected function getValidatorConfirmUser()
       {
             return Validator::make(Input::all(), array(
-                          'nombre' => 'required|min:4',
-                          'password' => 'required|min:9',
-                          'password' => array('regex:/^.*(?=.{8,15})(?=.*[a-z])(?=.*[A-Z])(?=.*[\d\W]).*$/'),
-                          'password_confirmation' => 'required|same:password',
-                          'correo' => 'required|email|unique:user,email',
-                          'plan' => 'required|exists:planes,id',
-                          'aceptar' => 'required|accepted'
-                            ), array(
-                          'password.required' => 'Escriba su contraseña anterior',
-                          'password.regex' => 'La contraseña debe ser mayor de 9 caracteres. puedes utilizar mayúsculas, minúsculas, números y ¡ # $ *',
-                          'password_confirmation.required' => 'Repita la contraseña',
-                          'password_confirmation.same' => 'Las contraseñas no concuerdan'
+                        'nombre' => 'required|min:4',
+                        'password' => 'required|min:9',
+                        'password' => array('regex:/^.*(?=.{8,15})(?=.*[a-z])(?=.*[A-Z])(?=.*[\d\W]).*$/'),
+                        'password_confirmation' => 'required|same:password',
+                        'correo' => 'required|email|unique:user,email',
+                        'plan' => 'required|exists:planes,id',
+                        'aceptar' => 'required|accepted'
+                        ), array(
+                        'password.required' => 'Escriba su contraseña anterior',
+                        'password.regex' => 'La contraseña debe ser mayor de 9 caracteres. puedes utilizar mayúsculas, minúsculas, números y ¡ # $ *',
+                        'password_confirmation.required' => 'Repita la contraseña',
+                        'password_confirmation.same' => 'Las contraseñas no concuerdan'
             ));
       }
 
@@ -223,12 +231,12 @@ class DominiosController extends BaseController
       protected function getValidatorComprobarNombreDominio()
       {
             return Validator::make(Input::all(), array(
-                          'dominio' => array('required'),
-                          'dominio' => array('regex:/^([a-z0-9]([-a-z0-9]*[a-z0-9])?\\.)+((a[cdefgilmnoqrstuwxz]|aero|arpa)|(b[abdefghijmnorstvwyz]|biz)|(c[acdfghiklmnorsuvxyz]|cat|com|coop)|d[ejkmoz]|(e[ceghrstu]|edu)|f[ijkmor]|(g[abdefghilmnpqrstuwy]|gov)|h[kmnrtu]|(i[delmnoqrst]|info|int)|(j[emop]|jobs)|k[eghimnprwyz]|l[abcikrstuvy]|(m[acdghklmnopqrstuvwxyz]|mil|mobi|museum)|(n[acefgilopruz]|name|net)|(om|org)|(p[aefghklmnrstwy]|pro)|qa|r[eouw]|s[abcdeghijklmnortvyz]|(t[cdfghjklmnoprtvwz]|travel)|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw])$/'),
-                            ), array(
-                          'dominio.required' => 'Es necesario especificar un dominio',
-                          'dominio.regex' => 'El dominio ',
-                            )
+                        'dominio' => array('required'),
+                        'dominio' => array('regex:/^([a-z0-9]([-a-z0-9]*[a-z0-9])?\\.)+((a[cdefgilmnoqrstuwxz]|aero|arpa)|(b[abdefghijmnorstvwyz]|biz)|(c[acdfghiklmnorsuvxyz]|cat|com|coop)|d[ejkmoz]|(e[ceghrstu]|edu)|f[ijkmor]|(g[abdefghilmnpqrstuwy]|gov)|h[kmnrtu]|(i[delmnoqrst]|info|int)|(j[emop]|jobs)|k[eghimnprwyz]|l[abcikrstuvy]|(m[acdghklmnopqrstuvwxyz]|mil|mobi|museum)|(n[acefgilopruz]|name|net)|(om|org)|(p[aefghklmnrstwy]|pro)|qa|r[eouw]|s[abcdeghijklmnortvyz]|(t[cdfghjklmnoprtvwz]|travel)|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw])$/'),
+                        ), array(
+                        'dominio.required' => 'Es necesario especificar un dominio',
+                        'dominio.regex' => 'El dominio ',
+                        )
             );
       }
 

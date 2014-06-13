@@ -22,4 +22,6 @@ interface DominioRepository {
       public function apartarDominio($user_model, $dominio, $is_ajeno, $plan_model);
 
       public function obtenerDominioPendiente($user_model);
+      
+      public function eliminarDominioPendiente($id);
 }

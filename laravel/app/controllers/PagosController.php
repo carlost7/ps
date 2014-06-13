@@ -4,7 +4,8 @@ use PagosRepository as Pagos;
 use PlanRepository as Planes;
 use Carbon\Carbon;
 
-class PagosController extends \BaseController {
+class PagosController extends \BaseController
+{
 
       protected $Pagos;
       protected $Planes;
@@ -16,6 +17,13 @@ class PagosController extends \BaseController {
             $this->Planes = $planes;
       }
 
+      public function mostrarPagos()
+      {
+            $this->Pagos->set_attributes(Auth::user());
+            $pagos = $this->Pagos->listar_pagos();
+            return View::make('pagos.index', array('pagos' => $pagos));
+      }
+      
       public function pagoCancelado()
       {
             return View::make('pagos.cancelado');
@@ -164,9 +172,9 @@ class PagosController extends \BaseController {
             $pago = $pagoRepository->agregar_pago('Pago Inicial de PrimerServer', $usuario, $costo_total[0]['costo_servicio'], $moneda, $costo_total[0]['descripcion_servicio'], $inicio, $vencimiento, true, $preference['response']['external_reference'], 'inicio');
             if (isset($pago) && $pago->id)
             {
-                  if (isset($costo_total['costo_dominio']))
+                  if (isset($costo_total[0]['costo_dominio']))
                   {
-                        $this->Pagos->agregar_pago('Pago Dominio', $usuario, $costo_total[0]['costo_dominio'], $moneda, $costo_total[0]['descripcion_dominio'], $inicio, $vencimiento, true, $preference['response']['external_reference'], 'inicio');
+                        $pagoRepository->agregar_pago('Pago Dominio', $usuario, $costo_total[0]['costo_dominio'], $moneda, $costo_total[0]['descripcion_dominio'], $inicio, $vencimiento, true, $preference['response']['external_reference'], 'inicio');
                   }
                   return $preference;
             }
@@ -281,7 +289,7 @@ class PagosController extends \BaseController {
                           "email":"mercadopago@primerserver.com",
                           "nickname":"PRIMERSERVERCOMWORLDWIDETEC"},
                   "order_id":"Ini_3",
-                  "external_reference":"Ini_3",
+                  "external_reference":"Ini_6",
                   "reason":"PrimerServer",
                   "transaction_amount":655.74,
                   "currency_id":"MXN",
@@ -357,26 +365,48 @@ class PagosController extends \BaseController {
 
       public function cancelarUsuario($usuario)
       {
-            $dominioPendiente = $usuario->dominioPendiente();
-            
-            if(DominiosController::eliminarDominioPendiente($dominio_pendiente)){
-                  if(UsuariosController::eliminarUsuarioPagoCancelado($usuario)){
-                        echo "usuario cancelado";
-                  }else{
-                        Log::error('PagosController . cancelarUsuario no se pudo eliminar usuario');
-                        echo "no se pudo eliminar el usuario";
-                  }
-            }else{
-                  Log::error('PagosController . cancelarUsuario no se pudo eliminar dominio pendiente');
-                  echo "no se pudo eliminar el dominio pendiente";
+            DB::beginTransaction();
+
+
+            Mail::queue('email.cancelacion_pago', null, function($message) use ($usuario) {
+                  $message->to($usuario->email, $usuario->username)->subject('Cancelación de pago');
+            });
+
+            if (UsuariosController::eliminarUsuarioPagoCancelado($usuario))
+            {
+                  DB::commit();
+                  echo "usuario cancelado";
             }
-            
-            
+            else
+            {
+                  DB::rollback();
+                  Log::error('PagosController . cancelarUsuario no se pudo eliminar usuario');
+                  echo "no se pudo eliminar el usuario";
+            }
       }
 
       public function agregarDominio($usuario)
       {
-            
+            DB::beginTransaction();
+            if (DominiosController::agregarDominio($usuario))
+            {
+                  if (UsuariosController::activarUsuario($usuario))
+                  {
+                        
+                        DB::commit();
+                        echo "creado el usuario";
+                  }
+                  else
+                  {
+                        DB::rollback();
+                        echo "no se creo el usuario";
+                  }
+            }
+            else
+            {
+                  DB::rollback();
+                  echo "no se creo el usuario";
+            }
       }
 
 }

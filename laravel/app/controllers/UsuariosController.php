@@ -230,7 +230,8 @@ class UsuariosController extends BaseController {
        */
       public static function eliminarUsuarioPagoCancelado($usuario){
             
-            if($this->Usuario->eliminarUsuario($usuario->$id)){
+            $usuariosRepository = new UsuariosRepositoryEloquent();
+            if($usuariosRepository->eliminarUsuario($usuario->id)){
                   return true;
             }else{
                   return false;
@@ -238,6 +239,16 @@ class UsuariosController extends BaseController {
             
       }
 
+      public static function activarUsuario($usuario){
+            $usuarioRepository = new UsuariosRepositoryEloquent();
+            if($usuarioRepository->activarUsuario($usuario)){
+                  return true;
+            }else{
+                  return false;
+            }
+      }
+      
+      
       /*
        * Funcion para regenerar el password
        */

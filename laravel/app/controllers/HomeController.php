@@ -67,6 +67,10 @@ class HomeController extends BaseController {
 
       public function obtenerPass()
       {
+            return Response::json($this->getPassword());
+      }    
+      
+      public function getPassword(){
             $length = 9;
             $available_sets = 'luds';
             $sets = array();
@@ -106,14 +110,7 @@ class HomeController extends BaseController {
             $password = str_shuffle($password);
 
             $response = array('password' => $password);
-
-            return Response::json($response);
-      }
-
-      public static function obtenerPasswordDominio()
-      {
-            $password = json_decode($this->obtenerPass(),true);
-            return $password['password'];
+            return $response;
       }
 
 }

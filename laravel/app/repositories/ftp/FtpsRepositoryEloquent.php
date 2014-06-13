@@ -5,7 +5,8 @@
  *
  * @author carlos
  */
-class FtpsRepositoryEloquent implements FtpsRepository {
+class FtpsRepositoryEloquent implements FtpsRepository
+{
 
       protected $dominio_model;
       protected $plan;
@@ -49,24 +50,23 @@ class FtpsRepositoryEloquent implements FtpsRepository {
 
       public function agregarFtp($username, $hostname, $home_dir, $password, $principal)
       {
-            DB::beginTransaction();
             if ($this->agregarFtpServidor($username, $home_dir, $password))
             {
                   $ftp = $this->agregarFtpBase($username, $hostname, $home_dir, $principal);
                   if (isset($ftp->id))
                   {
-                        DB::commit();
+
                         return $ftp;
                   }
                   else
                   {
-                        DB::rollback();
+
                         return false;
                   }
             }
             else
             {
-                  DB::rollback();
+
                   return false;
             }
       }
@@ -77,14 +77,28 @@ class FtpsRepositoryEloquent implements FtpsRepository {
 
       protected function agregarFtpBase($username, $hostname, $home_dir, $principal)
       {
-            $ftp = new Ftp();
-            $ftp->dominio_id = $this->dominio_model->id;
-            $ftp->username = $username . '@' . $this->plan->domain;
-            $ftp->hostname = $hostname;
-            $ftp->homedir = $home_dir;
-            $ftp->is_principal = $principal;
-            $ftp->save();
-            return $ftp;
+            try
+            {
+                  $ftp = new Ftp();
+                  $ftp->dominio_id = $this->dominio_model->id;
+                  $ftp->username = $username . '@' . $this->plan->domain;
+                  $ftp->hostname = $hostname;
+                  $ftp->homedir = $home_dir;
+                  $ftp->is_principal = $principal;
+                  if($ftp->save()){
+                        return $ftp;
+                  }else{
+                        return null;
+                  }
+            }
+            catch (Exception $e)
+            {
+                  $data = array('respuesta'=>print_r($e));
+                  Mail::queue('email.error_agregar_dominio', $data, function($message) {
+                        $message->to('carlos.juarez@t7marketing.com', "Administrador")->subject('Error al agregar el dominio');
+                  });
+                  Log::error('FtpsRepositoryEloquent. agregarFtpsBase ' . print_r($e));
+            }
       }
 
       /*
@@ -207,7 +221,9 @@ class FtpsRepositoryEloquent implements FtpsRepository {
                   {
                         return false;
                   }
-            }else{
+            }
+            else
+            {
                   return true;
             }
       }

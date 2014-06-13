@@ -23,6 +23,6 @@
             <p>Para entrar a la aplicación y comenzar a crear tus correos electrónicos puedes usar el siguiente link</p>
             <p>{{ HTML::linkRoute('usuario/login','Primer Server') }}</p>
             <br />
-            <p>Que tengas un excelente dia</p>
+            <p>El equipo de PrimerServer</p>
       </body>
 </html>

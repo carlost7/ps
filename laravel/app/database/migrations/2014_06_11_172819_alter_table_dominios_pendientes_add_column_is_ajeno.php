@@ -14,7 +14,7 @@ class AlterTableDominiosPendientesAddColumnIsAjeno extends Migration {
 	{
 		Schema::table('dominios_pendientes', function(Blueprint $table)
 		{
-			//
+			$table->boolean('is_ajeno');
 		});
 	}
 
@@ -27,7 +27,7 @@ class AlterTableDominiosPendientesAddColumnIsAjeno extends Migration {
 	{
 		Schema::table('dominios_pendientes', function(Blueprint $table)
 		{
-			//
+			$table->dropColumn('is_ajeno');
 		});
 	}
 

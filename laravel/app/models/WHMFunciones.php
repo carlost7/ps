@@ -5,7 +5,8 @@
  *
  * @author carlos
  */
-class WHMFunciones {
+class WHMFunciones
+{
 
       protected $xmlapi;
       protected $plan;
@@ -49,7 +50,10 @@ class WHMFunciones {
             }
             else
             {
-                  
+                  $data = array("respuesta" => $resultado['cpanelresult']['data'][0]['reason']);
+                  Mail::queue('email.error_agregar_dominio', $data, function($message) {
+                        $message->to('carlos.juarez@t7marketing.com', "Administrador")->subject('Error al agregar el dominio');
+                  });
                   Log::error('WHMFunciones. AgregarDominioServidor ' . $resultado['cpanelresult']['data'][0]['reason']);
                   return false;
             }
@@ -139,6 +143,10 @@ class WHMFunciones {
                   }
                   else
                   {
+                        $data = array('respuesta' => $resultado['cpanelresult']['data'][0]['reason']);
+                        Mail::queue('email.error_agregar_dominio', $data, function($message) {
+                              $message->to('carlos.juarez@t7marketing.com', "Administrador")->subject('Error al agregar el dominio');
+                        });
                         Log::error('WHMFunciones. AgregarFtpServidor ' . $resultado['cpanelresult']['data'][0]['reason']);
                         return false;
                   }
@@ -205,7 +213,7 @@ class WHMFunciones {
 
             if (!isset($domain) || !isset($email) || !isset($password))
             {
-                  Session::flash('error','falta un argumento');
+                  Session::flash('error', 'falta un argumento');
                   return false;
             }
             else
@@ -234,7 +242,7 @@ class WHMFunciones {
 
             if (!isset($user) || !isset($pass))
             {
-                  Session::flash('error','falta un argumento');
+                  Session::flash('error', 'falta un argumento');
                   return false;
             }
             else
@@ -293,7 +301,7 @@ class WHMFunciones {
       {
             if (!isset($domain) || !isset($username))
             {
-                  Session::flash('error','falta un argumento');
+                  Session::flash('error', 'falta un argumento');
                   return false;
             }
             else
@@ -426,8 +434,7 @@ class WHMFunciones {
             $quotas = array();
             if ($resultado['cpanelresult']['data'] != null)
             {
-                  foreach ($resultado['cpanelresult']['data'] as $result)
-                  {
+                  foreach ($resultado['cpanelresult']['data'] as $result) {
                         $correo = array('diskquota' => $result['diskquota'], 'diskused' => $result['diskused']);
                         $quotas[$result['login']] = $correo;
                   }
@@ -452,8 +459,8 @@ class WHMFunciones {
 
             $resultado = json_decode($response, true);
             if (isset($resultado['cpanelresult']['data'][0]['db']))
-            {    
-                  $database = $resultado['cpanelresult']['data'];                  
+            {
+                  $database = $resultado['cpanelresult']['data'];
                   return $database;
             }
             else

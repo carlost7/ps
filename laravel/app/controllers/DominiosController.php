@@ -187,13 +187,58 @@ class DominiosController extends BaseController {
 
       public static function eliminarDominioPendiente($dominio_pendiente)
       {
-            if($this->Dominio->eliminarDominioPendiente($dominio_pendiente->id)){
+            if(DominioRepositoryEloquent::eliminarDominioPendiente($dominio_pendiente->id)){
                   return true;
             }else{
                   return false;
             }
       }
+      
+      public static function agregarDominio($usuario)
+      {
+            $dominio_pendiente = $usuario->dominio_pendiente;
+            $home = new HomeController();
+            $arrPass = $home->getPassword();
+            $password = $arrPass['password'];
+            $dominiosRepository = new DominioRepositoryEloquent();
+            $dominio = $dominiosRepository->agregarDominio($usuario->id, $dominio_pendiente->dominio, true, $dominio_pendiente->plan_id, $dominio_pendiente->is_ajeno, $password);
+            if (isset($dominio->id))
+            {
+                  $FtpRepository = new FtpsRepositoryEloquent();
+                  $FtpRepository->set_attributes($dominio);
+                  $user = explode('.', $dominio->dominio);
+                  $username = $user[0];
+                  $hostname = 'primerserver.com';
+                  $home_dir = 'public_html/' . $dominio->dominio;
+                  $ftp = $FtpRepository->agregarFtp($username, $hostname, $home_dir, $password, true);
+                  if (isset($ftp) && $ftp->id)
+                  {
+                        $dominiosRepository->eliminarDominioPendiente($usuario->dominio_pendiente->id);
+                        
+                        $data = array('dominio' => $dominio->dominio,
+                              'usuario' => $usuario->email,
+                              'ftp_user' => $ftp->username,
+                              'ftp_pass' => $password);
 
+                        Mail::queue('email.welcome', $data, function($message) use ($usuario) {
+                              $message->to($usuario->email, $usuario->nombre)->subject('Creado dominio en primer server');
+                        });
+
+                        
+                        
+                        return true;
+                  }
+                  else
+                  {
+                        return false;
+                  }
+            }
+            else
+            {
+                  return false;
+            }
+      }
+      
       /*
        * Funcion para agregar usuario al sistema
        */

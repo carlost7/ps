@@ -67,8 +67,8 @@ class AdminUsersController extends \BaseController {
                   $usuario = $this->Usuario->agregarUsuario(Input::get('nombre'), Input::get('password'), Input::get('correo'), false, false, false);
                   if ($usuario->id != null)
                   {
-                        $plan = $this->Plan->obtenerPlanByNombre(Input::get('plan'));
-                        $dominio = $this->Dominio->agregarDominio(Input::get('dominio'), Input::get('password'), $usuario->id, $plan->id);
+                        $plan = $this->Plan->obtenerPlan();
+                        $dominio = $this->Dominio->agregarDominio($usuario->id, Input::get('dominio'), true, Input::get('plan'), Input::get('is_ajeno'), Input::get('password'));
                         if (isset($dominio->id))
                         {
                               $this->Ftp->set_attributes($dominio);

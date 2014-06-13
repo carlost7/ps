@@ -15,7 +15,7 @@
       <div class="container">
             <h1>Escribe tus datos para entrar</h1>
             <h3>Si aun no eres usuario</h3>
-            <p>{{ HTML::linkRoute('dominio/inicio','Registrate',null,array('class'=>'btn btn-primary btn-lg')) }}</p>
+            <p>{{ HTML::linkRoute('dominio.inicio','Registrate',null,array('class'=>'btn btn-primary btn-lg')) }}</p>
             <h3>Si olvidaste tu contraseña</h3>
             <p>{{ HTML::linkRoute('usuario/recuperar','Recuperar Contraseña',null,array('class'=>'btn btn-danger btn-lg')) }}</p>                
       </div>

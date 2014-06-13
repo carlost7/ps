@@ -16,7 +16,6 @@ class CreateTableDominiosPendientes extends Migration {
                   $table->increments('id');
                   $table->integer('usuario_id')->unsigned();
                   $table->string('dominio');                  
-                  $table->boolean('is_propio');
                   $table->integer('plan_id')->unsigned();                  
                   $table->timestamps();
                   $table->foreign('usuario_id')->references('id')->on('user')->onDelete('cascade')->onUpdate('cascade');;

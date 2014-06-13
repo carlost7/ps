@@ -27,6 +27,14 @@
             <label for="dominio">Dominio</label>
             <input type="text" name="dominio" value="{{ Input::old('dominio')}}" class="form-control" id="Dominio" placeholder="Escribe el dominio">
       </div>
+      <div class="form-group">            
+            <div class="radio">
+                  <label>
+                        {{Form::radio('is_ajeno', 1) }}
+                        Es ajeno
+                  </label>                  
+            </div>                              
+      </div>      
       <div class="form-group">
             <label for="Nombre">Nombre</label>
             <input type="text" name="nombre" value="{{ Input::old('nombre')}}" class="form-control" id="Nombre" placeholder="Escribe tu nombre">
@@ -54,7 +62,7 @@
             @foreach($planes as $plan)
             <div class="radio">
                   <label>
-                        {{Form::radio('plan', $plan->nombre) }}
+                        {{Form::radio('plan', $plan->id) }}
                         {{ $plan->nombre }}
                   </label>                  
             </div>                  

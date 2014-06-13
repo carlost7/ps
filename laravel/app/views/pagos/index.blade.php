@@ -25,7 +25,7 @@
                   <table class="table">
                         <tr>
 
-                              <td>Tipo</td>
+                              <td>Concepto</td>
                               <td>Monto</td>
                               <td>Descripción</td>
                               <td>Inicio</td>
@@ -38,7 +38,7 @@
 
                         @foreach($pagos as $pago)
                         <tr>
-                              <td>{{$pago->tipo_pago }}</td>
+                              <td>{{$pago->concepto }}</td>
                               <td>{{$pago->monto . 'MXN'}}</td>
                               <td>{{$pago->descripcion }}</td>
                               <td>{{$pago->inicio }}</td>

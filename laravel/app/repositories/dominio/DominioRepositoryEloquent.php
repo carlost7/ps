@@ -5,7 +5,8 @@
  *
  * @author carlos
  */
-class DominioRepositoryEloquent implements DominioRepository {
+class DominioRepositoryEloquent implements DominioRepository
+{
       /*
        * Tratar de probar si el dominio existe, o dar otras alternativas
        */
@@ -19,27 +20,25 @@ class DominioRepositoryEloquent implements DominioRepository {
        * Agregar el dominio al servidor y luego a la base de datos
        */
 
-      public function agregarDominio($nombre_dominio, $password, $usuario_id, $plan_id)
+      public function agregarDominio($usuario_id, $nombre_dominio, $is_activo, $plan_id, $is_ajeno, $password)
       {
-            Db::beginTransaction();
+
             if ($this->agregarDominioServidor($nombre_dominio, $plan_id, $password))
             {
-                  Log::error('Agregar Dominio');
-                  $dominio = $this->agregarDominioBase($usuario_id, $nombre_dominio, true, $plan_id);
+                  $dominio = $this->agregarDominioBase($usuario_id, $nombre_dominio, $is_activo, $plan_id, $is_ajeno);
                   if (isset($dominio->id))
                   {
-                        Db::commit();
+                        
                         return $dominio;
                   }
                   else
                   {
-                        Db::rollback();
+                        
                         return false;
                   }
             }
             else
             {
-                  Db::rollback();
                   return false;
             }
       }
@@ -69,15 +68,33 @@ class DominioRepositoryEloquent implements DominioRepository {
        * Funcion para agregar dominio a la base de datos
        */
 
-      public function agregarDominioBase($usuario_id, $nombre_dominio, $activar, $plan_id)
+      public function agregarDominioBase($usuario_id, $nombre_dominio, $is_activo, $plan_id, $is_ajeno)
       {
-            $dominio = new Dominio();
-            $dominio->user_id = $usuario_id;
-            $dominio->dominio = $nombre_dominio;
-            $dominio->activo = $activar;
-            $dominio->plan_id = $plan_id;
-            $dominio->save();
-            return $dominio;
+            try
+            {
+                  $dominio = new Dominio();
+                  $dominio->user_id = $usuario_id;
+                  $dominio->dominio = $nombre_dominio;
+                  $dominio->activo = $is_activo;
+                  $dominio->plan_id = $plan_id;
+                  $dominio->is_ajeno = $is_ajeno;
+                  if ($dominio->save())
+                  {
+                        return $dominio;
+                  }
+                  else
+                  {
+                        return null;
+                  }
+            }
+            catch (Exception $e)
+            {
+                  $data = array('respuesta'=>print_r($e));
+                  Mail::queue('email.error_agregar_dominio', $data, function($message) {
+                        $message->to('carlos.juarez@t7marketing.com', "Administrador")->subject('Error al agregar el dominio');
+                  });
+                  Log::error('DominiosRepositoryEloquent. agregarDominioBase ' . print_r($e));
+            }
       }
 
       /*
@@ -195,17 +212,23 @@ class DominioRepositoryEloquent implements DominioRepository {
 
       public function eliminarDominioPendiente($id)
       {
-            try{
+            try
+            {
                   $dominio_pendiente = DominioPendiente::find($id);
-                  if($dominio_pendiente->delete()){
+                  if ($dominio_pendiente->delete())
+                  {
                         return true;
-                  }else{
+                  }
+                  else
+                  {
                         return false;
                   }
-                  
-            }catch(Exception $e){
-                  Log::error('DominioRepositoryEloquent . eliminarDominiosPendiente '.print_r($e,true));
+            }
+            catch (Exception $e)
+            {
+                  Log::error('DominioRepositoryEloquent . eliminarDominiosPendiente ' . print_r($e, true));
             }
       }
+      
 
 }

@@ -15,7 +15,7 @@ interface DominioRepository {
 
       public function comprobarDominio($dominio);
 
-      public function agregarDominio($nombre_dominio, $password, $usuario_id, $plan_id);
+      public function agregarDominio($usuario_id, $nombre_dominio, $is_activo, $plan_id, $is_ajeno,$password);
 
       public function eliminarDominio($dominio_model);
 
@@ -23,5 +23,4 @@ interface DominioRepository {
 
       public function obtenerDominioPendiente($user_model);
       
-      public function eliminarDominioPendiente($id);
 }

@@ -11,9 +11,12 @@
                   </p>
 
                   <p>
-                        Procederemos a eliminar tu cuenta de usuario.
+                        Procederemos a cancelar tu cuenta
                   </p>                  
-
+                  <p>
+                        Si deseas registrater nuevamente en primerserver solo llena los datos
+                  </p>
+                  
                   <p>El equipo de PrimerServer</p>
             </div>
       </body>

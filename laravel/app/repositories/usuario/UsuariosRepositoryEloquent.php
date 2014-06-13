@@ -153,5 +153,21 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
                   return false;
             }
       }
+      
+      public function activarUsuario($usuario){
+            try{
+                  $usuario->is_activo = true;
+                  $usuario->is_deudor = false;
+                  
+                  if($usuario->save()){
+                        return true;
+                  }else{
+                        return false;
+                  }
+                  
+            }catch(Exception $e){
+                  Log::error('UsuariosRepositoryEloquent . activarUsuario '.print_r($e,true));
+            }
+      }
 
 }

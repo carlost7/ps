@@ -13,6 +13,7 @@ class DominioRepositoryEloquent implements DominioRepository
 
       public function comprobarDominio($dominio)
       {
+            
             return true;
       }
 

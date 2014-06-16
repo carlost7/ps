@@ -9,3 +9,4 @@ Thumbs.db
 /laravel/app/config/database.php
 /laravel/app/config/mercadopago.php
 /laravel/app/config/payment.php
+/laravel/app/config/enom.php

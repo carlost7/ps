@@ -13,7 +13,9 @@
  */
 interface DominioRepository {
 
-      public function comprobarDominio($dominio);
+      public function comprobarDominio($tld,$sld);
+      
+      public function obtenerDominiosSimilares($tld,$sld);
 
       public function agregarDominio($usuario_id, $nombre_dominio, $is_activo, $plan_id, $is_ajeno,$password);
 

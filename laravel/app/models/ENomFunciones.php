@@ -25,7 +25,14 @@ class ENomFunciones {
 
             $this->enom_api->create_url($args);
             $resultado = $this->enom_api->getResponse();
-            return $resultado;
+            
+            $rrpCode = $resultado->RRPCode;
+            if($rrpCode=="210"){
+                  return true;
+            }else{
+                  return false;
+            }            
+            
       }
 
       public function obtener_dominios_similares($sld, $tld)
@@ -34,13 +41,18 @@ class ENomFunciones {
                   "command" => "NameSpinner",
                   "SLD" => $sld,
                   "TLD" => $tld,
-                  "UseHyphens" => true,
+                  "UseHyphens" => false,
                   "UseNumbers" => false,
+                  "Topical" => "high",
+                  "Similar" => "medium",
+                  "Related" => "high",
+                  "Basic" => "low",
                   "MaxResults" => 5,
             );
 
             $this->enom_api->create_url($args);
-            $resultado = $this->enom_api->getResponse();
+            $resultado = $this->enom_api->getResponse();            
+            return $resultado;
       }
 
       public function comprar($sld, $tld)

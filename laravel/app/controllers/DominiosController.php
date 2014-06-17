@@ -44,16 +44,22 @@ class DominiosController extends BaseController {
             $validator = $this->getValidatorComprobarNombreDominio();
             if ($validator->passes())
             {
+                  $dominios = null;
                   $dominio = Input::get('dominio');
-                  if (filter_var(gethostbyname($dominio), FILTER_VALIDATE_IP))
-                  {
-                        $resultado = false;
-                        $mensaje = "El dominio " . $dominio . " ya esta siendo utilizado";
-                  }
-                  else
+                  $sld = substr($dominio, 0, strpos($dominio, '.'));
+                  $tld = substr($dominio, strpos($dominio, '.') + 1);
+                  if ($this->Dominio->comprobarDominio($tld, $sld))
                   {
                         $resultado = true;
                         $mensaje = "El dominio " . $dominio . " es correcto";
+                  }
+                  else
+                  {
+                        $resultado = false;
+                        $mensaje = "El dominio ya esta siendo utilizado, "
+                              . "te presentamos algunos dominios adicionales, "
+                              . "o puedes probar con otro dominio";
+                        $dominios = $this->Dominio->obtenerDominiosSimilares($tld, $sld);
                   }
             }
             else
@@ -62,7 +68,7 @@ class DominiosController extends BaseController {
                   $mensaje = $validator->messages()->first('dominio');
             }
 
-            $response = array('resultado' => $resultado, 'mensaje' => $mensaje);
+            $response = array('resultado' => $resultado, 'mensaje' => $mensaje, 'dominios' => $dominios);
 
             return Response::json($response);
       }
@@ -187,13 +193,16 @@ class DominiosController extends BaseController {
 
       public static function eliminarDominioPendiente($dominio_pendiente)
       {
-            if(DominioRepositoryEloquent::eliminarDominioPendiente($dominio_pendiente->id)){
+            if (DominioRepositoryEloquent::eliminarDominioPendiente($dominio_pendiente->id))
+            {
                   return true;
-            }else{
+            }
+            else
+            {
                   return false;
             }
       }
-      
+
       public static function agregarDominio($usuario)
       {
             $dominio_pendiente = $usuario->dominio_pendiente;
@@ -214,7 +223,7 @@ class DominiosController extends BaseController {
                   if (isset($ftp) && $ftp->id)
                   {
                         $dominiosRepository->eliminarDominioPendiente($usuario->dominio_pendiente->id);
-                        
+
                         $data = array('dominio' => $dominio->dominio,
                               'usuario' => $usuario->email,
                               'ftp_user' => $ftp->username,
@@ -224,8 +233,8 @@ class DominiosController extends BaseController {
                               $message->to($usuario->email, $usuario->nombre)->subject('Creado dominio en primer server');
                         });
 
-                        
-                        
+
+
                         return true;
                   }
                   else
@@ -238,7 +247,7 @@ class DominiosController extends BaseController {
                   return false;
             }
       }
-      
+
       /*
        * Funcion para agregar usuario al sistema
        */
@@ -280,7 +289,7 @@ class DominiosController extends BaseController {
                         'dominio' => array('regex:/^([a-z0-9]([-a-z0-9]*[a-z0-9])?\\.)+((a[cdefgilmnoqrstuwxz]|aero|arpa)|(b[abdefghijmnorstvwyz]|biz)|(c[acdfghiklmnorsuvxyz]|cat|com|coop)|d[ejkmoz]|(e[ceghrstu]|edu)|f[ijkmor]|(g[abdefghilmnpqrstuwy]|gov)|h[kmnrtu]|(i[delmnoqrst]|info|int)|(j[emop]|jobs)|k[eghimnprwyz]|l[abcikrstuvy]|(m[acdghklmnopqrstuvwxyz]|mil|mobi|museum)|(n[acefgilopruz]|name|net)|(om|org)|(p[aefghklmnrstwy]|pro)|qa|r[eouw]|s[abcdeghijklmnortvyz]|(t[cdfghjklmnoprtvwz]|travel)|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw])$/'),
                         ), array(
                         'dominio.required' => 'Es necesario especificar un dominio',
-                        'dominio.regex' => 'El dominio ',
+                        'dominio.regex' => 'Escriba el nombre del dominio correctamente. debe ser de la forma: dominio-nuevo.com o con codigo de pais',
                         )
             );
       }

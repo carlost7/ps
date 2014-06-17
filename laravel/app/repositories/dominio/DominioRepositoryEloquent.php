@@ -5,16 +5,29 @@
  *
  * @author carlos
  */
-class DominioRepositoryEloquent implements DominioRepository
-{
+class DominioRepositoryEloquent implements DominioRepository {
       /*
        * Tratar de probar si el dominio existe, o dar otras alternativas
        */
 
-      public function comprobarDominio($dominio)
+      public function comprobarDominio($tld, $sld)
       {
-            
-            return true;
+            $enomFunciones = new ENomFunciones();
+            if ($enomFunciones->checar_dominio($sld, $tld))
+            {
+                  return true;
+            }
+            else
+            {
+                  return false;
+            }
+      }
+
+      public function obtenerDominiosSimilares($tld, $sld)
+      {
+            $enomFunciones = new ENomFunciones();
+            $dominios_similares = $enomFunciones->obtener_dominios_similares($sld, $tld);
+            return $dominios_similares;
       }
 
       /*
@@ -29,12 +42,12 @@ class DominioRepositoryEloquent implements DominioRepository
                   $dominio = $this->agregarDominioBase($usuario_id, $nombre_dominio, $is_activo, $plan_id, $is_ajeno);
                   if (isset($dominio->id))
                   {
-                        
+
                         return $dominio;
                   }
                   else
                   {
-                        
+
                         return false;
                   }
             }
@@ -90,7 +103,7 @@ class DominioRepositoryEloquent implements DominioRepository
             }
             catch (Exception $e)
             {
-                  $data = array('respuesta'=>print_r($e));
+                  $data = array('respuesta' => print_r($e));
                   Mail::queue('email.error_agregar_dominio', $data, function($message) {
                         $message->to('carlos.juarez@t7marketing.com', "Administrador")->subject('Error al agregar el dominio');
                   });
@@ -230,6 +243,5 @@ class DominioRepositoryEloquent implements DominioRepository
                   Log::error('DominioRepositoryEloquent . eliminarDominiosPendiente ' . print_r($e, true));
             }
       }
-      
 
 }

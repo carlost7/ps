@@ -21,7 +21,7 @@ class enomapi {
       {
             $this->uid = Config::get('enom.uid');
             $this->pw = Config::get('enom.pw');
-            $this->response_type = Config::get('enom.response_type');
+            $this->response_type = Config::get('enom.responsetype');
             $this->url = Config::get('enom.url');
       }
 
@@ -92,16 +92,16 @@ class enomapi {
                   return false;
             }
             
-            $user_data = array('response_type'=>$this->response_type,'uid'=>$this->uid,'pw'=>$this->pw);
-            $auth = http_build_query($auth, '', '&');
+            $user_data = array('responsetype'=>$this->response_type,'uid'=>$this->uid,'pw'=>$this->pw);
+            $auth = http_build_query($user_data, '', '&');
             
             $data = http_build_query($args);
             
-            $this->url += $user_data.$data; 
+            $this->url .= $auth.'&'.$data; 
             
             Log::info('enomapi. Create_url: '.$this->url);
             
-            return $url;
+            return $this->url;
             
       }
       

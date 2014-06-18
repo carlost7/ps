@@ -25,14 +25,16 @@ class ENomFunciones {
 
             $this->enom_api->create_url($args);
             $resultado = $this->enom_api->getResponse();
-            
+
             $rrpCode = $resultado->RRPCode;
-            if($rrpCode=="210"){
+            if ($rrpCode == "210")
+            {
                   return true;
-            }else{
+            }
+            else
+            {
                   return false;
-            }            
-            
+            }
       }
 
       public function obtener_dominios_similares($sld, $tld)
@@ -41,18 +43,41 @@ class ENomFunciones {
                   "command" => "NameSpinner",
                   "SLD" => $sld,
                   "TLD" => $tld,
-                  "UseHyphens" => false,
+                  "UseHyphens" => true,
+                  "SensitiveContent" => true,
                   "UseNumbers" => false,
-                  "Topical" => "high",
+                  "Topical" => "medium",
                   "Similar" => "medium",
-                  "Related" => "high",
-                  "Basic" => "low",
+                  "Related" => "medium",
+                  "Basic" => "medium",
                   "MaxResults" => 5,
             );
 
             $this->enom_api->create_url($args);
-            $resultado = $this->enom_api->getResponse();            
-            return $resultado;
+            $resultado = $this->enom_api->getResponse();
+            $count = $resultado->namespin->spincount;
+            $dominios = array();
+            if ($count > 0)
+            {
+                  for ($i = 0; $i < $count; $i++)
+                  {
+                        if ($resultado->namespin->domains->domain[$i]['com'] != 'n')
+                        {
+                              array_push($dominios, $resultado->namespin->domains->domain[$i]['name'] . ".com");
+                        }
+
+                        if ($resultado->namespin->domains->domain[$i]['net'] != 'n')
+                        {
+                              array_push($dominios, $resultado->namespin->domains->domain[$i]['name'] . ".net");
+                        }
+                  }
+            }
+            
+            if(sizeof($dominios)){
+                  return $dominios;
+            }else{
+                  return null;
+            }            
       }
 
       public function comprar($sld, $tld)

@@ -32,8 +32,9 @@
                   <span class="input-group-btn">
                         <button class="btn btn-primary" id="Comprobar" type="button">Comprobar Disponibilidad</button>
                   </span>
-            </div><!-- /input-group -->
-      </div>      
+            </div>
+            <div class="alert" id="dominios_similares"></div>
+      </div>    
       <button type="submit" id="crear" class="btn btn-success" disabled='disabled'>Crear Dominio</button>
       {{ Form::close() }}
 </div>
@@ -60,6 +61,7 @@
                               $(".comprobacion").removeClass('alert-success');
                               $(".comprobacion").addClass('alert-danger');
                               $(".result").text(result['mensaje']);
+                              addDominiosSimilares(result['dominios']);
                               $(".comprobacion").show();
                               stopDomain();
                         }
@@ -67,12 +69,37 @@
             }
       });
 
-      function proceedDomain() {
-            $('#crear').removeAttr('disabled');            
+
+      function addDominiosSimilares(dominios) {
+
+            if (dominios != null && dominios.length) {
+                  listadominios = "<p>Dominios similares que podrias utilizar</p><br/>";
+                  listadominios += "<ul class='list-group'>";
+                  for (i = 0; i < dominios.length; i++) {
+                        listadominios += "<li class='list-group-item'>";
+                        listadominios += "<button type='button' class='btn btn-primary btn-sm' onclick=\"selectSimilar('"+dominios[i].toLowerCase()+"')\" >seleccionar</button> > "+dominios[i].toLowerCase()+'';
+                        listadominios += "</li>";
+                  }
+                  listadominios += "</ul>";
+                  $("#dominios_similares").html(listadominios);
+                  $("#dominios_similares").show();
+            }
+
       }
 
-      function stopDomain(){
-            $('#crear').attr('disabled',true);            
+      function proceedDomain() {
+            $('#crear').removeAttr('disabled');
+      }
+
+      function stopDomain() {
+            $('#crear').attr('disabled', true);
+      }
+
+      function selectSimilar(dominio) {
+            $("#dominios_similares").html();
+            $("#dominios_similares").hide();
+            $("#dominio").val(dominio);
+            stopDomain();
       }
 
       $('#ajeno').click(function() {
@@ -88,6 +115,8 @@
 
       $(document).ready(function() {
             $(".comprobacion").hide();
+            $("#dominios_similares").hide();
+            $('#crear').attr('disabled', true);
       });
 </script>
 @stop

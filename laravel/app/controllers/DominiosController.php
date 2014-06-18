@@ -42,9 +42,10 @@ class DominiosController extends BaseController {
       public function comprobarDominio()
       {
             $validator = $this->getValidatorComprobarNombreDominio();
+            $dom = null;
             if ($validator->passes())
             {
-                  $dominios = null;
+                  
                   $dominio = Input::get('dominio');
                   $sld = substr($dominio, 0, strpos($dominio, '.'));
                   $tld = substr($dominio, strpos($dominio, '.') + 1);
@@ -56,10 +57,8 @@ class DominiosController extends BaseController {
                   else
                   {
                         $resultado = false;
-                        $mensaje = "El dominio ya esta siendo utilizado, "
-                              . "te presentamos algunos dominios adicionales, "
-                              . "o puedes probar con otro dominio";
-                        $dominios = $this->Dominio->obtenerDominiosSimilares($tld, $sld);
+                        $mensaje = "El dominio ya esta siendo utilizado";                              
+                        $dom = $this->Dominio->obtenerDominiosSimilares($tld, $sld);                        
                   }
             }
             else
@@ -68,7 +67,7 @@ class DominiosController extends BaseController {
                   $mensaje = $validator->messages()->first('dominio');
             }
 
-            $response = array('resultado' => $resultado, 'mensaje' => $mensaje, 'dominios' => $dominios);
+            $response = array('resultado' => $resultado, 'mensaje' => $mensaje, 'dominios' => $dom);
 
             return Response::json($response);
       }

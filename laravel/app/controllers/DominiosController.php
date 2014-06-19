@@ -45,7 +45,7 @@ class DominiosController extends BaseController {
             $dom = null;
             if ($validator->passes())
             {
-                  
+
                   $dominio = Input::get('dominio');
                   $sld = substr($dominio, 0, strpos($dominio, '.'));
                   $tld = substr($dominio, strpos($dominio, '.') + 1);
@@ -57,8 +57,8 @@ class DominiosController extends BaseController {
                   else
                   {
                         $resultado = false;
-                        $mensaje = "El dominio ya esta siendo utilizado";                              
-                        $dom = $this->Dominio->obtenerDominiosSimilares($tld, $sld);                        
+                        $mensaje = "El dominio ya esta siendo utilizado";
+                        $dom = $this->Dominio->obtenerDominiosSimilares($tld, $sld);
                   }
             }
             else
@@ -76,10 +76,10 @@ class DominiosController extends BaseController {
        * Usando la api de Enom generar el costo del dominio
        */
 
-      public static function getCostoDominio($dominio)
+      public static function getCostoDominio($tld)
       {
 
-            return $costo_dominio = 12.00;
+            return $costo_dominio = 14.00;
       }
 
       /*
@@ -162,26 +162,27 @@ class DominiosController extends BaseController {
                         if ($this->Dominio->apartarDominio($usuario, $dominio, $dominio_ajeno, $plan_model))
                         {
                               //5.-
-                              $preference = PagosController::generarPagoServiciosIniciales($usuario, $dominio, $plan_model->id, $tipo_pago, $tiempo_servicio, $moneda);
-                              //6.-
-                              if (isset($preference))
-                              {
-                                    $data = array('usuario' => $usuario->email,
-                                          'password' => Input::get('password'),
-                                    );
-                                    Mail::queue('email.nuevousuario', $data, function($message) {
-                                          $message->to(Input::get('correo'), Input::get('nombre'))->subject('Bienvenido a PrimerServer');
-                                    });
-                                    DB::commit();
+                              /* $preference = PagosController::generarPagoServiciosIniciales($usuario, $dominio, $plan_model->id, $tipo_pago, $tiempo_servicio, $moneda);
+                                //6.-
+                                if (isset($preference))
+                                { */
+                              $data = array('usuario' => $usuario->email,
+                                    'password' => Input::get('password'),
+                              );
+                              Mail::queue('email.nuevousuario', $data, function($message) {
+                                    $message->to(Input::get('correo'), Input::get('nombre'))->subject('Bienvenido a PrimerServer');
+                              });
+                              //DB::commit();
 
-                                    $link = $preference['response'][Config::get('payment.init_point')];
-
-                                    return Redirect::away($link);
-                              }
-                              else
-                              {
-                                    Session::flash('error', 'No se pudo generar el pago del servicio');
-                              }
+                              //$link = $preference['response'][Config::get('payment.init_point')];
+                              Session::set('usuario', $usuario);
+                              //return Redirect::away($link);
+                              $this->comprarDominio();
+                              /* }
+                                else
+                                {
+                                Session::flash('error', 'No se pudo generar el pago del servicio');
+                                } */
                         }
                   }
 
@@ -244,6 +245,31 @@ class DominiosController extends BaseController {
             else
             {
                   return false;
+            }
+      }
+
+      public function comprarDominio()
+      {
+            $usuario = Session::get('usuario');
+            if (isset($usuario))
+            {
+                  $dominio_pendiente = $this->Dominio->obtenerDominioPendiente($usuario);
+                  if (isset($dominio_pendiente))
+                  {
+                        $dominio = $dominio_pendiente->dominio;
+                        $sld = substr($dominio, 0, strpos($dominio, '.'));
+                        $tld = substr($dominio, strpos($dominio, '.') + 1);
+                        $this->Dominio->comprarDominio($sld,$tld,null);
+                  }
+                  else
+                  {
+                        echo "no hay dominio pendiente";
+                  }
+            }
+            else
+            {
+                  Session::flash('error', 'No se especifico el usuario');
+                  return Redirect::back();
             }
       }
 

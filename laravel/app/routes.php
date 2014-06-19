@@ -37,7 +37,7 @@ Route::get('dominio', array('as' => 'dominio.inicio', 'uses' => 'DominiosControl
 Route::match(array('GET','POST'),'dominio/datos_usuario', array('as' => 'dominio.datos_usuario', 'uses' => 'DominiosController@obtenerDominioRequerido'));
 Route::post('dominio/confirmar_dominio', array('as' => 'dominio.confirmar_dominio', 'uses' => 'DominiosController@confirmarDominio'));
 Route::post('dominio/comprobar', array('as' => 'dominio/comprobar', 'uses' => 'DominiosController@comprobarDominio'));
-
+Route::get('dominio/comprar_dominio',array('as'=>'dominio.comprar_dominio', 'uses' => 'DominiosController@comprarDominio'));
 
 /*
   |----------------------------------

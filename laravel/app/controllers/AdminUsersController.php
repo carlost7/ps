@@ -75,7 +75,7 @@ class AdminUsersController extends \BaseController {
                               $user = explode('.', $dominio->dominio);
                               $username = $user[0];
                               $hostname = 'primerserver.com';
-                              $home_dir = $dominio->dominio;
+                              $home_dir = "public_html/".$dominio->dominio;
                               if ($this->Ftp->agregarFtp($username, $hostname, $home_dir, Input::get('password'), true))
                               {
                                     Session::put('message', 'La cuenta esta lista para usarse');

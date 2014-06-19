@@ -27,8 +27,13 @@ class ENomFunciones {
             $resultado = $this->enom_api->getResponse();
 
             $rrpCode = $resultado->RRPCode;
+            $premium = $resultado->IsPremiumName;
+            
             if ($rrpCode == "210")
             {
+                  if($premium != ''){
+                        return false;
+                  }
                   return true;
             }
             else
@@ -55,6 +60,7 @@ class ENomFunciones {
 
             $this->enom_api->create_url($args);
             $resultado = $this->enom_api->getResponse();
+            dd($resultado);
             $count = $resultado->namespin->spincount;
             $dominios = array();
             if ($count > 0)
@@ -90,6 +96,9 @@ class ENomFunciones {
             );
             $this->enom_api->create_url($args);
             $resultado = $this->enom_api->getResponse();
+            
+            dd($resultado);
+            return $resultado;
       }
 
       protected function getExternalAttributes()

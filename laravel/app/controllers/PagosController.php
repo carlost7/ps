@@ -30,7 +30,7 @@ class PagosController extends \BaseController {
 
       public function pagoAceptado()
       {
-            return View::make('pagos.pendiente');
+            return View::make('pagos.pendiente');            
       }
 
       public function pagoPendiente()

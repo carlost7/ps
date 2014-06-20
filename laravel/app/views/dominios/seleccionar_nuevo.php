@@ -103,6 +103,7 @@
             $(".comprobacion").hide();
             $("#dominios_similares").hide();
             $('#crear').attr('disabled', true);
+            addDominiosSimilares('{{$dominio_anterior}}');
       });
 </script>
 @stop

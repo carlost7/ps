@@ -166,17 +166,17 @@ class DominiosController extends BaseController {
                                 //6.-
                                 if (isset($preference))
                                 { */
-                              $data = array('usuario' => $usuario->email,
+                              /*$data = array('usuario' => $usuario->email,
                                     'password' => Input::get('password'),
                               );
-                              Mail::queue('email.nuevousuario', $data, function($message) {
+                              /*Mail::queue('email.nuevousuario', $data, function($message) {
                                     $message->to(Input::get('correo'), Input::get('nombre'))->subject('Bienvenido a PrimerServer');
                               });
                               //DB::commit();
                               //$link = $preference['response'][Config::get('payment.init_point')];
                               Session::set('usuario', $usuario);
-                              //return Redirect::away($link);
-                              if ($this->comprarDominio())
+                              //return Redirect::away($link);*/
+                              if ($this->AdquirirDominio())
                               {
                                     Session::flash('message', 'Dominio comprado con exito');
                               }
@@ -256,7 +256,7 @@ class DominiosController extends BaseController {
             }
       }
 
-      public function comprarDominio()
+      public function AdquirirDominio()
       {
             $usuario = Session::get('usuario');
             if (isset($usuario))
@@ -265,9 +265,7 @@ class DominiosController extends BaseController {
                   if (isset($dominio_pendiente))
                   {
                         $dominio = $dominio_pendiente->dominio;
-                        $sld = substr($dominio, 0, strpos($dominio, '.'));
-                        $tld = substr($dominio, strpos($dominio, '.') + 1);
-                        if ($this->Dominio->comprarDominio($sld, $tld, null))
+                        if ($this->comprarDominio($dominio))
                         {
                               return true;
                         }
@@ -288,15 +286,50 @@ class DominiosController extends BaseController {
             }
       }
 
+      protected function comprarDominio($dominio)
+      {
+            $sld = substr($dominio, 0, strpos($dominio, '.'));
+            $tld = substr($dominio, strpos($dominio, '.') + 1);
+            if ($this->Dominio->comprarDominio($sld, $tld, null))
+            {
+                  return true;
+            }
+            else
+            {
+                  return false;
+            }
+      }
+
       public function seleccionarNuevoDominio()
       {
             $dominio_anterior = Session::get('dominio_pendiente');
-            return View::make('dominios.seleccionar_nuevo')->with(array('dominio_anterior'=>$dominio_anterior));
+            return View::make('dominios.seleccionar_nuevo')->with(array('dominio_anterior' => $dominio_anterior));
       }
 
       public function comprarNuevoDominio()
       {
-            
+            if ($this->isPostRequest())
+            {
+                  $validator = $this->getValidatorComprobarNombreDominio();
+                  if ($validator->passes())
+                  {
+                        $dominios = Input::get('dominio');
+                        if ($this->comprarDominio($dominio))
+                        {
+                              Session::flash('message','Comprado el nuevo dominio');
+                              return true;                              
+                        }
+                        else
+                        {
+                              Session::flash('error','Error al comprar el dominio');
+                              return false;
+                        }
+                  }
+                  else
+                  {
+                        return Redirect::back()->withError($validator->messages());
+                  }
+            }
       }
 
       /*

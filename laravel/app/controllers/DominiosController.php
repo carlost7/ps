@@ -178,13 +178,12 @@ class DominiosController extends BaseController {
                               //return Redirect::away($link);
                               if ($this->comprarDominio())
                               {
-                                    Session::flash('message','Dominio comprado con exito');
+                                    Session::flash('message', 'Dominio comprado con exito');
                               }
                               else
                               {
-                                    Session::flash('error','No se pudo comprar el dominio');
-                                    return Redirect::to('dominio');
-                                    
+                                    Session::flash('error', 'No se pudo comprar el dominio');
+                                    return Redirect::to('dominio/nueva_eleccion');
                               }
 
                               /* }
@@ -284,20 +283,22 @@ class DominiosController extends BaseController {
             }
             else
             {
-                  Session::flash('error', 'No se especifico el usuario');
+                  Session::flash('error', 'No se especificó el usuario');
                   return Redirect::back();
             }
       }
 
-      public function seleccionarNuevoDominio(){
+      public function seleccionarNuevoDominio()
+      {
+            $dominio_anterior = Session::get('dominio_pendiente');
+            return View::make('dominios.seleccionar_nuevo')->with(array('dominio_anterior'=>$dominio_anterior));
+      }
+
+      public function comprarNuevoDominio()
+      {
             
       }
-      
-      
-      public function comprarNuevoDominio(){
-            
-      }
-      
+
       /*
        * Funcion para agregar usuario al sistema
        */

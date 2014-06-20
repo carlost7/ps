@@ -244,7 +244,7 @@ class DominioRepositoryEloquent implements DominioRepository {
             }
       }
 
-      public function comprarDominio($tld, $sld, $ext_attr = array())
+      public function comprarDominio($sld, $tld, $ext_attr = array())
       {
             $enomFunciones = new ENomFunciones();
             if ($enomFunciones->comprar($sld, $tld))

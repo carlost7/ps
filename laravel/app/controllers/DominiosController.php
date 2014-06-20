@@ -173,11 +173,20 @@ class DominiosController extends BaseController {
                                     $message->to(Input::get('correo'), Input::get('nombre'))->subject('Bienvenido a PrimerServer');
                               });
                               //DB::commit();
-
                               //$link = $preference['response'][Config::get('payment.init_point')];
                               Session::set('usuario', $usuario);
                               //return Redirect::away($link);
-                              $this->comprarDominio();
+                              if ($this->comprarDominio())
+                              {
+                                    Session::flash('message','Dominio comprado con exito');
+                              }
+                              else
+                              {
+                                    Session::flash('error','No se pudo comprar el dominio');
+                                    return Redirect::to('dominio');
+                                    
+                              }
+
                               /* }
                                 else
                                 {
@@ -259,7 +268,14 @@ class DominiosController extends BaseController {
                         $dominio = $dominio_pendiente->dominio;
                         $sld = substr($dominio, 0, strpos($dominio, '.'));
                         $tld = substr($dominio, strpos($dominio, '.') + 1);
-                        $this->Dominio->comprarDominio($sld,$tld,null);
+                        if ($this->Dominio->comprarDominio($sld, $tld, null))
+                        {
+                              return true;
+                        }
+                        else
+                        {
+                              return false;
+                        }
                   }
                   else
                   {
@@ -273,6 +289,15 @@ class DominiosController extends BaseController {
             }
       }
 
+      public function seleccionarNuevoDominio(){
+            
+      }
+      
+      
+      public function comprarNuevoDominio(){
+            
+      }
+      
       /*
        * Funcion para agregar usuario al sistema
        */

@@ -68,7 +68,15 @@ Route::group(array('before' => 'auth'), function() {
       Route::any('usuario/cambiar_password', array('as' => 'usuario/cambiar_password', 'uses' => 'UsuariosController@cambiarPasswordUsuario'));
       Route::any('usuario/cambiar_correo', array('as' => 'usuario/cambiar_correo', 'uses' => 'UsuariosController@cambiarCorreoUsuario'));
       Route::any('usuario/problemas', array('as' => 'usuario/problemas', 'uses' => 'UsuariosController@mostrarProblemas'));
-
+      
+      /*
+       * Si el dominio no se pudo comprar, elegir un nuevo dominio
+       */
+      Route::get('dominio/nueva_eleccion',array('as'=>'dominio.nueva_eleccion','uses'=>'DominiosController@seleccionarNuevoDominio'));
+      Route::post('dominio/comprar_dominio',array('as'=>'dominio.comprar_dominio','uses'=>'DominiosController@comprarNuevoDominio'));
+      
+      
+      
       /*
        * Seccion de pagos
        */

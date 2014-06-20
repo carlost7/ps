@@ -25,6 +25,6 @@ interface DominioRepository {
 
       public function obtenerDominioPendiente($user_model);
       
-      public function comprarDominio($tld,$sld, $ext_attr = array());
+      public function comprarDominio($sld,$tld, $ext_attr = array());
       
 }

@@ -28,10 +28,11 @@ class ENomFunciones {
 
             $rrpCode = $resultado->RRPCode;
             $premium = $resultado->IsPremiumName;
-            
+
             if ($rrpCode == "210")
             {
-                  if($premium != ''){
+                  if ($premium != '')
+                  {
                         return false;
                   }
                   return true;
@@ -60,7 +61,6 @@ class ENomFunciones {
 
             $this->enom_api->create_url($args);
             $resultado = $this->enom_api->getResponse();
-            dd($resultado);
             $count = $resultado->namespin->spincount;
             $dominios = array();
             if ($count > 0)
@@ -78,16 +78,20 @@ class ENomFunciones {
                         }
                   }
             }
-            
-            if(sizeof($dominios)){
+
+            if (sizeof($dominios))
+            {
                   return $dominios;
-            }else{
+            }
+            else
+            {
                   return null;
-            }            
+            }
       }
 
       public function comprar($sld, $tld)
       {
+
             $args = array(
                   "command" => "Purchase",
                   "sld" => $sld,
@@ -96,8 +100,19 @@ class ENomFunciones {
             );
             $this->enom_api->create_url($args);
             $resultado = $this->enom_api->getResponse();
+
+            $rrpCode = $resultado->RRPCode;
             
-            dd($resultado);
+            Log::info('ENomFunciones . comprar '.print_r($resultado,true));
+                  
+            if ($rrpCode == "200")
+            {
+                  return true;
+            }
+            else
+            {
+                  return false;
+            }
             return $resultado;
       }
 

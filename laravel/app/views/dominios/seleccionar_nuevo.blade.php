@@ -11,7 +11,7 @@
 <div class="jumbotron">
       <div class="container">
             <h1>
-                  Selecciona un nuevo dominio por favor
+                  Selecciona un nuevo dominio
             </h1>
       </div>
 </div>
@@ -20,12 +20,12 @@
             <div class="alert">                  
                   <p class="result"></p>
             </div>                        
-      </div>
+      </div>      
       <div class="clearfix"></div>
       {{ Form::open(array('route'=>'dominio.comprar_nuevo_dominio','id'=>'form_confirm')) }}
       <div class="form-group">                       
             <div class="input-group">                  
-                  <input type="text" class="form-control" id="dominio" name="dominio" placeholder="Escribir el nombre del dominio que quieres utilizar">
+                  <input type="text" class="form-control" value="{{$dominio_anterior}}" id="dominio" name="dominio" placeholder="Escribir el nombre del dominio que quieres utilizar">
                   <span class="input-group-btn">
                         <button class="btn btn-primary" id="Comprobar" type="button">Comprobar Disponibilidad</button>
                   </span>
@@ -102,8 +102,7 @@
       $(document).ready(function() {
             $(".comprobacion").hide();
             $("#dominios_similares").hide();
-            $('#crear').attr('disabled', true);
-            addDominiosSimilares('{{$dominio_anterior}}');
+            $('#crear').attr('disabled', true);            
       });
 </script>
 @stop

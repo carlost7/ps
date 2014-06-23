@@ -38,6 +38,8 @@ Route::match(array('GET','POST'),'dominio/datos_usuario', array('as' => 'dominio
 Route::post('dominio/confirmar_dominio', array('as' => 'dominio.confirmar_dominio', 'uses' => 'DominiosController@confirmarDominio'));
 Route::post('dominio/comprobar', array('as' => 'dominio/comprobar', 'uses' => 'DominiosController@comprobarDominio'));
 Route::get('dominio/comprar_dominio',array('as'=>'dominio.comprar_dominio', 'uses' => 'DominiosController@comprarDominio'));
+Route::get('dominio/seleccionar_nuevo',array('as'=>'dominio.seleccionar_nuevo','uses'=>'DominiosController@seleccionarNuevoDominio'));
+Route::post('dominio/comprar_nuevo_dominio',array('as'=>'dominio.comprar_nuevo_dominio','uses'=>'DominiosController@comprarNuevoDominio'));
 
 /*
   |----------------------------------
@@ -72,8 +74,8 @@ Route::group(array('before' => 'auth'), function() {
       /*
        * Si el dominio no se pudo comprar, elegir un nuevo dominio
        */
-      Route::get('dominio/seleccionar_nuevo',array('as'=>'dominio.nueva_eleccion','uses'=>'DominiosController@seleccionarNuevoDominio'));
-      Route::post('dominio/comprar_nuevo_dominio',array('as'=>'dominio.comprar_nuevo_dominio','uses'=>'DominiosController@comprarNuevoDominio'));
+      //Route::get('dominio/seleccionar_nuevo',array('as'=>'dominio.seleccionar_nuevo','uses'=>'DominiosController@seleccionarNuevoDominio'));
+      //Route::post('dominio/comprar_nuevo_dominio',array('as'=>'dominio.comprar_nuevo_dominio','uses'=>'DominiosController@comprarNuevoDominio'));
       
       
       

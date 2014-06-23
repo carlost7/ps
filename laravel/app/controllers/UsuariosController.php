@@ -224,31 +224,60 @@ class UsuariosController extends BaseController {
             Session::flash('message', 'Vuelve pronto');
             return Redirect::route("inicio");
       }
-      
+
       /*
        * 
        */
-      public static function eliminarUsuarioPagoCancelado($usuario){
-            
+
+      public static function eliminarUsuarioPagoCancelado($usuario)
+      {
+
             $usuariosRepository = new UsuariosRepositoryEloquent();
-            if($usuariosRepository->eliminarUsuario($usuario->id)){
+            if ($usuariosRepository->eliminarUsuario($usuario->id))
+            {
                   return true;
-            }else{
+            }
+            else
+            {
                   return false;
             }
-            
       }
 
-      public static function activarUsuario($usuario){
+      public static function activarUsuario($usuario)
+      {
             $usuarioRepository = new UsuariosRepositoryEloquent();
-            if($usuarioRepository->activarUsuario($usuario)){
+            if ($usuarioRepository->activarUsuario($usuario))
+            {
                   return true;
-            }else{
+            }
+            else
+            {
                   return false;
             }
       }
-      
-      
+
+      public static function actualizarPagoInicialUsuario($usuario)
+      {
+            try
+            {
+                  $usuario->is_deudor = false;
+
+                  if ($usuario->save())
+                  {
+                        return true;
+                  }
+                  else
+                  {
+                        return false;
+                  }
+            }
+            catch (Exception $e)
+            {
+                  Log::error('UsuariosRepositoryEloquent . activarUsuario ' . print_r($e, true));
+                  return false;
+            }
+      }
+
       /*
        * Funcion para regenerar el password
        */
@@ -302,7 +331,7 @@ class UsuariosController extends BaseController {
       {
             return Validator::make(Input::all(), array(
                         'email' => 'required|email',
-                        'password' => 'required',                        
+                        'password' => 'required',
             ));
       }
 
@@ -313,7 +342,7 @@ class UsuariosController extends BaseController {
                         'password' => 'required|min:9',
                         'password' => array('regex:/^.*(?=.{8,15})(?=.*[a-z])(?=.*[A-Z])(?=.*[\d\W]).*$/'),
                         'password_confirmation' => 'required|same:password',
-            ), array(
+                        ), array(
                         'old_password.required' => 'Escriba su contraseña anterior',
                         'password.regex' => 'La contraseña debe ser mayor de 9 caracteres. puedes utilizar mayúsculas, minúsculas, números y ¡ # $ *',
                         'password_confirmation.same' => 'Las contraseñas no concuerdan'
@@ -326,8 +355,8 @@ class UsuariosController extends BaseController {
                         'password' => 'required',
                         'old_email' => 'required|email',
                         'new_email' => 'required|email',
-            ), array(
-                        'password.required' => 'Escriba la contraseña de su usuario',                        
+                        ), array(
+                        'password.required' => 'Escriba la contraseña de su usuario',
             ));
       }
 

@@ -30,7 +30,7 @@ class PagosController extends \BaseController {
 
       public function pagoAceptado()
       {
-            return View::make('pagos.pendiente');            
+            return View::make('pagos.pendiente');
       }
 
       public function pagoPendiente()
@@ -244,121 +244,12 @@ class PagosController extends \BaseController {
       public function obtenerIPNMercadoPago()
       {
 
-            $id = Input::get('id');
-            if (isset($id))
-            {
-                  $response = $this->Pagos->recibir_notificacion($id);
-                  if (isset($response))
-                  {                        
-                        $external_reference = $response['collection']['external_reference'];
-                        $status = $response['collection']['status'];
-
-                        $user = $this->Pagos->actualizarStatusPagos($external_reference, $status);
-                        if (isset($user))
-                        {
-
-                              switch ($status)
-                              {
-                                    case 'approved':
-                                          $this->agregarDominio($user);
-                                          break;
-                                    case "pending":
-                                          echo "Pago pendiente";
-                                          break;
-                                    case "in_process":
-                                          echo "pago en proceso";
-                                          break;
-                                    case "rejected":
-                                          echo "Pago rechazado";
-                                          break;
-                                    case "refunded":
-                                          echo "Pago regresado";
-                                          break;
-                                    case "cancelled":
-                                          $this->cancelarUsuario($user);
-                                          break;
-                                    case "in_mediation":
-                                          echo "status en_mediacion";
-                                          break;
-                                    default :
-                                          echo "status incorrecto";
-                                          break;
-                              }
-                        }
-                        else
-                        {
-                              Log::info('PagosController . obtenerIPNMercadoPago No se encuentra ningun usuario con el numero de orden ' . $external_reference);
-                              echo "no se encontro ningun usuario";
-                        }
-                  }
-                  else
-                  {
-                        Log::error('PagosController.obtenerIPNMercadoPago No se recibio informacion de pago ID:' . $id);
-                        echo "no recibido";
-                  }
-            }
-            else
-            {
-                  echo "no recibi nada";
-            }
-
-
-            /* $result = json_decode('{"status":200,
-              "response":{
-              "collection":{
-              "sandbox":true,
-              "id":1402605615,
-              "site_id":"MLM",
-              "date_created":"2014-06-12T17:40:14-03:00",
-              "date_approved":"2014-06-12T17:40:14-03:00",
-              "money_release_date":"2014-06-12T17:40:14-03:00",
-              "last_modified":"2014-06-12T17:40:14-03:00",
-              "payer":{
-              "id":159395481,
-              "first_name":"primerserver.com",
-              "last_name":"World Wide Tech Ventures",
-              "phone":{
-              "area_code":"   ",
-              "number":"       ",
-              "extension":""},
-              "identification":{
-              "type":null,
-              "number":null},
-              "email":"mercadopago@primerserver.com",
-              "nickname":"PRIMERSERVERCOMWORLDWIDETEC"},
-              "order_id":"Ini_3",
-              "external_reference":"Ini_4",
-              "reason":"PrimerServer",
-              "transaction_amount":655.74,
-              "currency_id":"MXN",
-              "net_received_amount":655.74,
-              "total_paid_amount":655.74,
-              "shipping_cost":0,
-              "status":"approved",
-              "status_detail":"accredited",
-              "installments":9,
-              "payment_type":"credit_card",
-              "marketplace":"NONE",
-              "operation_type":"regular_payment",
-              "payment_method_id":"visa",
-              "marketplace_fee":0,
-              "collector":{
-              "id":159395481,
-              "first_name":"primerserver.com",
-              "last_name":"World Wide Tech Ventures",
-              "phone":{
-              "area_code":"   ",
-              "number":"       ",
-              "extension":""},
-              "email":"mercadopago@primerserver.com",
-              "nickname":"PRIMERSERVERCOMWORLDWIDETEC"}
-
-              }
-
-
-              }
-              }', true);
-              $response = $result['response'];
+            /* $id = Input::get('id');
+              if (isset($id))
+              {
+              $response = $this->Pagos->recibir_notificacion($id);
+              if (isset($response))
+              {
               $external_reference = $response['collection']['external_reference'];
               $status = $response['collection']['status'];
 
@@ -398,7 +289,116 @@ class PagosController extends \BaseController {
               {
               Log::info('PagosController . obtenerIPNMercadoPago No se encuentra ningun usuario con el numero de orden ' . $external_reference);
               echo "no se encontro ningun usuario";
-              } */
+              }
+              }
+              else
+              {
+              Log::error('PagosController.obtenerIPNMercadoPago No se recibio informacion de pago ID:' . $id);
+              echo "no recibido";
+              }
+              }
+              else
+              {
+              echo "no recibi nada";
+              }
+             */
+
+            $result = json_decode('{"status":200,
+              "response":{
+              "collection":{
+              "sandbox":true,
+              "id":1402605615,
+              "site_id":"MLM",
+              "date_created":"2014-06-12T17:40:14-03:00",
+              "date_approved":"2014-06-12T17:40:14-03:00",
+              "money_release_date":"2014-06-12T17:40:14-03:00",
+              "last_modified":"2014-06-12T17:40:14-03:00",
+              "payer":{
+              "id":159395481,
+              "first_name":"primerserver.com",
+              "last_name":"World Wide Tech Ventures",
+              "phone":{
+              "area_code":"   ",
+              "number":"       ",
+              "extension":""},
+              "identification":{
+              "type":null,
+              "number":null},
+              "email":"mercadopago@primerserver.com",
+              "nickname":"PRIMERSERVERCOMWORLDWIDETEC"},
+              "order_id":"Ini_15",
+              "external_reference":"Ini_15",
+              "reason":"PrimerServer",
+              "transaction_amount":655.74,
+              "currency_id":"MXN",
+              "net_received_amount":655.74,
+              "total_paid_amount":655.74,
+              "shipping_cost":0,
+              "status":"approved",
+              "status_detail":"accredited",
+              "installments":9,
+              "payment_type":"credit_card",
+              "marketplace":"NONE",
+              "operation_type":"regular_payment",
+              "payment_method_id":"visa",
+              "marketplace_fee":0,
+              "collector":{
+              "id":159395481,
+              "first_name":"primerserver.com",
+              "last_name":"World Wide Tech Ventures",
+              "phone":{
+              "area_code":"   ",
+              "number":"       ",
+              "extension":""},
+              "email":"mercadopago@primerserver.com",
+              "nickname":"PRIMERSERVERCOMWORLDWIDETEC"}
+
+              }
+
+
+              }
+              }', true);
+            $response = $result['response'];
+            $external_reference = $response['collection']['external_reference'];
+            $status = $response['collection']['status'];
+
+            $user = $this->Pagos->actualizarStatusPagos($external_reference, $status);
+            if (isset($user))
+            {
+
+                  switch ($status)
+                  {
+                        case 'approved':
+                              $this->agregarDominio($user);
+                              break;
+                        case "pending":
+                              echo "Pago pendiente";
+                              break;
+                        case "in_process":
+                              echo "pago en proceso";
+                              break;
+                        case "rejected":
+                              echo "Pago rechazado";
+                              break;
+                        case "refunded":
+                              echo "Pago regresado";
+                              break;
+                        case "cancelled":
+                              $this->cancelarUsuario($user);
+                              break;
+                        case "in_mediation":
+                              echo "status en_mediacion";
+                              break;
+                        default :
+                              echo "status incorrecto";
+                              break;
+                  }
+            }
+            else
+            {
+                  Log::info('PagosController . obtenerIPNMercadoPago No se encuentra ningun usuario con el numero de orden ' . $external_reference);
+                  echo "no se encontro ningun usuario";
+            } 
       }
 
       public function cancelarUsuario($usuario)
@@ -425,26 +425,7 @@ class PagosController extends \BaseController {
 
       public function agregarDominio($usuario)
       {
-            DB::beginTransaction();
-            if (DominiosController::agregarDominio($usuario))
-            {
-                  if (UsuariosController::activarUsuario($usuario))
-                  {
-
-                        DB::commit();
-                        echo "creado el usuario";
-                  }
-                  else
-                  {
-                        DB::rollback();
-                        echo "no se creo el usuario";
-                  }
-            }
-            else
-            {
-                  DB::rollback();
-                  echo "no se creo el usuario";
-            }
+            DominiosController::agregarDominio($usuario);            
       }
 
 }

@@ -162,35 +162,25 @@ class DominiosController extends BaseController {
                         if ($this->Dominio->apartarDominio($usuario, $dominio, $dominio_ajeno, $plan_model))
                         {
                               //5.-
-                              /* $preference = PagosController::generarPagoServiciosIniciales($usuario, $dominio, $plan_model->id, $tipo_pago, $tiempo_servicio, $moneda);
-                                //6.-
-                                if (isset($preference))
-                                { */
-                              /*$data = array('usuario' => $usuario->email,
-                                    'password' => Input::get('password'),
-                              );
-                              /*Mail::queue('email.nuevousuario', $data, function($message) {
-                                    $message->to(Input::get('correo'), Input::get('nombre'))->subject('Bienvenido a PrimerServer');
-                              });
-                              //DB::commit();
-                              //$link = $preference['response'][Config::get('payment.init_point')];
-                              Session::set('usuario', $usuario);
-                              //return Redirect::away($link);*/
-                              if ($this->AdquirirDominio())
+                              $preference = PagosController::generarPagoServiciosIniciales($usuario, $dominio, $plan_model->id, $tipo_pago, $tiempo_servicio, $moneda);
+                              //6.-
+                              if (isset($preference))
                               {
-                                    Session::flash('message', 'Dominio comprado con exito');
+                                    $data = array('usuario' => $usuario->email,
+                                          'password' => Input::get('password'),
+                                    );
+                                    Mail::queue('email.nuevousuario', $data, function($message) {
+                                          $message->to(Input::get('correo'), Input::get('nombre'))->subject('Bienvenido a PrimerServer');
+                                    });
+                                    DB::commit();
+                                    $link = $preference['response'][Config::get('payment.init_point')];
+
+                                    return Redirect::away($link);
                               }
                               else
                               {
-                                    Session::flash('error', 'No se pudo comprar el dominio');
-                                    return Redirect::to('dominio/nueva_eleccion');
+                                    Session::flash('error', 'No se pudo generar el pago del servicio');
                               }
-
-                              /* }
-                                else
-                                {
-                                Session::flash('error', 'No se pudo generar el pago del servicio');
-                                } */
                         }
                   }
 
@@ -218,6 +208,26 @@ class DominiosController extends BaseController {
             $arrPass = $home->getPassword();
             $password = $arrPass['password'];
             $dominiosRepository = new DominioRepositoryEloquent();
+            if (!$dominio_pendiente->is_ajeno)
+            {
+                  if (!self::comprarDominio($dominio_pendiente->dominio))
+                  {
+                        if (UsuariosController::actualizarPagoInicialUsuario($usuario))
+                        {
+                              $data = array('dominio' => $dominio->dominio);
+
+                              Mail::queue('email.error_compra_dominio', $data, function($message) use ($usuario) {
+                                    $message->to($usuario->email, $usuario->nombre)->subject('Creado dominio en primer server');
+                              });
+                              
+                              return false;
+                              
+                        }
+                        
+                  }
+            }
+            
+            DB::beginTransaction();
             $dominio = $dominiosRepository->agregarDominio($usuario->id, $dominio_pendiente->dominio, true, $dominio_pendiente->plan_id, $dominio_pendiente->is_ajeno, $password);
             if (isset($dominio->id))
             {
@@ -232,65 +242,49 @@ class DominiosController extends BaseController {
                   {
                         $dominiosRepository->eliminarDominioPendiente($usuario->dominio_pendiente->id);
 
-                        $data = array('dominio' => $dominio->dominio,
-                              'usuario' => $usuario->email,
-                              'ftp_user' => $ftp->username,
-                              'ftp_pass' => $password);
-
-                        Mail::queue('email.welcome', $data, function($message) use ($usuario) {
-                              $message->to($usuario->email, $usuario->nombre)->subject('Creado dominio en primer server');
-                        });
-
-
-
-                        return true;
-                  }
-                  else
-                  {
-                        return false;
-                  }
-            }
-            else
-            {
-                  return false;
-            }
-      }
-
-      public function AdquirirDominio()
-      {
-            $usuario = Session::get('usuario');
-            if (isset($usuario))
-            {
-                  $dominio_pendiente = $this->Dominio->obtenerDominioPendiente($usuario);
-                  if (isset($dominio_pendiente))
-                  {
-                        $dominio = $dominio_pendiente->dominio;
-                        if ($this->comprarDominio($dominio))
+                        if (UsuariosController::activarUsuario($usuario))
                         {
-                              return true;
+
+                              $data = array('dominio' => $dominio->dominio,
+                                    'usuario' => $usuario->email,
+                                    'ftp_user' => $ftp->username,
+                                    'ftp_pass' => $password);
+
+                              Mail::queue('email.welcome', $data, function($message) use ($usuario) {
+                                    $message->to($usuario->email, $usuario->nombre)->subject('Creado dominio en primer server');
+                              });
+
+                              DB::commit();
+                              echo "Usuario creado con éxito";                              
                         }
                         else
                         {
-                              return false;
+                              DB::rollback();
+                              echo "no se pudo crear el usuario";                              
                         }
+                        
                   }
                   else
                   {
-                        echo "no hay dominio pendiente";
+                        DB::rollback();                        
+                        echo "no se pudo crear el ftp";
                   }
             }
             else
             {
-                  Session::flash('error', 'No se especificó el usuario');
-                  return Redirect::back();
+                  DB::rollback();                  
+                  echo "no hay dominio";
             }
       }
 
-      protected function comprarDominio($dominio)
+      
+
+      public static function comprarDominio($dominio)
       {
+            $dominioRepository = new DominioRepositoryEloquent();
             $sld = substr($dominio, 0, strpos($dominio, '.'));
             $tld = substr($dominio, strpos($dominio, '.') + 1);
-            if ($this->Dominio->comprarDominio($sld, $tld, null))
+            if ($dominioRepository->comprarDominio($sld, $tld,null))
             {
                   return true;
             }
@@ -313,16 +307,16 @@ class DominiosController extends BaseController {
                   $validator = $this->getValidatorComprobarNombreDominio();
                   if ($validator->passes())
                   {
-                        $dominios = Input::get('dominio');
-                        if ($this->comprarDominio($dominio))
+                        $dominio = Input::get('dominio');
+                        if (self::comprarDominio($dominio))
                         {
-                              Session::flash('message','Comprado el nuevo dominio');
-                              return true;                              
+                              Session::flash('message', 'Dominio comprado con exito');
+                              return Redirect::to('/');
                         }
                         else
                         {
-                              Session::flash('error','Error al comprar el dominio');
-                              return false;
+                              Session::flash('error', 'No se pudo comprar el dominio');
+                              return Redirect::to('dominio/seleccionar_nuevo');
                         }
                   }
                   else

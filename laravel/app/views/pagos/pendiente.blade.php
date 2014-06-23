@@ -22,10 +22,6 @@
       </div>
 </div>
 
-<div class="container">
-      {{ HTML::linkRoute('dominio.comprar_dominio','Comprar Dominio') }}
-</div>
-
 @stop
 
 @section('scripts')

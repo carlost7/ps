@@ -204,29 +204,53 @@ class DominiosController extends BaseController {
       public static function agregarDominio($usuario)
       {
             $dominio_pendiente = $usuario->dominio_pendiente;
+            if (isset($dominio_pendiente))
+            {
+
+                  $dominio_registrado = true;
+                  if (!$dominio_pendiente->is_ajeno)
+                  {
+                        if (!self::comprarDominio($dominio_pendiente->dominio))
+                        {
+                              if (UsuariosController::actualizarPagoInicialUsuario($usuario))
+                              {
+                                    $dominio_registrado = false;
+                                    $data = array('dominio' => $dominio_pendiente->dominio);
+
+                                    Mail::queue('email.error_compra_dominio', $data, function($message) use ($usuario) {
+                                          $message->to($usuario->email, $usuario->nombre)->subject('Creado dominio en primer server');
+                                    });
+
+                                    echo "no se pudo registrar el dominio en Enom";
+                              }
+                        }
+                  }
+
+                  if ($dominio_registrado)
+                  {
+                        if (self::agregarDominioUsuarioSistema($dominio_pendiente, $usuario))
+                        {
+                              echo "Dominio agregado con exito";
+                        }
+                        else
+                        {
+                              echo "no se pudo agregar el dominio";
+                        }
+                  }
+            }
+            else
+            {
+                  echo "el dominio ya se registro o no hay dominio pendiente";
+            }
+      }
+
+      public static function agregarDominioUsuarioSistema($dominio_pendiente, $usuario)
+      {
             $home = new HomeController();
             $arrPass = $home->getPassword();
             $password = $arrPass['password'];
             $dominiosRepository = new DominioRepositoryEloquent();
-            if (!$dominio_pendiente->is_ajeno)
-            {
-                  if (!self::comprarDominio($dominio_pendiente->dominio))
-                  {
-                        if (UsuariosController::actualizarPagoInicialUsuario($usuario))
-                        {
-                              $data = array('dominio' => $dominio->dominio);
 
-                              Mail::queue('email.error_compra_dominio', $data, function($message) use ($usuario) {
-                                    $message->to($usuario->email, $usuario->nombre)->subject('Creado dominio en primer server');
-                              });
-                              
-                              return false;
-                              
-                        }
-                        
-                  }
-            }
-            
             DB::beginTransaction();
             $dominio = $dominiosRepository->agregarDominio($usuario->id, $dominio_pendiente->dominio, true, $dominio_pendiente->plan_id, $dominio_pendiente->is_ajeno, $password);
             if (isset($dominio->id))
@@ -255,36 +279,37 @@ class DominiosController extends BaseController {
                               });
 
                               DB::commit();
-                              echo "Usuario creado con éxito";                              
+                              return $dominio;
                         }
                         else
                         {
                               DB::rollback();
-                              echo "no se pudo crear el usuario";                              
+                              Log::error('DominiosController. agregarDominioUsuarioSistema : No se pudo activar el usuario ' . $usuario->id);
+                              return false;
                         }
-                        
                   }
                   else
                   {
-                        DB::rollback();                        
-                        echo "no se pudo crear el ftp";
+                        DB::rollback();
+                        Log::error('DominiosController. agregarDominioUsuarioSistema : No se pudo crear el ftp del usuario ' . $usuario->id);
+                        return false;
+                        ;
                   }
             }
             else
             {
-                  DB::rollback();                  
-                  echo "no hay dominio";
+                  DB::rollback();
+                  Log::error('DominiosController. agregarDominioUsuarioSistema : No se pudo activar el usuario ' . $usuario->id . ' ' . $dominio_pendiente->dominio);
+                  return false;
             }
       }
-
-      
 
       public static function comprarDominio($dominio)
       {
             $dominioRepository = new DominioRepositoryEloquent();
             $sld = substr($dominio, 0, strpos($dominio, '.'));
             $tld = substr($dominio, strpos($dominio, '.') + 1);
-            if ($dominioRepository->comprarDominio($sld, $tld,null))
+            if ($dominioRepository->comprarDominio($sld, $tld, null))
             {
                   return true;
             }
@@ -310,8 +335,21 @@ class DominiosController extends BaseController {
                         $dominio = Input::get('dominio');
                         if (self::comprarDominio($dominio))
                         {
-                              Session::flash('message', 'Dominio comprado con exito');
-                              return Redirect::to('/');
+                              $dominio_pendiente = Auth::user()->dominio_pendiente;
+                              $dominio_pendiente->dominio = $dominio;
+
+                              $dominio = self::agregarDominioUsuarioSistema($dominio_pendiente, Auth::user());
+                              if ($dominio)
+                              {
+                                    Session::set('dominio',$dominio);
+                                    Session::flash('message', 'Dominio seleccionado y listo para usarse');
+                                    return Redirect::to('usuario/inicio');
+                              }
+                              else
+                              {
+                                    Session::flash('message', 'Error al agregar el dominio. Comunicate con nosotros para solucionar el problema');
+                                    return Redirect::to('usuario/inicio');
+                              }
                         }
                         else
                         {

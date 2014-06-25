@@ -8,7 +8,7 @@
             <div>
                   Para regenerar tu password entra en el siguiente link: 
 
-                  <a href="{{ URL::route("usuario/reset", compact("token")) }}">Regenarar contraseña</a>
+                  <a href="{{ URL::route("usuario/reset", compact("token")) }}">Regenerar contraseña</a>
             </div>
       </body>
 </html>

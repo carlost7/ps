@@ -84,12 +84,18 @@ Route::group(array('before' => 'auth'), function() {
        */
       Route::get('pagos/inicio', array('as' => 'pagos/inicio', 'uses' => 'PagosController@mostrarPagos'));
       Route::get('pagos/faltantes', array('as' => 'pagos/faltantes', 'uses' => 'PagosController@mostrarPagos'));
-
+      
+      /*
+       * Seleccionar nuevo dominio
+       */
+      Route::get('dominios/seleccionar_nuevo',array('as'=>'dominios.seleccionar_nuevo', 'uses' => 'DominiosController@seleccionarNuevoDominio'));
+      
+      
       Route::group(array('before' => 'comprobar_usuario'), function() {
 
             /*
               |-------------------------------------------
-              | Acciondes del usuario
+              | Acciones del usuario
               |-------------------------------------------
              */
             Route::get('usuario/inicio', array('as' => 'usuario/inicio', 'uses' => 'UsuariosController@iniciar'));
@@ -111,7 +117,7 @@ Route::group(array('before' => 'auth'), function() {
       Route::group(array('before' => 'is_admin', 'prefix' => 'admin'), function() {
 
             /*
-             * Admin / t7marketing
+             * Admin
              */
             Route::resource('usuarios', 'AdminUsersController');            
             Route::get('usuarios/agregar_elementos',array('as'=>'usuarios.agregar_elementos','uses'=>'AdminUsersController@agregarElementos'));

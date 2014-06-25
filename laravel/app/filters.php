@@ -118,10 +118,10 @@ ROute::filter('comprobar_usuario', function() {
                   Session::flash('error', 'Revisa por favor los pagos pendientes, antes de poder continuar');
                   return Redirect::to('pagos/faltantes');
             }
-            else
-            {
+            
+            if (!$usuario->is_activo){
                   Session::flash('messages', 'El usuario tiene problemas, ponte en contacto con nosotros');
-                  return Redirect::to('usuario/problemas');
-            }
+                  return Redirect::to('dominios/seleccionar_nuevo');
+            }            
       }
 });

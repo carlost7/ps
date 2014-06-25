@@ -13,6 +13,9 @@
             <h1>
                   Selecciona un nuevo dominio
             </h1>
+            <p>
+                  Tu dominio anterior no pudo registrarse. pero puedes seleccionar uno nuevo.  
+            </p>
       </div>
 </div>
 <div class="container">

@@ -11,6 +11,8 @@ interface CorreosRepository {
 
       public function listarCorreos();
 
+      public function contarCorreos();
+      
       public function listarQuotas();
 
       public function obtenerCorreo($id);

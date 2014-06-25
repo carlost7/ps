@@ -20,7 +20,7 @@ class CorreosController extends \BaseController {
       public function index()
       {
             $correos = $this->Correo->listarCorreos();
-            $total = sizeof($correos);
+            $total = $this->Correo->contarCorreos();
             $quotas = $this->Correo->listarQuotas();
             return View::make('correos.index')->with(array('correos' => $correos, 'quotas' => $quotas, 'total' => $total));
       }

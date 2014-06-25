@@ -56,6 +56,9 @@
                         @endif
                         @endforeach
                   </table>
+
+                  {{ $correos->links(); }}
+
             </div>
 
             @else
@@ -66,7 +69,50 @@
             @endif
       </div>
 </div>
-
+<div class="container">
+      <div class="row">
+            <div class="col-xs-6">
+                  <h3>Segura SSL / TLS (Recomendado)</h3>
+                  <ul>
+                        <li>
+                              Usuario: &GT;Correo&Lt; 
+                        </li>
+                        <li>
+                              Servidor entrante: rs4.websitehostserver.net
+                              <br>
+                              Puerto POP3: 995
+                        </li>
+                        <li>
+                              Servidor de correo saliente: 	rs4.websitehostserver.net
+                              Puerto SMTP: 465
+                        </li>
+                        <li>
+                              <strong>Es necesaria la autenticación para POP3 y SMTP.</strong>
+                        </li>
+                  </ul>
+            </div>
+            <div class="col-xs-6">
+                  <h3>Segura SSL / TLS (Recomendado)</h3>
+                  <ul>
+                        <li>
+                              Usuario: &GT;Correo&Lt; 
+                        </li>
+                        <li>
+                              Servidor entrante: mail.leitmedic.com 
+                              <br>
+                              Puerto POP3: 110
+                        </li>
+                        <li>
+                              Servidor de correo saliente: mail.leitmedic.com 
+                              Puerto SMTP: 26
+                        </li>
+                        <li>
+                              <strong>Es necesaria la autenticación para POP3 y SMTP.</strong>
+                        </li>
+                  </ul>
+            </div>
+      </div>
+</div>
 @include('layouts.menu_usuario', array('activo'=>'correos'))
 
 @stop
@@ -75,13 +121,13 @@
 {{ HTML::script('js/vendor/bootbox.min.js') }}
 
 <script>
-      function confirmDelete(email,id){
-            bootbox.confirm("Estas seguro que deseas eliminar la cuenta "+email, function(result) {
-                  if(result){
-                        $('#'+id).submit();
-                  }
-            });
-            return false;
-      }
+              function confirmDelete(email, id){
+              bootbox.confirm("Estas seguro que deseas eliminar la cuenta " + email, function(result) {
+              if (result){
+              $('#' + id).submit();
+              }
+              });
+                      return false;
+              }
 </script>
 @stop

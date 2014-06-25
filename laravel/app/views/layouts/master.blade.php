@@ -36,7 +36,12 @@
                               </button>
                               
                               @if(Auth::check())
-                              {{ HTML::linkRoute('usuario/inicio','PrimerServer',null,array('class'=>'navbar-brand')) ;}}
+                                    @if(Auth->user()->is_admin)
+                                          {{ HTML::linkRoute('admin.usuarios.index','PrimerServer',null,array('class'=>'navbar-brand')) ;}}
+                                    @else
+                                          {{ HTML::linkRoute('usuario/inicio','PrimerServer',null,array('class'=>'navbar-brand')) ;}}
+                                    @endif
+                              
                               @else
                               {{ HTML::linkRoute('inicio','PrimerServer',null,array('class'=>'navbar-brand')) ;}}                              
                               @endif                              

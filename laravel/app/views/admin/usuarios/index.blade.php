@@ -31,17 +31,17 @@
 
                               <td>{{ $usuario->username }}</td>
                               <td>{{ HTML::link('admin/usuarios/'.$usuario->id,$usuario->email) }}</td>
-                              
+
                               @if($usuario->dominio != null)
                               <td>{{ $usuario->dominio->dominio }}</td>
                               <td>{{ $usuario->dominio->plan->nombre }}</td>
-                              
-                              
+
+
                               @else
                               <td>pendiente</td>
                               <td>pendiente</td>
-                              
-                              
+
+
                               @endif
                               <td>{{ HTML::link('admin/usuarios/'.$usuario->id.'/edit','Editar',array('class'=>'btn btn-primary btn-xs')) }}</td>
                               <td>
@@ -54,6 +54,9 @@
 
                         @endif
                   </table>
+                  @if($usuarios->count())
+                        {{ $usuarios->links()}}
+                  @endif
             </div>
       </div>
 

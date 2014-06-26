@@ -51,7 +51,7 @@
                         @endif
                         @endforeach
                   </table>
-                  @if($correos)
+                  @if($correos->count())
                         {{ $correos->links(); }}
                   @endif
             </div>

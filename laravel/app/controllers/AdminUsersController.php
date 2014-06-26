@@ -75,7 +75,7 @@ class AdminUsersController extends \BaseController {
                               $user = explode('.', $dominio->dominio);
                               $username = $user[0];
                               $hostname = 'primerserver.com';
-                              $home_dir = "public_html/".$dominio->dominio;
+                              $home_dir = "public_html/" . $dominio->dominio;
                               if ($this->Ftp->agregarFtp($username, $hostname, $home_dir, Input::get('password'), true))
                               {
                                     Session::put('message', 'La cuenta esta lista para usarse');
@@ -173,21 +173,37 @@ class AdminUsersController extends \BaseController {
       public function destroy($id)
       {
             $usuario = $this->Usuario->obtenerUsuario($id);
-            $this->Ftp->set_attributes($usuario->dominio);
-            $ftps = $usuario->dominio->ftps;
-
-
-
-            $this->Ftp->eliminarFtp($ftps, true);
-
-
-            $this->Correo->set_attributes($usuario->dominio);
-            foreach ($usuario->dominio->correos as $correo)
+            if ($usuario->dominio)
             {
-                  $this->Correo->eliminarCorreo($correo);
-            }
 
-            if ($this->Dominio->eliminarDominio($usuario->dominio))
+                  $this->Ftp->set_attributes($usuario->dominio);
+                  $ftps = $usuario->dominio->ftps;
+
+
+
+                  $this->Ftp->eliminarFtp($ftps, true);
+
+
+                  $this->Correo->set_attributes($usuario->dominio);
+                  foreach ($usuario->dominio->correos as $correo)
+                  {
+                        $this->Correo->eliminarCorreo($correo);
+                  }
+
+                  if ($this->Dominio->eliminarDominio($usuario->dominio))
+                  {
+                        if ($this->Usuario->eliminarUsuario($id))
+                        {
+                              Session::flash('message', 'Se elimino el usuario con exito');
+                              return Redirect::to('admin/usuarios');
+                        }
+                  }
+                  else
+                  {
+                        Session::flash('error', 'Error al eliminar el dominio');
+                  }
+            }
+            else
             {
                   if ($this->Usuario->eliminarUsuario($id))
                   {
@@ -195,10 +211,7 @@ class AdminUsersController extends \BaseController {
                         return Redirect::to('admin/usuarios');
                   }
             }
-            else
-            {
-                  Session::flash('error', 'Error al eliminar el dominio');
-            }
+
             return Redirect::to('admin/usuarios');
       }
 

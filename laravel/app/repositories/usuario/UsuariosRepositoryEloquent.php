@@ -18,7 +18,7 @@ class UsuariosRepositoryEloquent implements UsuariosRepository {
 
       public function listarUsuarios()
       {
-            return User::where('is_admin', false)->pagination(10);
+            return User::where('is_admin', false)->paginate(10);
       }
 
       /*

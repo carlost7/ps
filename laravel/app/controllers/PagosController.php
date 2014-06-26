@@ -244,66 +244,65 @@ class PagosController extends \BaseController {
       public function obtenerIPNMercadoPago()
       {
 
-            /* $id = Input::get('id');
-              if (isset($id))
-              {
-              $response = $this->Pagos->recibir_notificacion($id);
-              if (isset($response))
-              {
-              $external_reference = $response['collection']['external_reference'];
-              $status = $response['collection']['status'];
+            $id = Input::get('id');
+            if (isset($id))
+            {
+                  $response = $this->Pagos->recibir_notificacion($id);
+                  if (isset($response))
+                  {
+                        $external_reference = $response['collection']['external_reference'];
+                        $status = $response['collection']['status'];
 
-              $user = $this->Pagos->actualizarStatusPagos($external_reference, $status);
-              if (isset($user))
-              {
+                        $user = $this->Pagos->actualizarStatusPagos($external_reference, $status);
+                        if (isset($user))
+                        {
 
-              switch ($status)
-              {
-              case 'approved':
-              $this->agregarDominio($user);
-              break;
-              case "pending":
-              echo "Pago pendiente";
-              break;
-              case "in_process":
-              echo "pago en proceso";
-              break;
-              case "rejected":
-              echo "Pago rechazado";
-              break;
-              case "refunded":
-              echo "Pago regresado";
-              break;
-              case "cancelled":
-              $this->cancelarUsuario($user);
-              break;
-              case "in_mediation":
-              echo "status en_mediacion";
-              break;
-              default :
-              echo "status incorrecto";
-              break;
-              }
-              }
-              else
-              {
-              Log::info('PagosController . obtenerIPNMercadoPago No se encuentra ningun usuario con el numero de orden ' . $external_reference);
-              echo "no se encontro ningun usuario";
-              }
-              }
-              else
-              {
-              Log::error('PagosController.obtenerIPNMercadoPago No se recibio informacion de pago ID:' . $id);
-              echo "no recibido";
-              }
-              }
-              else
-              {
-              echo "no recibi nada";
-              }
-             */
-
-            $result = json_decode('{"status":200,
+                              switch ($status)
+                              {
+                                    case 'approved':
+                                          $this->agregarDominio($user);
+                                          break;
+                                    case "pending":
+                                          echo "Pago pendiente";
+                                          break;
+                                    case "in_process":
+                                          echo "pago en proceso";
+                                          break;
+                                    case "rejected":
+                                          echo "Pago rechazado";
+                                          break;
+                                    case "refunded":
+                                          echo "Pago regresado";
+                                          break;
+                                    case "cancelled":
+                                          $this->cancelarUsuario($user);
+                                          break;
+                                    case "in_mediation":
+                                          echo "status en_mediacion";
+                                          break;
+                                    default :
+                                          echo "status incorrecto";
+                                          break;
+                              }
+                        }
+                        else
+                        {
+                              Log::info('PagosController . obtenerIPNMercadoPago No se encuentra ningun usuario con el numero de orden ' . $external_reference);
+                              echo "no se encontro ningun usuario";
+                        }
+                  }
+                  else
+                  {
+                        Log::error('PagosController.obtenerIPNMercadoPago No se recibio informacion de pago ID:' . $id);
+                        echo "no recibido";
+                  }
+            }
+            else
+            {
+                  echo "no recibi nada";
+            }
+            /*
+              $result = json_decode('{"status":200,
               "response":{
               "collection":{
               "sandbox":true,
@@ -357,7 +356,7 @@ class PagosController extends \BaseController {
 
 
               }
-              }', true);
+              }', true); */
             $response = $result['response'];
             $external_reference = $response['collection']['external_reference'];
             $status = $response['collection']['status'];
@@ -398,7 +397,7 @@ class PagosController extends \BaseController {
             {
                   Log::info('PagosController . obtenerIPNMercadoPago No se encuentra ningun usuario con el numero de orden ' . $external_reference);
                   echo "no se encontro ningun usuario";
-            } 
+            }
       }
 
       public function cancelarUsuario($usuario)
@@ -425,7 +424,7 @@ class PagosController extends \BaseController {
 
       public function agregarDominio($usuario)
       {
-            DominiosController::agregarDominio($usuario);            
+            DominiosController::agregarDominio($usuario);
       }
 
 }

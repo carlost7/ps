@@ -71,11 +71,16 @@
 </div>
 <div class="container">
       <div class="row">
+            <div class="col-xs-12">
+                  <h2>Configuración:</h2>
+            </div>
+      </div>
+      <div class="row">
             <div class="col-xs-6">
                   <h3>Segura SSL / TLS (Recomendado)</h3>
                   <ul>
                         <li>
-                              Usuario: &GT;Correo&Lt; 
+                              Usuario: &lt;Correo&gt; 
                         </li>
                         <li>
                               Servidor entrante: rs4.websitehostserver.net
@@ -84,6 +89,7 @@
                         </li>
                         <li>
                               Servidor de correo saliente: 	rs4.websitehostserver.net
+                              <br>
                               Puerto SMTP: 465
                         </li>
                         <li>
@@ -92,18 +98,19 @@
                   </ul>
             </div>
             <div class="col-xs-6">
-                  <h3>Segura SSL / TLS (Recomendado)</h3>
+                  <h3>No Segura </h3>
                   <ul>
                         <li>
-                              Usuario: &GT;Correo&Lt; 
+                              Usuario: &lt;Correo&gt; 
                         </li>
                         <li>
-                              Servidor entrante: mail.leitmedic.com 
+                              Servidor entrante: mail.{{Session::get('dominio')->dominio}}
                               <br>
                               Puerto POP3: 110
                         </li>
                         <li>
                               Servidor de correo saliente: mail.leitmedic.com 
+                              <br>
                               Puerto SMTP: 26
                         </li>
                         <li>

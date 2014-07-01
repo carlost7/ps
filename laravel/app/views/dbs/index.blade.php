@@ -42,7 +42,7 @@
 
                               <td>{{ HTML::link('dbs/'.$db->id,$db->nombre) }}</td>
                               <td>{{ $db->usuario }}</td>
-                              <td>{{ HTML::link('http://primerserver.com/msql/','Accesar') }}</td>
+                              <td>{{ HTML::link('http://primerserver.com/msql/','Accesar',array('target'=>'_blank')) }}</td>
                               <td>{{ $quotas[$db->nombre].'mb' }}</td>
                               <td>
                                     {{ Form::open(array('route' => array('dbs.destroy',$db->id),'method'=>'DELETE','id'=>$db->id)) }}

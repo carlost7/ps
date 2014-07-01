@@ -21,7 +21,8 @@ class AdminCorreosController extends \BaseController {
       {
             $correos = $this->Correo->listarCorreos();
             $quotas = $this->Correo->listarQuotas();
-            $total = $this->Correo->contarCorreos();
+            $total = $this->Correo->contarCorreos();            
+            dd($quotas);
             return View::make('admin.correos.index')->with(array('correos' => $correos, 'quotas' => $quotas, 'total' => $total));
       }
 

@@ -25,7 +25,7 @@
             <!--[if lt IE 7]>
                 <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
             <![endif]-->
-            <div class="navbar navbar-inverse navbar-static-top">
+            <div class="navbar navbar-default navbar-static-top">
                   <div class="container">
                         <div class="navbar-header">
 
@@ -34,14 +34,14 @@
                                     <span class="icon-bar"></span>
                                     <span class="icon-bar"></span>
                               </button>
-                              
+
                               @if(Auth::check())
-                                    @if(Auth::user()->is_admin)
-                                          {{ HTML::linkRoute('admin.usuarios.index','PrimerServer',null,array('class'=>'navbar-brand')) ;}}
-                                    @else
-                                          {{ HTML::linkRoute('usuario/inicio','PrimerServer',null,array('class'=>'navbar-brand')) ;}}
-                                    @endif
-                              
+                              @if(Auth::user()->is_admin)
+                              {{ HTML::linkRoute('admin.usuarios.index','PrimerServer',null,array('class'=>'navbar-brand')) ;}}
+                              @else
+                              {{ HTML::linkRoute('usuario/inicio','PrimerServer',null,array('class'=>'navbar-brand')) ;}}
+                              @endif
+
                               @else
                               {{ HTML::linkRoute('inicio','PrimerServer',null,array('class'=>'navbar-brand')) ;}}                              
                               @endif                              
@@ -73,17 +73,9 @@
                                     </li>
                               </ul>
                               @else
-                              {{ Form::open(array('url'=>'usuario/login','class'=>'navbar-form navbar-right','role'=>'form')) ;}}
-
-                              <div class="form-group">
-                                    <input type="text" name="correo" placeholder="Email" class="form-control">
-                              </div>
-                              <div class="form-group">
-                                    <input type="password" name="password" placeholder="Password" class="form-control">
-                              </div>
-                              <button type="submit" class="btn btn-success">Entrar</button>
-
-                              {{ Form::close() ;}}
+                              <ul class="nav navbar-nav navbar-right">
+                                    <li>{{ HTML::linkRoute('usuario/login','Ingresar') }}</li>
+                              </ul>                         
                               @endif
                         </div><!--/.navbar-collapse -->
                   </div>

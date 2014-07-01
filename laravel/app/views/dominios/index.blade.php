@@ -15,25 +15,29 @@
             </h1>
       </div>
 </div>
-<div class="container">
-      <div class="comprobacion">
-            <div class="alert">                  
-                  <p class="result"></p>
-            </div>                        
-      </div>
+<div class="container">      
       <div class="clearfix"></div>
       {{ Form::open(array('route'=>'dominio.datos_usuario','id'=>'form_confirm')) }}
-      <div class="form-group">                       
-            <div class="input-group">
-                  <span class="input-group-addon">
-                        <input type="checkbox" id="ajeno" name="ajeno" value="1"> Ya tengo dominio:
-                  </span>
+      <div class="form-group">       
+            <h3>Escribe en el campo el dominio que quieres utilizar</h3>
+            <p>Da click en el boton para comprobar la disponiblidad</p>
+            <p>Si ya cuentas con un dominio selecciona la opción</p>
+            <div class="comprobacion">
+                  <div class="alert">                  
+                        <p class="result"></p>
+                  </div>                        
+            </div>
+            <div class="input-group">                  
                   <input type="text" class="form-control" id="dominio" name="dominio" placeholder="Escribir el nombre del dominio que quieres utilizar">
                   <span class="input-group-btn">
                         <button class="btn btn-primary" id="Comprobar" type="button">Comprobar Disponibilidad</button>
                   </span>
             </div>
+            <br>
             <div class="alert" id="dominios_similares"></div>
+            <div class="input-group">                          
+                  <input type="checkbox" id="ajeno" name="ajeno" value="1">Ya cuento con un dominio:
+            </div>
       </div>    
       <button type="submit" id="crear" class="btn btn-success" disabled='disabled'>Crear Dominio</button>
       {{ Form::close() }}
@@ -77,7 +81,7 @@
                   listadominios += "<ul class='list-group'>";
                   for (i = 0; i < dominios.length; i++) {
                         listadominios += "<li class='list-group-item'>";
-                        listadominios += "<button type='button' class='btn btn-primary btn-sm' onclick=\"selectSimilar('"+dominios[i].toLowerCase()+"')\" >seleccionar</button> > "+dominios[i].toLowerCase()+'';
+                        listadominios += "<button type='button' class='btn btn-primary btn-sm' onclick=\"selectSimilar('" + dominios[i].toLowerCase() + "')\" >seleccionar</button> > " + dominios[i].toLowerCase() + '';
                         listadominios += "</li>";
                   }
                   listadominios += "</ul>";

@@ -68,8 +68,7 @@ Route::group(array('before' => 'auth'), function() {
        */
       Route::get('usuario/logout', array('as' => 'usuario/logout', 'uses' => 'UsuariosController@logout'));
       Route::any('usuario/cambiar_password', array('as' => 'usuario/cambiar_password', 'uses' => 'UsuariosController@cambiarPasswordUsuario'));
-      Route::any('usuario/cambiar_correo', array('as' => 'usuario/cambiar_correo', 'uses' => 'UsuariosController@cambiarCorreoUsuario'));
-      Route::any('usuario/problemas', array('as' => 'usuario/problemas', 'uses' => 'UsuariosController@mostrarProblemas'));
+      Route::any('usuario/cambiar_correo', array('as' => 'usuario/cambiar_correo', 'uses' => 'UsuariosController@cambiarCorreoUsuario'));      
       
       /*
        * Si el dominio no se pudo comprar, elegir un nuevo dominio
